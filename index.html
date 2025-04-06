@@ -88,17 +88,18 @@
     </div>
     
     <!-- Geocoder Section -->
-    <div class="search-container">
-      <label for="location-search">Search Location:</label>
-      <div class="search-input-group">
-        <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
-               aria-describedby="search-hint" />
-        <button id="location-search-btn">
-          <span class="material-icons-round">search</span> Search
-        </button>
-      </div>
-      <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
-    </div>
+<!-- Updated Search Container in Location Drawer -->
+<div class="search-container">
+  <label for="location-search">Search Location:</label>
+  <div class="search-input-group">
+    <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
+           aria-describedby="search-hint" />
+    <button id="location-search-btn">
+      <span class="material-icons-round">search</span><span>Search</span>
+    </button>
+  </div>
+  <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
+</div>
     
     <!-- Add Custom Location -->
     <div class="custom-location-form">
