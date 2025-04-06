@@ -1,4 +1,4 @@
-const CACHE_NAME = "apa-app-cache-v2.3.1";
+const CACHE_NAME = "apa-app-cache-v2.4.0";
 const OFFLINE_URL = "offline.html";
 
 self.addEventListener("install", (event) => {
@@ -7,12 +7,14 @@ self.addEventListener("install", (event) => {
       return cache.addAll([
         "./",
         "index.html",
-        "styles.css?v=2.3.1",
-        "data.js?v=2.3.1",
-        "js/main.js?v=2.3.1",
+        "styles.css?v=2.4.0",
+        "data.js?v=2.4.0",
+        "js/main.js?v=2.4.0",
         "js/modules/core/config.js",
+        "js/modules/core/configManager.js",
         "js/modules/core/utils.js",
         "js/modules/core/events.js",
+        "js/modules/core/version.js",
         "js/modules/ui/map.js",
         "js/modules/ui/panels.js",
         "js/modules/ui/drawers.js",
@@ -22,9 +24,13 @@ self.addEventListener("install", (event) => {
         "js/modules/ui/filters.js",
         "js/modules/ui/legend.js",
         "js/modules/ui/geocoder.js",
+        "js/modules/ui/locationSelector.js",
+        "js/modules/ui/satelliteCoverage.js",
+        "js/modules/ui/whatsNew.js",
         "js/modules/data/storage.js",
         "js/modules/data/satellites.js",
         "js/modules/data/locations.js",
+        "js/modules/data/commandRegions.js",
         "js/modules/calculations/angles.js",
         "js/modules/calculations/visibility.js",
         "manifest.json",
@@ -34,7 +40,7 @@ self.addEventListener("install", (event) => {
       ]);
     })
   );
-  console.log("Installed SW Version: v2.3.1");
+  console.log("Installed SW Version: v2.4.0");
 });
 
 self.addEventListener("fetch", (event) => {
