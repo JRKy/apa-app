@@ -7,7 +7,15 @@ self.addEventListener("install", (event) => {
       return cache.addAll([
         "./",
         "index.html",
-        "styles.css?v=2.4.0",
+        // New modular CSS files
+        "css/base.css?v=2.4.0",
+        "css/layout.css?v=2.4.0",
+        "css/components.css?v=2.4.0",
+        "css/modules.css?v=2.4.0",
+        "css/dark-mode.css?v=2.4.0",
+        "css/animations.css?v=2.4.0",
+        "css/responsive.css?v=2.4.0",
+        // JavaScript files
         "data.js?v=2.4.0",
         "js/main.js?v=2.4.0",
         "js/modules/core/config.js",
@@ -45,7 +53,10 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request).then((response) => response || caches.match(OFFLINE_URL)))
+    fetch(event.request)
+      .catch(() => caches.match(event.request)
+        .then((response) => response || caches.match(OFFLINE_URL))
+      )
   );
 });
 
