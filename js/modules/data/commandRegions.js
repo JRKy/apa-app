@@ -199,3 +199,31 @@ export function drawCommandRegions() {
     commandLayers.push({ name, layer });
   });
 }
+
+/**
+ * Clear all command regions from the map
+ */
+export function clearCommandRegions() {
+  const map = getMap();
+  if (!map) return;
+  
+  commandLayers.forEach(c => map.removeLayer(c.layer));
+  commandLayers = [];
+}
+
+/**
+ * Check if command regions are currently visible
+ * @returns {boolean} Whether command regions are visible
+ */
+export function areCommandRegionsVisible() {
+  return commandRegionsVisible;
+}
+
+// Export for use in main.js
+export default {
+  init: initCommandRegions,
+  toggle: toggleCommandRegions,
+  draw: drawCommandRegions,
+  clear: clearCommandRegions,
+  isVisible: areCommandRegionsVisible
+};
