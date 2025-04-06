@@ -1,0 +1,258 @@
+/* layout.css - Structural layout and positioning - v2.4.0 */
+
+/* ===== Header ===== */
+header {
+  background-color: var(--color-primary);
+  color: white;
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-md);
+  height: 48px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 1010;
+}
+
+header h1 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+/* ===== Map Container ===== */
+#map {
+  height: calc(100vh - 48px);
+  width: 100%;
+  position: relative;
+}
+
+/* ===== Drawer Layout ===== */
+.drawer {
+  position: absolute;
+  top: 90px;
+  left: 10px;
+  z-index: 1003;
+  width: 280px;
+  display: none; /* Hidden by default */
+  animation: slide-down var(--transition-normal);
+}
+
+.drawer.visible {
+  display: block !important; /* Force display when visible class is applied */
+}
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-sm);
+}
+
+/* ===== Drawer Buttons Layout ===== */
+.drawer-buttons.top {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  z-index: 1002;
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ===== Drawer Overlay ===== */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1002;
+  display: none;
+}
+
+.drawer-overlay.visible {
+  display: block;
+}
+
+/* ===== Current Location Indicator ===== */
+#current-location-indicator {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: var(--space-md);
+  z-index: 1004;
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ===== APA Panel Layout ===== */
+#apa-panel.leaflet-control.apa-control {
+  padding: var(--space-md);
+  max-height: 70vh;
+  width: 420px;
+  overflow-y: auto;
+  z-index: 1001;
+  position: fixed;
+  top: 70px;
+  right: var(--space-md);
+  display: none;
+  resize: both;
+  overflow: auto;
+  min-width: 360px;
+  min-height: 200px;
+  animation: fade-in var(--transition-normal);
+}
+
+#apa-panel.minimized {
+  max-height: 40px !important;
+  overflow: hidden !important;
+  padding: var(--space-xs) var(--space-md) !important;
+  resize: none !important;
+  z-index: 1005 !important;
+}
+
+/* ===== Panel Controls Layout ===== */
+.panel-controls {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* ===== Toggle APA Panel Button Layout ===== */
+#toggle-apa-panel {
+  position: fixed;
+  right: 80px;
+  bottom: var(--space-md);
+  z-index: 1002;
+  display: none;
+}
+
+/* ===== Floating Controls Layout ===== */
+.floating-control {
+  position: fixed;
+  z-index: 1002;
+}
+
+#legend-toggle {
+  bottom: var(--space-xl);
+  right: var(--space-md);
+}
+
+#dark-mode-toggle {
+  bottom: calc(var(--space-xl) + 50px);
+  right: var(--space-md);
+}
+
+#toggle-polar-plot {
+  bottom: calc(var(--space-xl) + 100px);
+  right: var(--space-md);
+}
+
+/* ===== APA Legend Layout ===== */
+#apa-legend {
+  position: fixed;
+  bottom: var(--space-xl);
+  right: calc(var(--space-md) + 50px);
+  z-index: 1002;
+  width: 240px;
+  animation: fade-in var(--transition-normal);
+}
+
+/* ===== Help Tooltip Layout ===== */
+#help-tooltip {
+  position: fixed;
+  bottom: var(--space-md);
+  left: var(--space-md);
+  z-index: 9999;
+  max-width: 300px;
+  animation: fade-in var(--transition-normal);
+}
+
+/* ===== Tutorial Overlay Layout ===== */
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tutorial-card {
+  max-width: 500px;
+  width: 90%;
+}
+
+.tutorial-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tutorial-highlight {
+  position: absolute;
+  z-index: 9997;
+  pointer-events: none;
+}
+
+/* ===== Polar Plot Layout ===== */
+.polar-plot-container {
+  position: absolute;
+  bottom: var(--space-lg);
+  left: var(--space-md);
+  z-index: 1000;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== Modal Dialog Layout ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in var(--transition-normal);
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: slide-up var(--transition-normal);
+}
+
+.modal-header {
+  padding: var(--space-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-body {
+  padding: var(--space-md);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.modal-footer {
+  padding: var(--space-md);
+  display: flex;
+  justify-content: flex-end;
+}
