@@ -1,0 +1,264 @@
+/* dark-mode.css - Dark mode specific styles - v2.4.0 */
+
+/* ===== Dark Mode Base Styles ===== */
+body.dark-mode {
+  --color-background: var(--color-dark-background);
+  --color-surface: var(--color-dark-surface);
+  --color-text-primary: var(--color-dark-text-primary);
+  --color-text-secondary: var(--color-dark-text-secondary);
+  --color-border: var(--color-dark-border);
+  --color-primary: var(--color-dark-primary);
+}
+
+body.dark-mode :focus-visible {
+  outline-color: var(--color-dark-primary);
+}
+
+/* ===== Dark Mode Layout Components ===== */
+body.dark-mode .drawer,
+body.dark-mode #apa-legend {
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .drawer input,
+body.dark-mode .drawer select {
+  background-color: var(--color-dark-background);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .drawer-header h3 {
+  color: var(--color-dark-primary);
+}
+
+body.dark-mode .drawer-header {
+  border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode #apa-panel {
+  background: rgba(31, 41, 55, 0.95);
+}
+
+body.dark-mode #toggle-apa-panel,
+body.dark-mode #legend-toggle,
+body.dark-mode #current-location-indicator,
+body.dark-mode .control-button {
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .drawer-buttons button {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .drawer-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .satellite-icon {
+  filter: brightness(1.2);
+}
+
+body.dark-mode .secondary-btn {
+  color: var(--color-dark-text-secondary) !important;
+  border-color: var(--color-dark-border) !important;
+}
+
+body.dark-mode .secondary-btn:hover {
+  color: var(--color-dark-text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* ===== Dark Mode Controls ===== */
+body.dark-mode #close-apa-panel:hover,
+body.dark-mode #minimize-apa-panel:hover,
+body.dark-mode .panel-control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .modal-close:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .range-slider {
+  background: var(--color-dark-border);
+}
+
+body.dark-mode .range-slider::-webkit-slider-thumb,
+body.dark-mode .range-slider::-moz-range-thumb {
+  background: var(--color-dark-primary);
+}
+
+/* ===== Dark Mode Table ===== */
+body.dark-mode #apa-table {
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode #apa-table tbody tr {
+  background-color: var(--color-dark-surface);
+}
+
+body.dark-mode #apa-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+body.dark-mode #apa-table tbody tr:hover {
+  background-color: rgba(91, 156, 247, 0.1);
+}
+
+body.dark-mode #apa-table td {
+  border-bottom-color: var(--color-dark-border);
+}
+
+/* ===== Dark Mode Elevation Classes ===== */
+body.dark-mode .elevation-excellent {
+  background-color: rgba(52, 168, 83, 0.2) !important;
+  color: #4eda9d !important;
+}
+
+body.dark-mode .elevation-good {
+  background-color: rgba(66, 133, 244, 0.2) !important;
+  color: #7baaf7 !important;
+}
+
+body.dark-mode .elevation-marginal {
+  background-color: rgba(251, 188, 4, 0.2) !important;
+  color: #fdd663 !important;
+}
+
+body.dark-mode .elevation-poor {
+  background-color: rgba(234, 134, 0, 0.2) !important;
+  color: #ffa340 !important;
+}
+
+body.dark-mode .elevation-negative {
+  background-color: rgba(234, 67, 53, 0.2) !important;
+  color: #ff6c60 !important;
+}
+
+/* ===== Dark Mode Labels & Tooltips ===== */
+body.dark-mode .apa-line-label {
+  background: rgba(55, 65, 81, 0.9) !important;
+  border-color: var(--color-dark-border) !important;
+  color: var(--color-dark-text-primary) !important;
+}
+
+body.dark-mode .command-region-label {
+  background: rgba(55, 65, 81, 0.9) !important;
+  border-color: var(--color-dark-border) !important;
+  color: var(--color-dark-text-primary) !important;
+}
+
+body.dark-mode .apa-panel-header {
+  border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode .apa-panel-header strong {
+  color: var(--color-dark-primary);
+}
+
+/* ===== Dark Mode Polar Plot ===== */
+body.dark-mode .polar-plot-container {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .polar-plot-circle,
+body.dark-mode .polar-plot-line {
+  stroke: var(--color-dark-border);
+}
+
+body.dark-mode .polar-plot-label {
+  fill: var(--color-dark-text-secondary);
+}
+
+/* ===== Dark Mode Location Selector ===== */
+body.dark-mode .location-list-container {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .location-group-header:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .location-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .add-custom-location,
+body.dark-mode .geocoder-section {
+  border-top-color: var(--color-dark-border);
+}
+
+body.dark-mode #apa-legend strong {
+  border-bottom-color: var(--color-dark-border);
+}
+
+/* ===== Dark Mode Notifications ===== */
+body.dark-mode .notification-success {
+  background-color: rgba(46, 125, 50, 0.2);
+  color: #81c784;
+}
+
+body.dark-mode .notification-info {
+  background-color: rgba(25, 118, 210, 0.2);
+  color: #64b5f6;
+}
+
+body.dark-mode .notification-warning {
+  background-color: rgba(245, 127, 23, 0.2);
+  color: #ffd54f;
+}
+
+body.dark-mode .notification-error {
+  background-color: rgba(198, 40, 40, 0.2);
+  color: #ef9a9a;
+}
+
+/* ===== Dark Mode Modal ===== */
+body.dark-mode .modal-content {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .modal-header {
+  border-bottom-color: var(--color-dark-border);
+}
+
+body.dark-mode .modal-header h2 {
+  color: var(--color-dark-primary);
+}
+
+body.dark-mode .modal-footer {
+  border-top-color: var(--color-dark-border);
+}
+
+/* ===== Dark Mode Leaflet Controls ===== */
+body.dark-mode .leaflet-control-geocoder {
+  background: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .leaflet-control-geocoder-input {
+  background-color: var(--color-dark-background);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .leaflet-container {
+  /* Adjust map base colors for dark mode to avoid too much contrast */
+  filter: brightness(0.8) contrast(1.2) saturate(0.8);
+}
+
+body.dark-mode .leaflet-control {
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
