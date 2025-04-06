@@ -18,6 +18,54 @@ A Progressive Web App (PWA) for calculating and visualizing antenna pointing ang
 - Draggable APA table panel with persistent layout and sorting  
 - Dark mode with optimized map layers  
 - Interactive tutorial and help system  
+- Create components in a modular way
+- Follow
+
+## Recent Refactoring (v2.4.0)
+
+The codebase underwent a major refactoring in v2.4.0 to improve maintainability and performance:
+
+### CSS Modularization
+
+The monolithic `styles.css` has been split into specialized files:
+
+- **css/base.css**: Variables, reset, base elements
+- **css/layout.css**: Structural layout and positioning
+- **css/components.css**: Reusable UI components
+- **css/modules.css**: App-specific modules
+- **css/dark-mode.css**: Dark mode styles
+- **css/animations.css**: Animation keyframes
+- **css/responsive.css**: Media queries
+
+### Code Structure Improvements
+
+- Fixed circular dependencies in JS modules
+- Removed redundant code
+- Implemented proper ES module patterns
+- Added dynamic imports for better separation of concerns
+
+### File Structure
+
+```
+/css               # CSS modules
+  - base.css
+  - layout.css
+  - components.css
+  - modules.css
+  - dark-mode.css
+  - animations.css
+  - responsive.css
+/js
+  /modules         # JS modules
+    /core          # Core app functionality
+    /ui            # UI components 
+    /data          # Data management
+    /calculations  # Calculation utilities
+/icons             # App icons
+index.html         # Main HTML
+manifest.json      # PWA manifest
+sw.js              # Service worker
+```
 
 ## 🆕 What's New in v2.3.0
 
