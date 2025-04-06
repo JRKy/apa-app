@@ -12,7 +12,7 @@
   <!-- Improved Leaflet CSS loading with multiple fallbacks -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
       onerror="this.onerror=null;this.href='https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css';
-              this.onerror=function(){this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';}">
+              this.onerror=function(){this.href='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';}"/>
 
   <!-- Improved Leaflet JS loading with multiple fallbacks -->
   <script>
@@ -88,21 +88,20 @@
     </div>
     
     <!-- Geocoder Section -->
-<!-- Updated Search Container in Location Drawer -->
-<div class="search-container">
-  <label for="location-search">Search Location:</label>
-  <div class="search-input-group">
-    <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
-           aria-describedby="search-hint" />
-    <button id="location-search-btn">
-      <span class="material-icons-round">search</span><span>Search</span>
-    </button>
-  </div>
-  <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
-</div>
+    <div class="geocoder-section">
+      <label for="location-search">Search Location:</label>
+      <div class="search-input-group">
+        <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
+               aria-describedby="search-hint" />
+        <button id="location-search-btn">
+          <span class="material-icons-round">search</span><span>Search</span>
+        </button>
+      </div>
+      <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
+    </div>
     
     <!-- Add Custom Location -->
-    <div class="custom-location-form">
+    <div class="add-custom-location">
       <label for="custom-loc-name">Location Name:</label>
       <input type="text" id="custom-loc-name" placeholder="e.g. My Office" />
       
@@ -199,53 +198,6 @@
     </button>
     
     <button id="reset-location-filters" class="secondary-btn">
-      <span class="material-icons-round">clear</span> Clear Filters
-    </button>
-  </div>
-
-  <!-- Satellite Filter Drawer -->
-  <div id="satellite-filter-drawer" class="drawer" aria-labelledby="satellite-filter-drawer-title">
-    <div class="drawer-header">
-      <h3 id="satellite-filter-drawer-title">Satellite Filters</h3>
-      <button class="drawer-close" title="Close" data-drawer="satellite-filter-drawer" aria-label="Close satellite filter drawer">
-        <span class="material-icons-round">close</span>
-      </button>
-    </div>
-    
-    <label for="min-elevation">Minimum Elevation:</label>
-    <div class="range-filter">
-      <input type="range" id="min-elevation" min="-30" max="90" value="-10" class="range-slider">
-      <span id="min-elevation-value">-10°</span>
-    </div>
-    
-    <label for="satellite-type">Satellite Type:</label>
-    <select id="satellite-type">
-      <option value="all">All Satellites</option>
-      <option value="predefined">Predefined Only</option>
-      <option value="custom">Custom Only</option>
-    </select>
-    
-    <div class="longitude-range">
-      <label>Longitude Range:</label>
-      <div class="range-inputs">
-        <input type="number" id="min-longitude" placeholder="Min (-180)" min="-180" max="180" step="1">
-        <span>to</span>
-        <input type="number" id="max-longitude" placeholder="Max (180)" min="-180" max="180" step="1">
-      </div>
-    </div>
-    
-    <label for="visibility-filter">Visibility:</label>
-    <select id="visibility-filter">
-      <option value="all">All Satellites</option>
-      <option value="visible">Only Visible</option>
-      <option value="not-visible">Only Not Visible</option>
-    </select>
-    
-    <button id="apply-satellite-filters">
-      <span class="material-icons-round">filter_alt</span> Apply Filters
-    </button>
-    
-    <button id="clear-satellite-filters" class="secondary-btn">
       <span class="material-icons-round">clear</span> Clear Filters
     </button>
   </div>
