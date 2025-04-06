@@ -72,70 +72,48 @@
   <!-- Drawer Overlay for Mobile -->
   <div id="drawer-overlay" class="drawer-overlay"></div>
 
-  <!-- Location Drawer -->
+  <!-- Location Drawer (Add Custom Location) -->
   <div id="location-drawer" class="drawer" aria-labelledby="location-drawer-title">
     <div class="drawer-header">
-      <h3 id="location-drawer-title">Location Selector</h3>
+      <h3 id="location-drawer-title">Add Custom Location</h3>
       <button class="drawer-close" title="Close" data-drawer="location-drawer" aria-label="Close location drawer">
         <span class="material-icons-round">close</span>
       </button>
     </div>
     
-    <!-- Search & Filter Section -->
+    <!-- Geocoder Section -->
     <div class="search-container">
-      <label for="location-search">Search Locations:</label>
+      <label for="location-search">Search Location:</label>
       <div class="search-input-group">
-        <input type="text" id="location-search" placeholder="Filter by name, country, or CCMD" 
+        <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
                aria-describedby="search-hint" />
         <button id="location-search-btn">
-          <span class="material-icons-round">search</span>
+          <span class="material-icons-round">search</span> Search
         </button>
       </div>
-      <span id="search-hint" class="sr-only">Type to filter locations by name, country, or command</span>
+      <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
     </div>
     
-    <!-- Location List -->
-    <div class="location-list-container">
-      <h4>Preset Locations</h4>
-      <div class="location-list">
-        <!-- Preset locations will be populated dynamically -->
-      </div>
+    <!-- Add Custom Location -->
+    <div class="custom-location-form">
+      <label for="custom-loc-name">Location Name:</label>
+      <input type="text" id="custom-loc-name" placeholder="e.g. My Office" />
       
-      <h4>Custom Locations</h4>
-      <div class="custom-location-list">
-        <!-- Custom locations saved by the user will appear here -->
-        <div class="no-custom-locations">No custom locations saved yet.</div>
-      </div>
-    </div>
-    
-    <!-- Add New Location -->
-    <div class="add-custom-location">
-      <h4>Add New Location</h4>
-      <div class="custom-location-form">
-        <label for="custom-loc-name">Location Name:</label>
-        <input type="text" id="custom-loc-name" placeholder="e.g. My Office" />
-        
-        <label for="custom-lat">Latitude:</label>
-        <input type="number" id="custom-lat" step="0.000001" placeholder="e.g. 34.05" />
-        
-        <label for="custom-lon">Longitude:</label>
-        <input type="number" id="custom-lon" step="0.000001" placeholder="e.g. -118.25" />
-        
-        <button id="add-custom-location-btn">
-          <span class="material-icons-round">add_location</span> Add Location
-        </button>
-      </div>
-    </div>
-    
-    <!-- Geocoder Section -->
-    <div class="geocoder-section">
-      <h4>Find by Address</h4>
-      <div class="search-input-group">
-        <input type="text" id="geocoder-input" placeholder="Enter address or place name" />
-        <button id="geocoder-search-btn">
-          <span class="material-icons-round">search</span> Find
-        </button>
-      </div>
+      <label for="custom-lat">Latitude:</label>
+      <input type="number" id="custom-lat" step="0.000001" placeholder="e.g. 34.05" aria-describedby="lat-hint" />
+      <span id="lat-hint" class="sr-only">Enter location latitude in decimal degrees</span>
+      
+      <label for="custom-lon">Longitude:</label>
+      <input type="number" id="custom-lon" step="0.000001" placeholder="e.g. -118.25" aria-describedby="lon-hint" />
+      <span id="lon-hint" class="sr-only">Enter location longitude in decimal degrees</span>
+      
+      <button id="custom-location-btn">
+        <span class="material-icons-round">pin_drop</span> Go to Location
+      </button>
+      
+      <button id="save-location-btn" class="secondary-btn">
+        <span class="material-icons-round">save</span> Save Location
+      </button>
     </div>
   </div>
 
@@ -168,19 +146,48 @@
         <span class="material-icons-round">close</span>
       </button>
     </div>
-    <label for="aor-filter">AOR:</label>
-    <select id="aor-filter" aria-describedby="aor-hint"></select>
+    
+    <!-- Search and filter input -->
+    <label for="location-filter-search">Search Locations:</label>
+    <div class="search-input-group">
+      <input type="text" id="location-filter-search" placeholder="Filter by name, country, or CCMD" 
+             aria-describedby="filter-search-hint" />
+      <button id="clear-filter-search">
+        <span class="material-icons-round">clear</span>
+      </button>
+    </div>
+    <span id="filter-search-hint" class="sr-only">Type to filter locations by name, country, or command</span>
+    
+    <!-- Filters -->
+    <label for="aor-filter">AOR/CCMD:</label>
+    <select id="aor-filter" aria-describedby="aor-hint">
+      <option value="">All Command Regions</option>
+      <option value="NORTHCOM">NORTHCOM</option>
+      <option value="SOUTHCOM">SOUTHCOM</option>
+      <option value="EUCOM">EUCOM</option>
+      <option value="AFRICOM">AFRICOM</option>
+      <option value="CENTCOM">CENTCOM</option>
+      <option value="INDOPACOM">INDOPACOM</option>
+    </select>
     <span id="aor-hint" class="sr-only">Filter by Area of Responsibility</span>
     
     <label for="country-filter">Country:</label>
     <select id="country-filter" aria-describedby="country-hint"></select>
     <span id="country-hint" class="sr-only">Filter by Country</span>
     
-    <label for="location-select">Location:</label>
-    <select id="location-select" aria-describedby="location-hint"></select>
-    <span id="location-hint" class="sr-only">Select a specific location</span>
+    <div class="location-list-container">
+      <h4>Preset Locations</h4>
+      <div id="filtered-locations-list" class="location-list">
+        <!-- Locations will be populated dynamically -->
+      </div>
+      
+      <h4>Custom Locations</h4>
+      <div id="custom-locations-list" class="custom-location-list">
+        <!-- Custom locations will be populated dynamically -->
+      </div>
+    </div>
     
-    <button id="apply-location-filters">
+    <button id="apply-location-filters" class="primary-btn">
       <span class="material-icons-round">filter_alt</span> Apply Filters
     </button>
     
