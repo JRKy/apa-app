@@ -39,13 +39,13 @@
   <!-- Google Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=2.2.0" />
+  <link rel="stylesheet" href="styles.css?v=2.4.0" />
   
 </head>
 <body>
   <header>
     <h1>APA App</h1>
-    <span id="version">Version: 2.2.0</span>
+    <span id="version">Version: 2.4.0</span>
   </header>
 
   <!-- Drawer Buttons -->
@@ -75,34 +75,68 @@
   <!-- Location Drawer -->
   <div id="location-drawer" class="drawer" aria-labelledby="location-drawer-title">
     <div class="drawer-header">
-      <h3 id="location-drawer-title">Custom Location</h3>
+      <h3 id="location-drawer-title">Location Selector</h3>
       <button class="drawer-close" title="Close" data-drawer="location-drawer" aria-label="Close location drawer">
         <span class="material-icons-round">close</span>
       </button>
     </div>
     
+    <!-- Search & Filter Section -->
     <div class="search-container">
-      <label for="location-search">Search Location:</label>
+      <label for="location-search">Search Locations:</label>
       <div class="search-input-group">
-        <input type="text" id="location-search" placeholder="Enter city, address, or landmark" aria-describedby="search-hint" />
+        <input type="text" id="location-search" placeholder="Filter by name, country, or CCMD" 
+               aria-describedby="search-hint" />
         <button id="location-search-btn">
-          <span class="material-icons-round">search</span> Search
+          <span class="material-icons-round">search</span>
         </button>
       </div>
-      <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
+      <span id="search-hint" class="sr-only">Type to filter locations by name, country, or command</span>
     </div>
     
-    <label for="custom-lat">Latitude:</label>
-    <input type="number" id="custom-lat" step="0.000001" placeholder="e.g. 34.05" aria-describedby="lat-hint" />
-    <span id="lat-hint" class="sr-only">Enter location latitude in decimal degrees</span>
+    <!-- Location List -->
+    <div class="location-list-container">
+      <h4>Preset Locations</h4>
+      <div class="location-list">
+        <!-- Preset locations will be populated dynamically -->
+      </div>
+      
+      <h4>Custom Locations</h4>
+      <div class="custom-location-list">
+        <!-- Custom locations saved by the user will appear here -->
+        <div class="no-custom-locations">No custom locations saved yet.</div>
+      </div>
+    </div>
     
-    <label for="custom-lon">Longitude:</label>
-    <input type="number" id="custom-lon" step="0.000001" placeholder="e.g. -118.25" aria-describedby="lon-hint" />
-    <span id="lon-hint" class="sr-only">Enter location longitude in decimal degrees</span>
+    <!-- Add New Location -->
+    <div class="add-custom-location">
+      <h4>Add New Location</h4>
+      <div class="custom-location-form">
+        <label for="custom-loc-name">Location Name:</label>
+        <input type="text" id="custom-loc-name" placeholder="e.g. My Office" />
+        
+        <label for="custom-lat">Latitude:</label>
+        <input type="number" id="custom-lat" step="0.000001" placeholder="e.g. 34.05" />
+        
+        <label for="custom-lon">Longitude:</label>
+        <input type="number" id="custom-lon" step="0.000001" placeholder="e.g. -118.25" />
+        
+        <button id="add-custom-location-btn">
+          <span class="material-icons-round">add_location</span> Add Location
+        </button>
+      </div>
+    </div>
     
-    <button id="custom-location-btn">
-      <span class="material-icons-round">pin_drop</span> Go to Location
-    </button>
+    <!-- Geocoder Section -->
+    <div class="geocoder-section">
+      <h4>Find by Address</h4>
+      <div class="search-input-group">
+        <input type="text" id="geocoder-input" placeholder="Enter address or place name" />
+        <button id="geocoder-search-btn">
+          <span class="material-icons-round">search</span> Find
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Satellite Drawer -->
@@ -316,7 +350,7 @@
       </button>
     </div>
 
-    <div class="legend-section">
+    <div class="legend-section command-region-legend">
       <div class="legend-subtitle">Command Regions</div>
       <div class="legend-item">
       <div class="legend-color" style="background-color: #9c27b0;"></div>
@@ -361,12 +395,12 @@
   </div>
 
   <!-- Scripts -->
-  <script src="data.js?v=2.2.0"></script>
+  <script src="data.js?v=2.4.0"></script>
   <!-- Replace the original script reference with the modular entry point -->
-  <script type="module" src="js/main.js?v=2.2.0"></script>
+  <script type="module" src="js/main.js?v=2.4.0"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.2.0").then(reg => {
+      navigator.serviceWorker.register("sw.js?v=2.4.0").then(reg => {
         console.log("Service Worker registered with scope:", reg.scope);
       });
     }
