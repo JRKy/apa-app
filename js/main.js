@@ -1,5 +1,5 @@
-// main.js - Application entry point
-import { APP_VERSION } from './modules/core/config.js';
+// main.js - Application entry point - v2.4.0
+import ConfigManager from './modules/core/configManager.js';
 import { showNotification } from './modules/core/utils.js';
 import { initEventListeners } from './modules/core/events.js';
 import { initMap, updateMapAppearance, getMap } from './modules/ui/map.js';
@@ -13,11 +13,17 @@ import { initLegend } from './modules/ui/legend.js';
 import { initGeocoder } from './modules/ui/geocoder.js';
 import { loadCustomSatellites } from './modules/data/satellites.js';
 import { restoreLastLocation, loadLastLocation } from './modules/data/storage.js';
-import { goToLocation } from './modules/data/locations.js';
-import { toggleSatelliteFootprints } from './modules/calculations/visibility.js';
+import { initCommandRegions } from './modules/data/commandRegions.js';
+import { initLocationSelector } from './modules/ui/locationSelector.js';
+import { initSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
+import { VERSION } from './modules/core/version.js';
+import { showWhatsNewDialog } from './modules/ui/whatsNew.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log(`APA App ${APP_VERSION} initialized`);
+  console.log(`APA App ${VERSION} initializing...`);
+  
+  // Initialize configuration manager
+  ConfigManager.init();
   
   // Initialize map
   initMap();
@@ -31,6 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initTutorial();
   initGeocoder();
   
+  // Initialize new components
+  initCommandRegions();
+  initLocationSelector();
+  initSatelliteCoverage();
+  
   // Set up event listeners
   initEventListeners();
   
@@ -40,9 +51,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load saved data
   loadCustomSatellites();
   
-  // Check dark mode preference
-  const isDarkMode = localStorage.getItem("darkMode") === "true";
-  if (isDarkMode) {
+  // Check dark mode preference from config
+  const theme = ConfigManager.get('theme', 'light');
+  if (theme === 'dark') {
     document.body.classList.add("dark-mode");
     updateMapAppearance(true);
     
@@ -54,57 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   
-  // Repurpose polar plot button to show command regions
-  const commandRegionsButton = document.getElementById("toggle-polar-plot");
-  if (commandRegionsButton) {
-    // Update tooltip and icon
-    commandRegionsButton.title = "Toggle Command Regions";
-    commandRegionsButton.setAttribute("aria-label", "Toggle combatant command regions");
-    commandRegionsButton.querySelector(".material-icons-round").textContent = "map";
-    
-    // Update event listener
-    commandRegionsButton.addEventListener("click", () => {
-      const isVisible = toggleSatelliteFootprints(); // Function name kept for backward compatibility
-      
-      // Show notification
-      if (isVisible) {
-        showNotification("Command regions displayed", "info");
-      } else {
-        showNotification("Command regions hidden", "info");
-      }
+  // Check for command regions visibility from config
+  const showCommandRegions = ConfigManager.get('ui.showCommandRegions', false);
+  if (showCommandRegions) {
+    // Import dynamically to avoid circular dependencies
+    import('./modules/data/commandRegions.js').then(module => {
+      module.toggleCommandRegions();
     });
   }
   
-  // Show tutorial if first time or if coming from "restart tutorial"
-  setTimeout(() => {
-    // Check URL parameters for tutorial restart
-    const urlParams = new URLSearchParams(window.location.search);
-    const showTutorial = urlParams.get('tutorial') === 'true';
-    
-    if (showTutorial || (!localStorage.getItem('tutorialCompleted') && localStorage.getItem('helpDismissed'))) {
-      // Clean up URL if needed
-      if (showTutorial) {
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-      
-      // Show tutorial with slight delay to ensure UI is ready
-      setTimeout(() => {
-        import('./modules/ui/tutorial.js').then(module => {
-          module.showTutorial();
-        });
-      }, 1000);
-    }
-  }, 500);
-  
-  // Register shortcut key for tutorial (Shift+?)
-  document.addEventListener('keydown', (e) => {
-    // Shift + ?
-    if (e.shiftKey && e.key === '?') {
-      import('./modules/ui/tutorial.js').then(module => {
-        module.restartTutorial();
-      });
-    }
-  });
+  // Check for polar plot visibility from config
+  const showPolarPlot = ConfigManager.get('ui.showPolarPlot', false);
+  if (showPolarPlot) {
+    // Import dynamically to avoid circular dependencies
+    import('./modules/ui/polarPlot.js').then(module => {
+      module.togglePolarPlotVisibility(true);
+    });
+  }
   
   // Restore last location or set a world view
   setTimeout(() => {
@@ -124,9 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     // Show tutorial if first time
-    if (!localStorage.getItem('tutorialCompleted') && localStorage.getItem('helpDismissed')) {
+    const tutorialCompleted = ConfigManager.get('ui.tutorialCompleted', false);
+    const showHelp = ConfigManager.get('ui.showHelp', true);
+    
+    if (!tutorialCompleted && !showHelp) {
       setTimeout(() => showTutorial(), 1000);
     }
+    
+    // Show What's New dialog if version changed
+    setTimeout(() => showWhatsNewDialog(), 1500);
   }, 500);
   
   // Announce app is ready for screen readers
@@ -141,4 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.removeChild(announcement);
     }, 1000);
   }, 1000);
+  
+  console.log(`APA App ${VERSION} initialized successfully`);
 });
