@@ -1,0 +1,134 @@
+/* base.css - Core variables and foundation styles - v2.4.0 */
+
+/* Import modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ===== CSS Reset & Base Styles ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Primary Colors */
+  --color-primary: #1a73e8;
+  --color-primary-light: #4285f4;
+  --color-primary-dark: #0d47a1;
+  
+  /* Secondary/Accent Colors */
+  --color-accent-green: #34a853;
+  --color-accent-red: #ea4335;
+  --color-accent-yellow: #fbbc04;
+  --color-accent-orange: #ea8600;
+  
+  /* Neutral Colors */
+  --color-background: #f8f9fa;
+  --color-surface: #ffffff;
+  --color-text-primary: #202124;
+  --color-text-secondary: #5f6368;
+  --color-border: #dadce0;
+  
+  /* Dark Mode Colors */
+  --color-dark-background: #1f2937;
+  --color-dark-surface: #374151;
+  --color-dark-text-primary: #f3f4f6;
+  --color-dark-text-secondary: #d1d5db;
+  --color-dark-border: #4b5563;
+  --color-dark-primary: #5b9cf7;
+  
+  /* Spacing System */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  
+  /* Typography */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* Animation */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* ===== Focus Styles for Accessibility ===== */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ===== Utility Classes ===== */
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Base link styles */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* Base heading styles */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+}
+
+/* Base button styles */
+button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+/* Base input styles */
+input, select, textarea {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: var(--font-size-sm);
+}
