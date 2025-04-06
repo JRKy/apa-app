@@ -1,12 +1,12 @@
-// visibility.js - Antenna angle calculation functions
+// visibility.js - Satellite visibility calculation and map visualization
 
 import { getMap } from '../ui/map.js';
 import { getCoverageStyleClass, LINE_STYLES } from '../core/config.js';
-import { getSatellites } from '../data/satellites.js';
 import { calculateElevation, calculateAzimuth, calculateCoverageRadius } from './angles.js';
 import { showNotification } from '../core/utils.js';
-import { COMMAND_REGIONS } from '../data/commandRegions.js';
+import { eventBus } from '../core/events.js';
 
+// State tracking
 let lineLayers = [];
 let satelliteMarkers = [];
 let orbitPaths = [];
@@ -185,10 +185,19 @@ export function updateSatelliteLines(lat, lon) {
       drawLine(lat, lon, satLon, name, el, cb.id);
     });
 
-    if (typeof SATELLITES !== 'undefined') {
-      SATELLITES.forEach((sat) => {
-        const el = calculateElevation(lat, lon, sat.longitude);
-        addSatelliteMarker(sat, el < 0);
+    // Add satellite markers
+    if (typeof getSatellites === 'function') {
+      // Import dynamically to prevent circular dependency
+      import('../data/satellites.js').then(module => {
+        const satellites = module.getSatellites();
+        if (satellites && satellites.length) {
+          satellites.forEach((sat) => {
+            const el = calculateElevation(lat, lon, sat.longitude);
+            addSatelliteMarker(sat, el < 0);
+          });
+        }
+      }).catch(err => {
+        console.error('Failed to import satellites module:', err);
       });
     }
     
@@ -221,27 +230,33 @@ export function removeLine(id) {
 /**
  * Toggle command region display
  */
-export function toggleSatelliteFootprints() {
+export function toggleCommandRegions() {
   const lastLocation = document.getElementById('current-location-indicator');
   if (!lastLocation || lastLocation.classList.contains('hidden')) {
     showNotification("Please select a location first", "error");
     return false;
   }
 
-  // Repurpose this function to toggle command regions
+  // Toggle visibility state
   commandRegionsVisible = !commandRegionsVisible;
 
   if (commandRegionsVisible) {
     drawCommandRegions();
+    showNotification("Command regions displayed", "info");
   } else {
     clearCommandRegions();
+    showNotification("Command regions hidden", "info");
   }
+
+  // Publish event
+  eventBus.publish('commandRegionsVisibilityChanged', commandRegionsVisible);
 
   return commandRegionsVisible;
 }
 
 /**
- * Draw all combatant command regions on the map
+ * Draw command regions on the map
+ * Note: This function imports the region data dynamically to avoid circular dependencies
  */
 export function drawCommandRegions() {
   const map = getMap();
@@ -250,28 +265,38 @@ export function drawCommandRegions() {
   // Clear any existing regions first
   clearCommandRegions();
   
-  // Draw each command region
-  COMMAND_REGIONS.features.forEach((feature) => {
-    const { name, color, description } = feature.properties;
+  // Import command regions data dynamically to avoid circular dependencies
+  import('../data/commandRegions.js').then(module => {
+    const { COMMAND_REGIONS } = module;
     
-    const layer = L.geoJSON(feature, {
-      style: {
-        color: color || "#1a73e8",
-        weight: 2,
-        opacity: 0.6,
-        fillColor: color || "#1a73e8",
-        fillOpacity: 0.15,
-        className: 'command-region'
-      }
-    }).addTo(map);
-    
-    // Add a tooltip
-    layer.bindTooltip(`${name}: ${description}`, {
-      permanent: false,
-      className: "command-region-label"
-    });
-    
-    commandLayers.push({ name, layer });
+    if (COMMAND_REGIONS && COMMAND_REGIONS.features) {
+      // Draw each command region
+      COMMAND_REGIONS.features.forEach((feature) => {
+        const { name, color, description } = feature.properties;
+        
+        const layer = L.geoJSON(feature, {
+          style: {
+            color: color || "#1a73e8",
+            weight: 2,
+            opacity: 0.6,
+            fillColor: color || "#1a73e8",
+            fillOpacity: 0.15,
+            className: 'command-region'
+          }
+        }).addTo(map);
+        
+        // Add a tooltip
+        layer.bindTooltip(`${name}: ${description}`, {
+          permanent: false,
+          className: "command-region-label"
+        });
+        
+        commandLayers.push({ name, layer });
+      });
+    }
+  }).catch(err => {
+    console.error('Failed to import command regions:', err);
+    showNotification("Failed to display command regions", "error");
   });
 }
 
@@ -284,4 +309,15 @@ export function clearCommandRegions() {
   
   commandLayers.forEach(c => map.removeLayer(c.layer));
   commandLayers = [];
+}
+
+// Export additional functions for completeness
+export function isCommandRegionsVisible() {
+  return commandRegionsVisible;
+}
+
+// Local helper function to get satellites - to be imported dynamically
+function getSatellites() {
+  // This is just a stub - the actual function is imported dynamically
+  return [];
 }
