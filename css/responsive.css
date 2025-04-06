@@ -295,3 +295,34 @@
     animation: none !important;
   }
 }
+
+/* Mobile Search Input Group Refinements */
+@media (max-width: 768px) {
+  .search-input-group {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .search-input-group input {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .search-input-group button {
+    width: 100%;
+    justify-content: center;
+    padding: var(--space-sm);
+  }
+
+  .search-input-group button .material-icons-round {
+    margin-right: var(--space-xs);
+  }
+
+  .search-input-group button span:not(.material-icons-round) {
+    display: inline; /* Override previous hide */
+  }
+
+  .drawer .search-input-group {
+    margin-bottom: var(--space-md);
+  }
+}
