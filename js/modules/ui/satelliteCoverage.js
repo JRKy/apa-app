@@ -1,7 +1,7 @@
 // satelliteCoverage.js - Enhanced satellite coverage visualization
 import { getMap } from '../ui/map.js';
 import { getElevationClass, getCoverageStyleClass } from '../core/config.js';
-import { calculateCoverageRadius } from '../calculations/angles.js';
+import { calculateElevation, calculateAzimuth, calculateCoverageRadius } from '../calculations/angles.js';
 import { showNotification } from '../core/utils.js';
 import { eventBus } from '../core/events.js';
 
@@ -190,9 +190,7 @@ function updateCoverageForSatellite(id) {
   const satLon = parseFloat(checkbox.dataset.satlon);
   const name = checkbox.dataset.name;
   
-  // Calculate the elevation angle
-  // We'll need to import or recreate the calculate function
-  // For now, let's assume we have access to it
+  // Calculate the elevation angle - using imported function
   const el = calculateElevation(lat, lon, satLon);
   
   // Draw the coverage cone
@@ -263,54 +261,6 @@ export function toggleCoverageVisibility() {
   eventBus.publish('coverageVisibilityChanged', coverageVisible);
   
   return coverageVisible;
-}
-
-/**
- * Calculate elevation angle to a geostationary satellite
- * Duplicate from angles.js to avoid circular dependencies
- * @param {number} lat - Observer latitude in degrees
- * @param {number} lon - Observer longitude in degrees
- * @param {number} satLon - Satellite longitude in degrees
- * @returns {number} Elevation angle in degrees
- */
-function calculateElevation(lat, lon, satLon) {
-  // Convert to radians
-  const latRad = lat * Math.PI / 180;
-  
-  // Handle the 180/-180 boundary
-  let lonDiff = satLon - lon;
-  if (lonDiff > 180) {
-    lonDiff -= 360;
-  } else if (lonDiff < -180) {
-    lonDiff += 360;
-  }
-  
-  const lonDiffRad = lonDiff * Math.PI / 180;
-  
-  // Earth radius in km
-  const R = 6378.137;
-  
-  // Geostationary orbit altitude (km)
-  const h = 35786;
-  
-  // Calculate the geocentric angle between observer and satellite nadir point
-  const geocentricAngle = Math.acos(
-    Math.cos(latRad) * Math.cos(lonDiffRad)
-  );
-  
-  // Calculate the distance from observer to satellite
-  const d = Math.sqrt(
-    Math.pow(R, 2) + Math.pow(R + h, 2) - 
-    2 * R * (R + h) * Math.cos(geocentricAngle)
-  );
-  
-  // Calculate elevation angle
-  const elevRad = Math.asin(
-    ((R + h) * Math.cos(geocentricAngle) - R) / d
-  );
-  
-  // Convert to degrees
-  return elevRad * 180 / Math.PI;
 }
 
 // Export for use in main.js
