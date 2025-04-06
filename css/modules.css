@@ -1,0 +1,527 @@
+/* modules.css - Specific UI module styles - v2.4.0 */
+
+/* ===== APA Table Styles ===== */
+#apa-table {
+  width: 100%;
+  margin-top: var(--space-sm);
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Define specific widths for columns */
+#apa-table th:nth-child(1), #apa-table td:nth-child(1) { width: 60px; } /* Visible toggle */
+#apa-table th:nth-child(2), #apa-table td:nth-child(2) { width: 25%; } /* Name */
+#apa-table th:nth-child(3), #apa-table td:nth-child(3) { width: 15%; } /* Longitude */
+#apa-table th:nth-child(4), #apa-table td:nth-child(4) { width: 20%; } /* Elevation */
+#apa-table th:nth-child(5), #apa-table td:nth-child(5) { width: 15%; } /* Azimuth */
+#apa-table th:nth-child(6), #apa-table td:nth-child(6) { width: 60px; } /* Actions */
+
+#apa-table thead {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-primary);
+  z-index: 10;
+}
+
+#apa-table th,
+#apa-table td {
+  padding: var(--space-sm);
+  text-align: center;
+  word-wrap: break-word;
+  font-size: var(--font-size-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+#apa-table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#apa-table th {
+  color: white;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-primary);
+}
+
+#apa-table tbody tr {
+  background-color: var(--color-surface);
+  transition: background-color var(--transition-fast);
+}
+
+#apa-table tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+#apa-table tbody tr:hover {
+  background-color: rgba(26, 115, 232, 0.05);
+}
+
+/* Sortable columns */
+#apa-table th.sortable {
+  cursor: pointer;
+  position: relative;
+  padding-right: var(--space-lg);
+}
+
+#apa-table th.sortable:hover {
+  background-color: var(--color-primary-dark);
+}
+
+#apa-table th.sortable::after {
+  content: '⇅';
+  position: absolute;
+  right: var(--space-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.7;
+}
+
+#apa-table th.sort-asc::after {
+  content: '↑';
+  opacity: 1;
+}
+
+#apa-table th.sort-desc::after {
+  content: '↓';
+  opacity: 1;
+}
+
+/* Elevation color coding */
+.elevation-excellent {
+  background-color: rgba(52, 168, 83, 0.15) !important;
+  color: var(--color-accent-green) !important;
+  font-weight: 600;
+}
+
+.elevation-good {
+  background-color: rgba(66, 133, 244, 0.15) !important;
+  color: var(--color-primary) !important;
+  font-weight: 500;
+}
+
+.elevation-marginal {
+  background-color: rgba(251, 188, 4, 0.15) !important;
+  color: var(--color-accent-yellow) !important;
+  font-weight: 500;
+}
+
+.elevation-poor {
+  background-color: rgba(234, 134, 0, 0.15) !important;
+  color: var(--color-accent-orange) !important;
+  font-weight: 500;
+}
+
+.elevation-negative {
+  background-color: rgba(234, 67, 53, 0.15) !important;
+  color: var(--color-accent-red) !important;
+  font-weight: 600;
+}
+
+#apa-no-results {
+  margin-top: var(--space-md);
+  font-style: italic;
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-md);
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-sm);
+}
+
+/* ===== Line and Satellite Visualization ===== */
+.apa-line-above {
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-opacity: 0.9;
+  animation: pulse-line var(--transition-slow) infinite;
+}
+
+.apa-line-below {
+  stroke: var(--color-accent-red);
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5, 5;
+}
+
+.apa-line-label {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1px solid var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
+  padding: var(--space-xs) var(--space-sm) !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-size: var(--font-size-xs) !important;
+}
+
+.satellite-icon {
+  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
+
+/* ===== Coverage Cone Styles ===== */
+.coverage-cone {
+  fill: var(--color-primary);
+  fill-opacity: 0.05;
+  stroke: var(--color-primary);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
+
+.coverage-cone-excellent {
+  fill: var(--color-accent-green);
+  fill-opacity: 0.05;
+  stroke: var(--color-accent-green);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
+
+.coverage-cone-good {
+  fill: var(--color-primary);
+  fill-opacity: 0.05;
+  stroke: var(--color-primary);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
+
+.coverage-cone-marginal {
+  fill: var(--color-accent-yellow);
+  fill-opacity: 0.05;
+  stroke: var(--color-accent-yellow);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
+
+.coverage-cone-poor {
+  fill: var(--color-accent-orange);
+  fill-opacity: 0.05;
+  stroke: var(--color-accent-orange);
+  stroke-width: 1;
+  stroke-opacity: 0.3;
+}
+
+/* ===== Polar Plot Styles ===== */
+.polar-plot {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.polar-plot-circle {
+  fill: none;
+  stroke: var(--color-border);
+}
+
+.polar-plot-line {
+  stroke: var(--color-border);
+}
+
+.polar-plot-satellite {
+  fill: var(--color-primary);
+}
+
+.polar-plot-satellite-below {
+  fill: var(--color-accent-red);
+}
+
+.polar-plot-label {
+  fill: var(--color-text-secondary);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+/* ===== Command Region Styles ===== */
+.command-region {
+  pointer-events: auto;
+  transition: fill-opacity 0.3s;
+}
+
+.command-region:hover {
+  fill-opacity: 0.3 !important;
+  cursor: pointer;
+}
+
+.command-region-label {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid var(--color-border) !important;
+  color: var(--color-text-primary) !important;
+  font-weight: 500 !important;
+  border-radius: var(--radius-sm) !important;
+  padding: var(--space-xs) var(--space-sm) !important;
+  box-shadow: var(--shadow-sm) !important;
+  font-size: var(--font-size-xs) !important;
+  max-width: 200px;
+}
+
+/* ===== APA Panel Header ===== */
+.apa-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-md);
+}
+
+.apa-panel-header:active {
+  cursor: grabbing;
+}
+
+.apa-panel-header strong {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* ===== APA Legend Styles ===== */
+#apa-legend strong {
+  display: block;
+  margin-bottom: var(--space-sm);
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: var(--font-size-md);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-xs);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-xs);
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: var(--space-sm);
+}
+
+.legend-color.above {
+  background-color: var(--color-primary);
+}
+
+.legend-color.below {
+  background-color: var(--color-accent-red);
+}
+
+.legend-color.excellent {
+  background-color: var(--color-accent-green);
+}
+
+.legend-color.good {
+  background-color: var(--color-primary-light);
+}
+
+.legend-color.marginal {
+  background-color: var(--color-accent-yellow);
+}
+
+.legend-color.poor {
+  background-color: var(--color-accent-orange);
+}
+
+.legend-section {
+  margin-bottom: var(--space-md);
+}
+
+.legend-subtitle {
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-secondary);
+}
+
+.legend-note {
+  font-style: italic;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-sm);
+}
+
+/* ===== Location Selector Styles ===== */
+.location-list-container {
+  margin-top: var(--space-md);
+  max-height: 40vh;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.location-list-container h4 {
+  margin: var(--space-sm) var(--space-sm) var(--space-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.location-group {
+  margin-bottom: var(--space-xs);
+}
+
+.location-group-header {
+  padding: var(--space-xs) var(--space-sm);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.location-group-header:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.location-group-count {
+  background-color: var(--color-primary);
+  color: white;
+  font-size: var(--font-size-xs);
+  border-radius: 10px;
+  padding: 0 var(--space-xs);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Color-code CCMD groups */
+.location-group[data-category="NORTHCOM"] .location-group-count {
+  background-color: #9c27b0;
+}
+.location-group[data-category="SOUTHCOM"] .location-group-count {
+  background-color: #ffeb3b;
+  color: rgba(0, 0, 0, 0.8);
+}
+.location-group[data-category="EUCOM"] .location-group-count {
+  background-color: #2196f3;
+}
+.location-group[data-category="AFRICOM"] .location-group-count {
+  background-color: #ff9800;
+  color: rgba(0, 0, 0, 0.8);
+}
+.location-group[data-category="CENTCOM"] .location-group-count {
+  background-color: #ff5722;
+}
+.location-group[data-category="INDOPACOM"] .location-group-count {
+  background-color: #4caf50;
+}
+
+.location-items {
+  padding: 0 var(--space-sm);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-normal);
+}
+
+.location-group.expanded .location-items {
+  max-height: 500px;
+  margin-bottom: var(--space-sm);
+}
+
+.location-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  margin: var(--space-xs) 0;
+  transition: background-color var(--transition-fast);
+}
+
+.location-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+.go-to-location-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: var(--space-xs);
+  border-radius: 50%;
+  transition: background-color var(--transition-fast);
+}
+
+.go-to-location-btn:hover {
+  background-color: rgba(26, 115, 232, 0.1);
+}
+
+.custom-location-list {
+  padding: var(--space-xs) var(--space-sm) var(--space-sm);
+}
+
+.no-custom-locations {
+  font-style: italic;
+  color: var(--color-text-secondary);
+  text-align: center;
+  padding: var(--space-sm);
+}
+
+.add-custom-location, 
+.geocoder-section {
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Search input group */
+.search-input-group {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.search-input-group input {
+  flex: 1;
+}
+
+.search-input-group button {
+  min-width: 40px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.search-input-group button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Delete satellite button */
+.delete-sat {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-md);
+  padding: 0;
+  margin: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+  color: var(--color-accent-red);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.delete-sat:hover {
+  opacity: 1;
+  background-color: rgba(234, 67, 53, 0.1);
+}
