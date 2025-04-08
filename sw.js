@@ -1,4 +1,4 @@
-const CACHE_NAME = "apa-app-cache-v2.4.0";
+const CACHE_NAME = "apa-app-cache-v2.5.0";
 const OFFLINE_URL = "offline.html";
 
 self.addEventListener("install", (event) => {
@@ -8,16 +8,16 @@ self.addEventListener("install", (event) => {
         "./",
         "index.html",
         // New modular CSS files
-        "css/base.css?v=2.4.0",
-        "css/layout.css?v=2.4.0",
-        "css/components.css?v=2.4.0",
-        "css/modules.css?v=2.4.0",
-        "css/dark-mode.css?v=2.4.0",
-        "css/animations.css?v=2.4.0",
-        "css/responsive.css?v=2.4.0",
+        "css/base.css?v=2.5.0",
+        "css/layout.css?v=2.5.0",
+        "css/components.css?v=2.5.0",
+        "css/modules.css?v=2.5.0",
+        "css/dark-mode.css?v=2.5.0",
+        "css/animations.css?v=2.5.0",
+        "css/responsive.css?v=2.5.0",
         // JavaScript files
-        "data.js?v=2.4.0",
-        "js/main.js?v=2.4.0",
+        "data.js?v=2.5.0",
+        "js/main.js?v=2.5.0",
         "js/modules/core/config.js",
         "js/modules/core/configManager.js",
         "js/modules/core/utils.js",

@@ -21,4 +21,10 @@ module.exports = {
       statements: 80,
     },
   },
+  transform: {
+    '^.+\\.(js|jsx)$': 'babel-jest',
+  },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(testing-library|@testing-library)/)',
+  ],
 }; 

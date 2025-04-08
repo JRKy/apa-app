@@ -1,12 +1,12 @@
 // version.js - Version information
 
-export const VERSION = '2.4.0';
-export const BUILD_DATE = '2025-04-07';
+export const VERSION = '2.5.0';
+export const BUILD_DATE = '2025-04-08';
 export const VERSION_INFO = {
   major: 2,
-  minor: 4,
+  minor: 5,
   patch: 0,
-  fullVersion: '2.4.0'
+  fullVersion: '2.5.0'
 };
 
 // Features included in this version

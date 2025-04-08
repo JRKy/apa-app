@@ -1,4 +1,4 @@
-// Version 2.2.0
+// Version 2.5.0
 
 const SATELLITES = [
   { name: "MUOS-2", longitude: -177 },

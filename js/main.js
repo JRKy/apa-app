@@ -1,4 +1,4 @@
-// main.js - Application entry point - v2.4.0
+// main.js - Application entry point - v2.5.0
 import ConfigManager from './modules/core/configManager.js';
 import { showNotification } from './modules/core/utils.js';
 import { initEventListeners } from './modules/core/events.js';
