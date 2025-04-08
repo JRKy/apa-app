@@ -20,7 +20,7 @@ on:
 jobs:
   version-check:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
     
     steps:
       - uses: actions/checkout@v3
