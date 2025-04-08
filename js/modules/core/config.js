@@ -104,11 +104,12 @@ export function getElevationClass(el) {
  * @returns {string} Human-readable elevation label
  */
 export function getElevationLabel(el) {
-  if (el < 0) return 'Below Horizon';
-  if (el >= ELEVATION_THRESHOLDS.EXCELLENT) return 'Excellent';
-  if (el >= ELEVATION_THRESHOLDS.GOOD) return 'Good';
-  if (el >= ELEVATION_THRESHOLDS.MARGINAL) return 'Marginal';
-  return 'Poor';
+  if (el >= 80) return "Excellent";
+  if (el >= 60) return "Very Good";
+  if (el >= 40) return "Good";
+  if (el >= 20) return "Fair";
+  if (el >= 0) return "Poor";
+  return "Below Horizon";
 }
 
 /**
@@ -117,9 +118,10 @@ export function getElevationLabel(el) {
  * @returns {string} CSS class name
  */
 export function getCoverageStyleClass(el) {
-  if (el < 0) return COVERAGE_STYLES.BELOW;
-  if (el >= ELEVATION_THRESHOLDS.EXCELLENT) return COVERAGE_STYLES.EXCELLENT;
-  if (el >= ELEVATION_THRESHOLDS.GOOD) return COVERAGE_STYLES.GOOD;
-  if (el >= ELEVATION_THRESHOLDS.MARGINAL) return COVERAGE_STYLES.MARGINAL;
-  return COVERAGE_STYLES.POOR;
+  if (el >= 80) return "coverage-excellent";
+  if (el >= 60) return "coverage-very-good";
+  if (el >= 40) return "coverage-good";
+  if (el >= 20) return "coverage-fair";
+  if (el >= 0) return "coverage-poor";
+  return "coverage-below-horizon";
 }

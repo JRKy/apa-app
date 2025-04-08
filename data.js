@@ -34,5 +34,3 @@ const LOCATIONS = [
   { name: "RRMC, PA", latitude: 36.233402, longitude: -91.251801, country: "USA", aor: "NORTHCOM" },
   { name: "Schriever SFB, CO", latitude: 38.801244686130765, longitude: -104.5260869617432, country: "USA", aor: "NORTHCOM" }
 ];
-
-console.log(`Data Loaded: ${SATELLITES.length} satellites, ${LOCATIONS.length} locations (v2.2.0)`);

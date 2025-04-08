@@ -3,87 +3,104 @@ import { MAP_DEFAULTS, GRID_INTERVALS } from '../core/config.js';
 import { debounce } from '../core/utils.js';
 import { updateSatelliteLines } from '../calculations/visibility.js';
 import { eventBus } from '../core/events.js';
+import { showError } from '../core/errorHandler.js';
+import { UICache } from '../core/cache.js';
 
 // Map instance and state variables
-let map;
+let map = null;
 let siteMarker;
 let lastLocation = null;
+let currentMarker = null;
+let currentLocation = null;
 
 /**
  * Initialize the map with base layers
  * @returns {Object} The initialized map instance
  */
 export function initMap() {
-  // Define base layers with correct subdomains and URL structure for Google Satellite
-  const baseLayers = {
-    "Map": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenStreetMap contributors',
-      className: 'map-layer-light'
-    }),
-    "Satellite": L.tileLayer("https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
-      subdomains: ['0', '1', '2', '3'], // Corrected subdomains
-      attribution: "&copy; Google Satellite",
-      className: 'map-layer-dark'
-    }),
-    "Terrain": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; OpenTopoMap contributors',
-      className: 'map-layer-light'
-    }),
-    "Dark": L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: '&copy; CARTO',
-      className: 'map-layer-dark'
-    })
-  };
+  try {
+    if (map) return map;
+    
+    // Define base layers with correct subdomains and URL structure for Google Satellite
+    const baseLayers = {
+      "Map": L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap contributors',
+        className: 'map-layer-light'
+      }),
+      "Satellite": L.tileLayer("https://mt{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+        subdomains: ['0', '1', '2', '3'], // Corrected subdomains
+        attribution: "&copy; Google Satellite",
+        className: 'map-layer-dark'
+      }),
+      "Terrain": L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenTopoMap contributors',
+        className: 'map-layer-light'
+      }),
+      "Dark": L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+        attribution: '&copy; CARTO',
+        className: 'map-layer-dark'
+      })
+    };
 
-  // Create map instance
-  map = L.map("map", {
-    center: MAP_DEFAULTS.CENTER,
-    zoom: MAP_DEFAULTS.ZOOM,
-    layers: [baseLayers.Map],
-    zoomControl: true,
-    attributionControl: true,
-    minZoom: MAP_DEFAULTS.MIN_ZOOM
-  });
+    // Create map instance
+    map = L.map("map", {
+      center: MAP_DEFAULTS.CENTER,
+      zoom: MAP_DEFAULTS.ZOOM,
+      layers: [baseLayers.Map],
+      zoomControl: true,
+      attributionControl: true,
+      minZoom: MAP_DEFAULTS.MIN_ZOOM
+    });
 
-  // Add layer control
-  L.control.layers(baseLayers, null, {
-    position: 'topright',
-    collapsed: true
-  }).addTo(map);
+    // Add layer control
+    L.control.layers(baseLayers, null, {
+      position: 'topright',
+      collapsed: true
+    }).addTo(map);
 
-  // Add grid lines
-  const gridOptions = {
-    showLabel: true,
-    dashArray: [5, 5],
-    color: '#666',
-    fontColor: '#666',
-    opacity: 0.6,
-    lineWidth: 1
-  };
+    // Add grid lines
+    const gridOptions = {
+      showLabel: true,
+      dashArray: [5, 5],
+      color: '#666',
+      fontColor: '#666',
+      opacity: 0.6,
+      lineWidth: 1
+    };
 
-  // Add latitude-longitude grid when zoomed in
-  map.on('zoomend', function() {
+    // Add latitude-longitude grid when zoomed in
+    map.on('zoomend', function() {
+      updateGridLines();
+    });
+    
+    // Add debounced map event handlers for better performance
+    map.on('zoomend moveend', debounce(() => {
+      if (lastLocation) {
+        updateSatelliteLines(lastLocation.lat, lastLocation.lon);
+        eventBus.publish('mapViewChanged', {
+          center: map.getCenter(),
+          zoom: map.getZoom()
+        });
+      }
+    }, 100));
+    
+    // Initialize grid lines
     updateGridLines();
-  });
-  
-  // Add debounced map event handlers for better performance
-  map.on('zoomend moveend', debounce(() => {
-    if (lastLocation) {
-      updateSatelliteLines(lastLocation.lat, lastLocation.lon);
-      eventBus.publish('mapViewChanged', {
-        center: map.getCenter(),
-        zoom: map.getZoom()
-      });
+    
+    // Restore map state from cache
+    const cachedPosition = UICache.getPanelPosition();
+    if (cachedPosition) {
+      map.setView(cachedPosition.center, cachedPosition.zoom);
     }
-  }, 100));
-  
-  // Initialize grid lines
-  updateGridLines();
-  
-  // Publish map ready event
-  eventBus.publish('mapReady', map);
-  
-  return map;
+    
+    // Publish map ready event
+    eventBus.publish('mapReady', map);
+    
+    return map;
+  } catch (error) {
+    showError(error, 'Map');
+    return null;
+  }
 }
 
 /**
@@ -188,6 +205,9 @@ export function setMapLocation(lat, lon, zoom = 5) {
  * @returns {Object|null} Leaflet map instance or null if not initialized
  */
 export function getMap() {
+  if (!map) {
+    return initMap();
+  }
   return map;
 }
 
@@ -312,3 +332,49 @@ L.LatLngGraticule = L.LayerGroup.extend({
 L.latlngGraticule = function(options) {
   return new L.LatLngGraticule(options);
 };
+
+export function updateMapLocation(lat, lon) {
+  try {
+    const map = getMap();
+    if (!map) {
+      throw new Error('Map not initialized');
+    }
+    
+    // Cache the new position
+    UICache.setPanelPosition({
+      center: [lat, lon],
+      zoom: map.getZoom()
+    });
+    
+    // Update map view
+    map.setView([lat, lon], map.getZoom());
+    
+    // Update or create marker
+    if (currentMarker) {
+      currentMarker.setLatLng([lat, lon]);
+    } else {
+      currentMarker = L.marker([lat, lon]).addTo(map);
+    }
+    
+    currentLocation = { lat, lon };
+    
+  } catch (error) {
+    showError(error, 'Map');
+  }
+}
+
+export function getCurrentLocation() {
+  return currentLocation;
+}
+
+export function clearMap() {
+  try {
+    if (currentMarker) {
+      currentMarker.remove();
+      currentMarker = null;
+    }
+    currentLocation = null;
+  } catch (error) {
+    showError(error, 'Map');
+  }
+}

@@ -1,264 +1,217 @@
-/* dark-mode.css - Dark mode specific styles - v2.4.0 */
+/* dark-mode.css - Dark mode theme styles - v2.5.0 */
 
-/* ===== Dark Mode Base Styles ===== */
-body.dark-mode {
-  --color-background: var(--color-dark-background);
-  --color-surface: var(--color-dark-surface);
-  --color-text-primary: var(--color-dark-text-primary);
-  --color-text-secondary: var(--color-dark-text-secondary);
-  --color-border: var(--color-dark-border);
-  --color-primary: var(--color-dark-primary);
+/* ===== Base Styles ===== */
+[data-theme="dark"] {
+  --color-background: #1a1a1a;
+  --color-surface: #2d2d2d;
+  --color-surface-hover: #3d3d3d;
+  --color-border: #404040;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-tertiary: #707070;
+  --color-primary: #4a9eff;
+  --color-primary-light: rgba(74, 158, 255, 0.1);
+  --color-primary-dark: #357abd;
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-danger: #f44336;
+  --color-info: #2196f3;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
 }
 
-body.dark-mode :focus-visible {
-  outline-color: var(--color-dark-primary);
+/* ===== Layout Components ===== */
+[data-theme="dark"] .header {
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
 }
 
-/* ===== Dark Mode Layout Components ===== */
-body.dark-mode .drawer,
-body.dark-mode #apa-legend {
-  background-color: var(--color-dark-surface);
-  color: var(--color-dark-text-primary);
-  border-color: var(--color-dark-border);
+[data-theme="dark"] .drawer {
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
 }
 
-body.dark-mode .drawer input,
-body.dark-mode .drawer select {
-  background-color: var(--color-dark-background);
-  color: var(--color-dark-text-primary);
-  border-color: var(--color-dark-border);
+[data-theme="dark"] .panel {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
-body.dark-mode .drawer-header h3 {
-  color: var(--color-dark-primary);
+[data-theme="dark"] .modal {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
 }
 
-body.dark-mode .drawer-header {
-  border-bottom-color: var(--color-dark-border);
+/* ===== Form Elements ===== */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode #apa-panel {
-  background: rgba(31, 41, 55, 0.95);
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.2);
 }
 
-body.dark-mode #toggle-apa-panel,
-body.dark-mode #legend-toggle,
-body.dark-mode #current-location-indicator,
-body.dark-mode .control-button {
-  background-color: var(--color-dark-surface);
-  color: var(--color-dark-text-primary);
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--color-text-tertiary);
 }
 
-body.dark-mode .drawer-buttons button {
-  background-color: var(--color-dark-surface);
-  border-color: var(--color-dark-border);
-  color: var(--color-dark-text-primary);
+/* ===== Buttons ===== */
+[data-theme="dark"] .btn {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode .drawer-close:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+[data-theme="dark"] .btn:hover {
+  background-color: var(--color-surface-hover);
 }
 
-body.dark-mode .satellite-icon {
-  filter: brightness(1.2);
+[data-theme="dark"] .btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
 }
 
-body.dark-mode .secondary-btn {
-  color: var(--color-dark-text-secondary) !important;
-  border-color: var(--color-dark-border) !important;
+[data-theme="dark"] .btn-primary:hover {
+  background-color: var(--color-primary-dark);
 }
 
-body.dark-mode .secondary-btn:hover {
-  color: var(--color-dark-text-primary) !important;
-  background-color: rgba(255, 255, 255, 0.05) !important;
+[data-theme="dark"] .btn-secondary {
+  background-color: transparent;
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
 }
 
-/* ===== Dark Mode Controls ===== */
-body.dark-mode #close-apa-panel:hover,
-body.dark-mode #minimize-apa-panel:hover,
-body.dark-mode .panel-control-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--color-dark-text-primary);
+[data-theme="dark"] .btn-secondary:hover {
+  background-color: var(--color-surface-hover);
 }
 
-body.dark-mode .modal-close:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--color-dark-text-primary);
+/* ===== Tables ===== */
+[data-theme="dark"] table {
+  border-color: var(--color-border);
 }
 
-body.dark-mode .range-slider {
-  background: var(--color-dark-border);
+[data-theme="dark"] th {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-border);
 }
 
-body.dark-mode .range-slider::-webkit-slider-thumb,
-body.dark-mode .range-slider::-moz-range-thumb {
-  background: var(--color-dark-primary);
+[data-theme="dark"] td {
+  border-bottom-color: var(--color-border);
 }
 
-/* ===== Dark Mode Table ===== */
-body.dark-mode #apa-table {
-  border-color: var(--color-dark-border);
+[data-theme="dark"] tr:hover {
+  background-color: var(--color-surface-hover);
 }
 
-body.dark-mode #apa-table tbody tr {
-  background-color: var(--color-dark-surface);
+/* ===== Notifications ===== */
+[data-theme="dark"] .notification {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode #apa-table tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.03);
+[data-theme="dark"] .notification-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  border-color: var(--color-success);
 }
 
-body.dark-mode #apa-table tbody tr:hover {
-  background-color: rgba(91, 156, 247, 0.1);
+[data-theme="dark"] .notification-warning {
+  background-color: rgba(255, 152, 0, 0.1);
+  border-color: var(--color-warning);
 }
 
-body.dark-mode #apa-table td {
-  border-bottom-color: var(--color-dark-border);
+[data-theme="dark"] .notification-error {
+  background-color: rgba(244, 67, 54, 0.1);
+  border-color: var(--color-danger);
 }
 
-/* ===== Dark Mode Elevation Classes ===== */
-body.dark-mode .elevation-excellent {
-  background-color: rgba(52, 168, 83, 0.2) !important;
-  color: #4eda9d !important;
+[data-theme="dark"] .notification-info {
+  background-color: rgba(33, 150, 243, 0.1);
+  border-color: var(--color-info);
 }
 
-body.dark-mode .elevation-good {
-  background-color: rgba(66, 133, 244, 0.2) !important;
-  color: #7baaf7 !important;
+/* ===== Map Elements ===== */
+[data-theme="dark"] .leaflet-container {
+  background-color: var(--color-background);
 }
 
-body.dark-mode .elevation-marginal {
-  background-color: rgba(251, 188, 4, 0.2) !important;
-  color: #fdd663 !important;
+[data-theme="dark"] .leaflet-control {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode .elevation-poor {
-  background-color: rgba(234, 134, 0, 0.2) !important;
-  color: #ffa340 !important;
+[data-theme="dark"] .leaflet-popup-content-wrapper {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode .elevation-negative {
-  background-color: rgba(234, 67, 53, 0.2) !important;
-  color: #ff6c60 !important;
+[data-theme="dark"] .leaflet-popup-tip {
+  background-color: var(--color-surface);
 }
 
-/* ===== Dark Mode Labels & Tooltips ===== */
-body.dark-mode .apa-line-label {
-  background: rgba(55, 65, 81, 0.9) !important;
-  border-color: var(--color-dark-border) !important;
-  color: var(--color-dark-text-primary) !important;
+/* ===== Elevation Colors ===== */
+[data-theme="dark"] .elevation-excellent {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--color-success);
 }
 
-body.dark-mode .command-region-label {
-  background: rgba(55, 65, 81, 0.9) !important;
-  border-color: var(--color-dark-border) !important;
-  color: var(--color-dark-text-primary) !important;
+[data-theme="dark"] .elevation-good {
+  background-color: rgba(74, 158, 255, 0.1);
+  color: var(--color-primary);
 }
 
-body.dark-mode .apa-panel-header {
-  border-bottom-color: var(--color-dark-border);
+[data-theme="dark"] .elevation-marginal {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: var(--color-warning);
 }
 
-body.dark-mode .apa-panel-header strong {
-  color: var(--color-dark-primary);
+[data-theme="dark"] .elevation-poor {
+  background-color: rgba(244, 67, 54, 0.1);
+  color: var(--color-danger);
 }
 
-/* ===== Dark Mode Polar Plot ===== */
-body.dark-mode .polar-plot-container {
-  background-color: var(--color-dark-surface);
-  border-color: var(--color-dark-border);
+[data-theme="dark"] .elevation-negative {
+  background-color: rgba(244, 67, 54, 0.05);
+  color: var(--color-danger);
 }
 
-body.dark-mode .polar-plot-circle,
-body.dark-mode .polar-plot-line {
-  stroke: var(--color-dark-border);
+/* ===== Tooltips ===== */
+[data-theme="dark"] .tooltip {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
-body.dark-mode .polar-plot-label {
-  fill: var(--color-dark-text-secondary);
+[data-theme="dark"] .tooltip::after {
+  border-top-color: var(--color-surface);
 }
 
-/* ===== Dark Mode Location Selector ===== */
-body.dark-mode .location-list-container {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: var(--color-dark-border);
+/* ===== Scrollbars ===== */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-body.dark-mode .location-group-header:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background-color: var(--color-background);
 }
 
-body.dark-mode .location-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 4px;
 }
 
-body.dark-mode .add-custom-location,
-body.dark-mode .geocoder-section {
-  border-top-color: var(--color-dark-border);
-}
-
-body.dark-mode #apa-legend strong {
-  border-bottom-color: var(--color-dark-border);
-}
-
-/* ===== Dark Mode Notifications ===== */
-body.dark-mode .notification-success {
-  background-color: rgba(46, 125, 50, 0.2);
-  color: #81c784;
-}
-
-body.dark-mode .notification-info {
-  background-color: rgba(25, 118, 210, 0.2);
-  color: #64b5f6;
-}
-
-body.dark-mode .notification-warning {
-  background-color: rgba(245, 127, 23, 0.2);
-  color: #ffd54f;
-}
-
-body.dark-mode .notification-error {
-  background-color: rgba(198, 40, 40, 0.2);
-  color: #ef9a9a;
-}
-
-/* ===== Dark Mode Modal ===== */
-body.dark-mode .modal-content {
-  background-color: var(--color-dark-surface);
-  border-color: var(--color-dark-border);
-}
-
-body.dark-mode .modal-header {
-  border-bottom-color: var(--color-dark-border);
-}
-
-body.dark-mode .modal-header h2 {
-  color: var(--color-dark-primary);
-}
-
-body.dark-mode .modal-footer {
-  border-top-color: var(--color-dark-border);
-}
-
-/* ===== Dark Mode Leaflet Controls ===== */
-body.dark-mode .leaflet-control-geocoder {
-  background: var(--color-dark-surface);
-  border-color: var(--color-dark-border);
-}
-
-body.dark-mode .leaflet-control-geocoder-input {
-  background-color: var(--color-dark-background);
-  color: var(--color-dark-text-primary);
-  border-color: var(--color-dark-border);
-}
-
-body.dark-mode .leaflet-container {
-  /* Adjust map base colors for dark mode to avoid too much contrast */
-  filter: brightness(0.8) contrast(1.2) saturate(0.8);
-}
-
-body.dark-mode .leaflet-control {
-  background-color: var(--color-dark-surface);
-  color: var(--color-dark-text-primary);
-  border-color: var(--color-dark-border);
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-tertiary);
 }

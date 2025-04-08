@@ -3,8 +3,9 @@
 import { getMap } from '../ui/map.js';
 import { getCoverageStyleClass, LINE_STYLES } from '../core/config.js';
 import { calculateElevation, calculateAzimuth, calculateCoverageRadius } from './angles.js';
-import { showNotification } from '../core/utils.js';
+import { showNotification, showError } from '../core/utils.js';
 import { eventBus } from '../core/events.js';
+import { SatelliteCache } from '../core/cache.js';
 
 // State tracking
 let lineLayers = [];
@@ -25,22 +26,21 @@ function normalizeLon(lon) {
  * Clear all satellite visualization elements from the map
  */
 export function clearVisualization() {
-  const map = getMap();
-  if (!map) return;
-
-  lineLayers.forEach(l => map.removeLayer(l.layer));
-  lineLayers = [];
-
-  satelliteMarkers.forEach(m => map.removeLayer(m.marker));
-  satelliteMarkers = [];
-
-  orbitPaths.forEach(p => map.removeLayer(p));
-  orbitPaths = [];
-
-  coverageCones.forEach(c => map.removeLayer(c.circle));
-  coverageCones = [];
-
-  clearCommandRegions();
+  try {
+    const map = getMap();
+    if (!map) throw new Error('Map not initialized');
+    
+    // Clear all satellite lines
+    map.eachLayer(layer => {
+      if (layer instanceof L.Polyline) {
+        map.removeLayer(layer);
+      }
+    });
+    
+    clearCommandRegions();
+  } catch (error) {
+    showError(error, 'Visibility');
+  }
 }
 
 /**
@@ -70,60 +70,77 @@ export function drawEquator() {
  * Draw a satellite line and optionally its footprint
  */
 export function drawLine(lat, lon, satLon, label, el, id) {
-  const map = getMap();
-  if (!map) return null;
+  try {
+    const map = getMap();
+    if (!map) throw new Error('Map not initialized');
 
-  const isVisible = el >= 0;
-  const style = isVisible ? LINE_STYLES.ABOVE_HORIZON : LINE_STYLES.BELOW_HORIZON;
+    const isVisible = el >= 0;
+    const style = isVisible ? LINE_STYLES.ABOVE_HORIZON : LINE_STYLES.BELOW_HORIZON;
 
-  // Handle the 180/-180 boundary for the satellite longitude
-  let displaySatLon = satLon;
-  if (Math.abs(lon - satLon) > 180) {
-    if (satLon < 0) {
-      displaySatLon += 360;
-    } else {
-      displaySatLon -= 360;
+    // Handle the 180/-180 boundary for the satellite longitude
+    let displaySatLon = satLon;
+    if (Math.abs(lon - satLon) > 180) {
+      if (satLon < 0) {
+        displaySatLon += 360;
+      } else {
+        displaySatLon -= 360;
+      }
     }
+
+    const polyline = L.polyline([[lat, lon], [0, displaySatLon]], {
+      color: style.color,
+      weight: style.weight,
+      opacity: style.opacity,
+      dashArray: style.dashArray,
+      className: style.className
+    }).addTo(map);
+
+    polyline.bindTooltip(`${label} (${el.toFixed(1)}°)`, {
+      permanent: true,
+      direction: "center",
+      className: "apa-line-label"
+    });
+
+    lineLayers.push({ id, layer: polyline });
+
+    drawCoverageCone(lat, lon, satLon, el, id);
+
+    // Cache the elevation for future use
+    SatelliteCache.setElevation(lat, lon, satLon, el);
+
+    return polyline;
+  } catch (error) {
+    showError(error, 'Visibility');
   }
-
-  const polyline = L.polyline([[lat, lon], [0, displaySatLon]], {
-    color: style.color,
-    weight: style.weight,
-    opacity: style.opacity,
-    dashArray: style.dashArray,
-    className: style.className
-  }).addTo(map);
-
-  polyline.bindTooltip(`${label} (${el.toFixed(1)}°)`, {
-    permanent: true,
-    direction: "center",
-    className: "apa-line-label"
-  });
-
-  lineLayers.push({ id, layer: polyline });
-
-  drawCoverageCone(lat, lon, satLon, el, id);
-
-  return polyline;
 }
 
 /**
  * Draw a coverage cone
  */
 export function drawCoverageCone(lat, lon, satLon, el, id) {
-  const map = getMap();
-  if (!map) return;
+  try {
+    const map = getMap();
+    if (!map) throw new Error('Map not initialized');
 
-  const coverageRadius = calculateCoverageRadius(el);
-  const colorClass = getCoverageStyleClass(el);
+    // Check cache first
+    let coverageRadius = SatelliteCache.getCoverageRadius(el);
+    if (coverageRadius === null) {
+      coverageRadius = calculateCoverageRadius(el);
+      SatelliteCache.setCoverageRadius(el, coverageRadius);
+    }
 
-  const coverageCircle = L.circle([lat, lon], {
-    radius: coverageRadius * 1000,
-    className: colorClass,
-    interactive: false
-  }).addTo(map);
+    const colorClass = getCoverageStyleClass(el);
 
-  coverageCones.push({ id, circle: coverageCircle });
+    const coverageCircle = L.circle([lat, lon], {
+      radius: coverageRadius * 1000,
+      className: colorClass,
+      interactive: false
+    }).addTo(map);
+
+    coverageCones.push({ id, circle: coverageCircle });
+  } catch (error) {
+    showError(error, 'Visibility');
+  }
 }
 
 /**
@@ -171,40 +188,33 @@ export function addSatelliteMarker(satellite, isBelow) {
  * Update all satellite lines
  */
 export function updateSatelliteLines(lat, lon) {
-  const map = getMap();
-  if (!map) return;
-
-  if (lineLayers.length > 0) {
+  try {
+    const map = getMap();
+    if (!map) throw new Error('Map not initialized');
+    
     clearVisualization();
     drawEquator();
-
-    document.querySelectorAll("input[type=checkbox][data-satlon]:checked").forEach(cb => {
-      const satLon = parseFloat(cb.dataset.satlon);
-      const name = cb.dataset.name;
-      const el = calculateElevation(lat, lon, satLon);
-      drawLine(lat, lon, satLon, name, el, cb.id);
+    
+    const satellites = getSatellites();
+    satellites.forEach(sat => {
+      const satLon = sat.longitude;
+      
+      // Check cache first
+      let el = SatelliteCache.getElevation(lat, lon, satLon);
+      if (el === null) {
+        el = calculateElevation(lat, lon, satLon);
+        SatelliteCache.setElevation(lat, lon, satLon, el);
+      }
+      
+      drawLine(lat, lon, satLon, sat.name, el, sat.id);
     });
-
-    // Add satellite markers
-    if (typeof getSatellites === 'function') {
-      // Import dynamically to prevent circular dependency
-      import('../data/satellites.js').then(module => {
-        const satellites = module.getSatellites();
-        if (satellites && satellites.length) {
-          satellites.forEach((sat) => {
-            const el = calculateElevation(lat, lon, sat.longitude);
-            addSatelliteMarker(sat, el < 0);
-          });
-        }
-      }).catch(err => {
-        console.error('Failed to import satellites module:', err);
-      });
-    }
     
     // Redraw command regions if they were visible
-    if (commandRegionsVisible) {
+    if (isCommandRegionsVisible()) {
       drawCommandRegions();
     }
+  } catch (error) {
+    showError(error, 'Visibility');
   }
 }
 
@@ -295,7 +305,6 @@ export function drawCommandRegions() {
       });
     }
   }).catch(err => {
-    console.error('Failed to import command regions:', err);
     showNotification("Failed to display command regions", "error");
   });
 }

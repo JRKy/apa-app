@@ -1,258 +1,292 @@
-/* layout.css - Structural layout and positioning - v2.4.0 */
+/* layout.css - Structural layout and positioning styles - v2.5.0 */
 
-/* ===== Header ===== */
-header {
-  background-color: var(--color-primary);
-  color: white;
-  padding: var(--space-sm) var(--space-md);
-  text-align: left;
+/* ===== Base Layout ===== */
+body {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--font-size-md);
-  height: 48px;
-  box-shadow: var(--shadow-md);
-  position: relative;
-  z-index: 1010;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
 }
 
-header h1 {
+/* ===== Header Layout ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-border);
+  height: 60px;
+  padding: 0 var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.header-title {
   margin: 0;
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
 }
 
-/* ===== Map Container ===== */
-#map {
-  height: calc(100vh - 48px);
-  width: 100%;
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* ===== Main Content Layout ===== */
+.main-content {
+  flex: 1;
+  display: flex;
+  margin-top: 60px;
+  min-height: calc(100vh - 60px);
   position: relative;
 }
 
 /* ===== Drawer Layout ===== */
 .drawer {
-  position: absolute;
-  top: 90px;
-  left: 10px;
-  z-index: 1003;
-  width: 280px;
-  display: none; /* Hidden by default */
-  animation: slide-down var(--transition-normal);
-}
-
-.drawer.visible {
-  display: block !important; /* Force display when visible class is applied */
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  z-index: 90;
+  background-color: var(--color-background);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  transition: transform var(--transition-normal) ease-in-out;
+  width: 300px;
+  max-width: 90vw;
+  box-shadow: var(--shadow-md);
 }
 
 .drawer-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-md);
+  padding: var(--spacing-md);
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-sm);
-}
-
-/* ===== Drawer Buttons Layout ===== */
-.drawer-buttons.top {
-  position: absolute;
-  top: 60px;
-  left: 60px;
-  z-index: 1002;
-  display: flex;
-  gap: var(--space-sm);
-}
-
-/* ===== Drawer Overlay ===== */
-.drawer-overlay {
-  position: fixed;
+  background-color: var(--color-surface);
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
+  z-index: 1;
+}
+
+.drawer-content {
+  padding: var(--spacing-md);
+}
+
+.drawer-footer {
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  position: sticky;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1002;
-  display: none;
 }
 
-.drawer-overlay.visible {
-  display: block;
-}
-
-/* ===== Current Location Indicator ===== */
-#current-location-indicator {
+/* ===== Panel Layout ===== */
+.panel {
   position: fixed;
-  bottom: var(--space-lg);
-  left: var(--space-md);
-  z-index: 1004;
-  max-width: 300px;
-  white-space: nowrap;
+  z-index: 80;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   overflow: hidden;
-  text-overflow: ellipsis;
+  transition: transform var(--transition-normal) ease-in-out;
 }
 
-/* ===== APA Panel Layout ===== */
-#apa-panel.leaflet-control.apa-control {
-  padding: var(--space-md);
-  max-height: 70vh;
-  width: 420px;
-  overflow-y: auto;
-  z-index: 1001;
-  position: fixed;
-  top: 70px;
-  right: var(--space-md);
-  display: none;
-  resize: both;
-  overflow: auto;
-  min-width: 360px;
-  min-height: 200px;
-  animation: fade-in var(--transition-normal);
-}
-
-#apa-panel.minimized {
-  max-height: 40px !important;
-  overflow: hidden !important;
-  padding: var(--space-xs) var(--space-md) !important;
-  resize: none !important;
-  z-index: 1005 !important;
-}
-
-/* ===== Panel Controls Layout ===== */
-.panel-controls {
+.panel-header {
   display: flex;
-  gap: var(--space-xs);
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-/* ===== Toggle APA Panel Button Layout ===== */
-#toggle-apa-panel {
-  position: fixed;
-  right: 80px;
-  bottom: var(--space-md);
-  z-index: 1002;
-  display: none;
+.panel-content {
+  padding: var(--spacing-md);
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
 }
 
-/* ===== Floating Controls Layout ===== */
-.floating-control {
-  position: fixed;
-  z-index: 1002;
+.panel-footer {
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  position: sticky;
+  bottom: 0;
 }
 
-#legend-toggle {
-  bottom: var(--space-xl);
-  right: var(--space-md);
+/* ===== Control Layout ===== */
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-#dark-mode-toggle {
-  bottom: calc(var(--space-xl) + 50px);
-  right: var(--space-md);
+.control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast) ease-in-out;
+  position: relative;
 }
 
-#toggle-polar-plot {
-  bottom: calc(var(--space-xl) + 100px);
-  right: var(--space-md);
+.control-button:hover {
+  background-color: var(--color-surface-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-/* ===== APA Legend Layout ===== */
+.control-button:active {
+  transform: translateY(0);
+}
+
+.control-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-primary);
+}
+
+/* ===== Legend Layout ===== */
 #apa-legend {
   position: fixed;
-  bottom: var(--space-xl);
-  right: calc(var(--space-md) + 50px);
-  z-index: 1002;
-  width: 240px;
-  animation: fade-in var(--transition-normal);
-}
-
-/* ===== Help Tooltip Layout ===== */
-#help-tooltip {
-  position: fixed;
-  bottom: var(--space-md);
-  left: var(--space-md);
-  z-index: 9999;
+  z-index: 70;
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
   max-width: 300px;
-  animation: fade-in var(--transition-normal);
+  transition: transform var(--transition-normal) ease-in-out;
 }
 
-/* ===== Tutorial Overlay Layout ===== */
-.tutorial-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9998;
+.legend-header {
+  padding: var(--spacing-md);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
-  justify-content: center;
   align-items: center;
-}
-
-.tutorial-card {
-  max-width: 500px;
-  width: 90%;
-}
-
-.tutorial-footer {
-  display: flex;
   justify-content: space-between;
 }
 
-.tutorial-highlight {
-  position: absolute;
-  z-index: 9997;
-  pointer-events: none;
+.legend-content {
+  padding: var(--spacing-md);
+  display: grid;
+  gap: var(--spacing-sm);
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-/* ===== Polar Plot Layout ===== */
-.polar-plot-container {
-  position: absolute;
-  bottom: var(--space-lg);
-  left: var(--space-md);
-  z-index: 1000;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ===== Table Layout ===== */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }
 
-/* ===== Modal Dialog Layout ===== */
-.modal-overlay {
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-background);
+}
+
+.table th {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+  text-align: left;
+  padding: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.table td {
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.table tr:hover {
+  background-color: var(--color-surface);
+}
+
+/* ===== Modal Layout ===== */
+.modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 9999;
-  display: none;
-  justify-content: center;
+  z-index: 1000;
+  display: flex;
   align-items: center;
-  animation: fade-in var(--transition-normal);
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
 }
 
 .modal-content {
-  width: 90%;
-  max-width: 600px;
+  position: relative;
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-width: 90%;
   max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  animation: slide-up var(--transition-normal);
+  overflow: auto;
+  animation: fade-in 0.3s ease-out;
 }
 
 .modal-header {
-  padding: var(--space-md);
+  padding: var(--spacing-md);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background-color: var(--color-background);
+  z-index: 1;
 }
 
 .modal-body {
-  padding: var(--space-md);
-  overflow-y: auto;
-  max-height: 60vh;
+  padding: var(--spacing-md);
 }
 
 .modal-footer {
-  padding: var(--space-md);
+  padding: var(--spacing-md);
+  border-top: 1px solid var(--color-border);
   display: flex;
   justify-content: flex-end;
+  gap: var(--spacing-sm);
+  position: sticky;
+  bottom: 0;
+  background-color: var(--color-background);
+  z-index: 1;
 }

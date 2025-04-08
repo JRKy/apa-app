@@ -3,6 +3,7 @@ import { TUTORIAL_STEPS } from '../core/config.js';
 import { saveTutorialCompleted } from '../data/storage.js';
 import { eventBus } from '../core/events.js';
 import { makeAnnouncement } from '../core/utils.js';
+import { showNotification } from '../core/utils.js';
 
 // Tutorial state
 let tutorialStep = 1;
@@ -151,14 +152,14 @@ function updateTutorial() {
  * Highlight an element in the tutorial
  * @param {string} elementId - ID of the element to highlight
  */
-function highlightElement(elementId) {
+export function highlightElement(elementId) {
   // Remove any existing highlights
   removeHighlight();
   
   // Find the element to highlight
   const element = document.getElementById(elementId);
   if (!element) {
-    console.warn(`Tutorial highlight element with ID "${elementId}" not found`);
+    showNotification(`Tutorial element with ID "${elementId}" not found`, "error");
     return;
   }
   

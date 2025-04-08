@@ -1,5 +1,13 @@
 // angles.js - Antenna angle calculation functions
 
+import { showError } from '../core/errorHandler.js';
+import { SatelliteCache } from '../core/cache.js';
+import { memoize } from '../core/memoize.js';
+
+// Memoize expensive calculations
+const memoizedCalculateElevation = memoize(calculateElevationRaw);
+const memoizedCalculateAzimuth = memoize(calculateAzimuthRaw);
+
 /**
  * Calculate elevation angle to a geostationary satellite using proper spherical geometry
  * @param {number} lat - Observer latitude in degrees
@@ -8,6 +16,124 @@
  * @returns {number} Elevation angle in degrees
  */
 export function calculateElevation(lat, lon, satLon) {
+  try {
+    // Check cache first
+    const cachedElevation = SatelliteCache.getElevation(lat, lon, satLon);
+    if (cachedElevation !== null) {
+      return cachedElevation;
+    }
+
+    // Calculate new elevation
+    const elevation = calculateElevationRaw(lat, lon, satLon);
+
+    // Cache the result
+    SatelliteCache.setElevation(lat, lon, satLon, elevation);
+
+    return elevation;
+  } catch (error) {
+    showError(error, 'Angles');
+    throw error;
+  }
+}
+
+/**
+ * Calculate azimuth angle to a geostationary satellite using proper spherical geometry
+ * @param {number} lat - Observer latitude in degrees
+ * @param {number} lon - Observer longitude in degrees
+ * @param {number} satLon - Satellite longitude in degrees
+ * @returns {number} Azimuth angle in degrees (0-360, where 0 is North)
+ */
+export function calculateAzimuth(lat, lon, satLon) {
+  try {
+    // Check cache first
+    const cachedAzimuth = SatelliteCache.getAzimuth(lat, lon, satLon);
+    if (cachedAzimuth !== null) {
+      return cachedAzimuth;
+    }
+
+    // Calculate new azimuth
+    const azimuth = calculateAzimuthRaw(lat, lon, satLon);
+
+    // Cache the result
+    SatelliteCache.setAzimuth(lat, lon, satLon, azimuth);
+
+    return azimuth;
+  } catch (error) {
+    showError(error, 'Angles');
+    throw error;
+  }
+}
+
+/**
+ * Calculate satellite visibility
+ * @param {number} elevation - Elevation angle in degrees
+ * @returns {boolean} True if satellite is visible
+ */
+export function isSatelliteVisible(elevation) {
+  return elevation >= 0;
+}
+
+/**
+ * Calculate look angles for polar plot
+ * @param {number} lat - Observer latitude in degrees
+ * @param {number} lon - Observer longitude in degrees
+ * @param {Array} satellites - Array of satellite objects
+ * @returns {Array} Array of satellite objects with polar coordinates
+ */
+export function calculatePolarCoordinates(lat, lon, satellites) {
+  try {
+    // Check cache first
+    const cachedCoordinates = SatelliteCache.getPolarCoordinates(lat, lon);
+    if (cachedCoordinates !== null) {
+      return cachedCoordinates;
+    }
+
+    // Calculate new coordinates
+    const coordinates = satellites.map(sat => ({
+      name: sat.name,
+      longitude: sat.longitude,
+      elevation: calculateElevation(lat, lon, sat.longitude),
+      azimuth: calculateAzimuth(lat, lon, sat.longitude)
+    }));
+
+    // Cache the result
+    SatelliteCache.setPolarCoordinates(lat, lon, coordinates);
+
+    return coordinates;
+  } catch (error) {
+    showError(error, 'Angles');
+    throw error;
+  }
+}
+
+/**
+ * Calculate coverage radius based on elevation
+ * @param {number} elevation - Elevation angle in degrees
+ * @returns {number} Coverage radius in kilometers
+ */
+export function calculateCoverageRadius(elevation) {
+  try {
+    // Check cache first
+    const cachedRadius = SatelliteCache.getCoverageRadius(elevation);
+    if (cachedRadius !== null) {
+      return cachedRadius;
+    }
+
+    // Calculate new radius
+    const radius = calculateCoverageRadiusRaw(elevation);
+
+    // Cache the result
+    SatelliteCache.setCoverageRadius(elevation, radius);
+
+    return radius;
+  } catch (error) {
+    showError(error, 'Angles');
+    throw error;
+  }
+}
+
+// Raw calculation functions (private)
+function calculateElevationRaw(lat, lon, satLon) {
   // Convert to radians
   const latRad = lat * Math.PI / 180;
   
@@ -47,14 +173,7 @@ export function calculateElevation(lat, lon, satLon) {
   return elevRad * 180 / Math.PI;
 }
 
-/**
- * Calculate azimuth angle to a geostationary satellite using proper spherical geometry
- * @param {number} lat - Observer latitude in degrees
- * @param {number} lon - Observer longitude in degrees
- * @param {number} satLon - Satellite longitude in degrees
- * @returns {number} Azimuth angle in degrees (0-360, where 0 is North)
- */
-export function calculateAzimuth(lat, lon, satLon) {
+function calculateAzimuthRaw(lat, lon, satLon) {
   // Convert to radians
   const latRad = lat * Math.PI / 180;
   
@@ -94,83 +213,30 @@ export function calculateAzimuth(lat, lon, satLon) {
   return azDeg;
 }
 
-/**
- * Calculate satellite visibility
- * @param {number} elevation - Elevation angle in degrees
- * @returns {boolean} True if satellite is visible
- */
-export function isSatelliteVisible(elevation) {
-  return elevation >= 0;
-}
-
-/**
- * Calculate look angles for polar plot
- * @param {number} lat - Observer latitude in degrees
- * @param {number} lon - Observer longitude in degrees
- * @param {Array} satellites - Array of satellite objects
- * @returns {Array} Array of satellite objects with polar coordinates
- */
-export function calculatePolarCoordinates(lat, lon, satellites) {
-  return satellites.map(sat => {
-    // Calculate azimuth and elevation
-    const azDeg = calculateAzimuth(lat, lon, sat.longitude);
-    const az = azDeg * Math.PI / 180;
-    const el = calculateElevation(lat, lon, sat.longitude);
-    
-    // Convert to polar coordinates (0 elevation at edge, 90 at center)
-    // Radius is proportional to 90-elevation (0 at center, max at edge)
-    const radius = (90 - Math.max(el, 0)) / 90;
-    
-    // Calculate x,y position (for SVG plotting)
-    // x increases to the right (azimuth 90°), y increases downward (azimuth 180°)
-    const x = radius * Math.sin(az);
-    const y = -radius * Math.cos(az);  // Negative because SVG y-axis is flipped
-    
-    return {
-      ...sat,
-      elevation: el,
-      azimuth: azDeg,
-      isVisible: el >= 0,
-      polarX: x,
-      polarY: y,
-      polarRadius: radius
-    };
-  });
-}
-
-/**
- * Calculate coverage radius based on elevation
- * @param {number} elevation - Elevation angle in degrees
- * @returns {number} Coverage radius in kilometers
- */
-export function calculateCoverageRadius(elevation) {
-  if (elevation < 0) return 0;
+function calculateCoverageRadiusRaw(elevation) {
+  // Calculate the coverage radius based on elevation angle
+  // This is a simplified model that assumes a spherical Earth
+  const earthRadius = 6371; // km
+  const satelliteAltitude = 35786; // km (GEO)
   
-  // Simplified calculation - elevation to coverage mapping
-  // Higher elevation = greater coverage radius, up to a maximum
-  return Math.min(Math.max(elevation * 20, 200), 1000);
+  // Calculate the angle between the satellite and the coverage edge
+  const coverageAngle = Math.asin(earthRadius / (earthRadius + satelliteAltitude));
+  
+  // Calculate the ground distance to the coverage edge
+  const groundDistance = earthRadius * coverageAngle;
+  
+  // Adjust for elevation angle
+  const adjustedDistance = groundDistance * Math.cos(elevation * Math.PI / 180);
+  
+  return adjustedDistance;
 }
 
-/**
- * More precise elevation calculation for geostationary satellites
- * @param {number} lat - Observer latitude in degrees
- * @param {number} lon - Observer longitude in degrees
- * @param {number} satLon - Satellite longitude in degrees
- * @returns {number} Elevation angle in degrees
- */
-export function calculatePreciseElevation(lat, lon, satLon) {
-  // This function now uses the same improved calculation as calculateElevation
-  return calculateElevation(lat, lon, satLon);
-}
-
-/**
- * More precise azimuth calculation for geostationary satellites
- * @param {number} lat - Observer latitude in degrees
- * @param {number} lon - Observer longitude in degrees
- * @param {number} satLon - Satellite longitude in degrees
- * @returns {number} Azimuth angle in degrees
- */
-export function calculatePreciseAzimuth(lat, lon, satLon) {
-  // This function now uses the same improved calculation as calculateAzimuth
-  return calculateAzimuth(lat, lon, satLon);
+// Clear all cached calculations
+export function clearCalculations() {
+  try {
+    SatelliteCache.clearSatelliteCache();
+    clearMemoCache();
+  } catch (error) {
+    showError(error, 'Angles');
+  }
 }

@@ -101,15 +101,7 @@ export function makeAnnouncement(message, priority = 'polite', duration = 1000) 
  * @returns {boolean} True if device is mobile size
  */
 export function isMobileDevice() {
-  return window.innerWidth <= 768;
-}
-
-/**
- * Generate a unique identifier
- * @returns {string} Unique ID
- */
-export function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 /**
@@ -124,7 +116,7 @@ export function getStoredValue(key, defaultValue) {
     if (value === null) return defaultValue;
     return JSON.parse(value);
   } catch (e) {
-    console.error(`Error reading ${key} from localStorage:`, e);
+    showNotification(`Error reading ${key} from storage`, "error");
     return defaultValue;
   }
 }
@@ -140,7 +132,7 @@ export function storeValue(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (e) {
-    console.error(`Error saving ${key} to localStorage:`, e);
+    showNotification(`Error saving ${key} to storage`, "error");
     return false;
   }
 }

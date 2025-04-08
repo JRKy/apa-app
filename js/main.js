@@ -3,25 +3,92 @@ import ConfigManager from './modules/core/configManager.js';
 import { showNotification } from './modules/core/utils.js';
 import { initEventListeners } from './modules/core/events.js';
 import { initMap, updateMapAppearance, getMap } from './modules/ui/map.js';
-import { initPanels } from './modules/ui/panels.js';
+import { initPanels, updatePanelState } from './modules/ui/panels.js';
 import { initDrawers } from './modules/ui/drawers.js';
-import { initTable } from './modules/ui/table.js';
-import { initPolarPlot } from './modules/ui/polarPlot.js';
+import { initTable, updateTable } from './modules/ui/table.js';
+import { initPolarPlot, updatePolarPlot } from './modules/ui/polarPlot.js';
 import { initTutorial, showTutorial } from './modules/ui/tutorial.js';
 import { initFilters } from './modules/ui/filters.js';
 import { initLegend } from './modules/ui/legend.js';
-import { initGeocoder } from './modules/ui/geocoder.js';
+import { initGeocoder, geocodeAddress } from './modules/ui/geocoder.js';
 import { loadCustomSatellites } from './modules/data/satellites.js';
 import { restoreLastLocation, loadLastLocation } from './modules/data/storage.js';
 import { initCommandRegions } from './modules/data/commandRegions.js';
 import { initLocationSelector } from './modules/ui/locationSelector.js';
-import { initSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
+import { initSatelliteCoverage, updateSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
 import { VERSION } from './modules/core/version.js';
 import { showWhatsNewDialog } from './modules/ui/whatsNew.js';
+import { showError } from './modules/core/errorHandler.js';
+import { UICache } from './modules/core/cache.js';
+
+let appState = null;
+let lastUpdate = null;
+
+export function initApp() {
+    try {
+        if (appState) return appState;
+        
+        // Restore app state from cache
+        const cachedState = UICache.getAppState();
+        if (cachedState) {
+            appState = cachedState;
+            lastUpdate = cachedState.timestamp;
+        }
+        
+        // Initialize all components
+        initMap();
+        initGeocoder();
+        initTable();
+        initPolarPlot();
+        initSatelliteCoverage();
+        initPanels();
+        
+        return appState;
+    } catch (error) {
+        showError(error, 'App');
+        return null;
+    }
+}
+
+export function updateAppState(state) {
+    try {
+        // Update state
+        appState = {
+            ...state,
+            timestamp: Date.now()
+        };
+        
+        // Cache the state
+        UICache.setAppState(appState);
+        
+        lastUpdate = Date.now();
+        
+        return appState;
+    } catch (error) {
+        showError(error, 'App');
+        throw error;
+    }
+}
+
+export function getAppState() {
+    return appState;
+}
+
+export function getLastUpdate() {
+    return lastUpdate;
+}
+
+export function clearAppState() {
+    try {
+        appState = null;
+        lastUpdate = null;
+        UICache.clearAppCache();
+    } catch (error) {
+        showError(error, 'App');
+    }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log(`APA App ${VERSION} initializing...`);
-  
   // Initialize configuration manager
   ConfigManager.init();
   
@@ -124,6 +191,10 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.removeChild(announcement);
     }, 1000);
   }, 1000);
-  
-  console.log(`APA App ${VERSION} initialized successfully`);
+
+  try {
+    initApp();
+  } catch (error) {
+    showError(error, 'App');
+  }
 });

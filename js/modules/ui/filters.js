@@ -410,12 +410,3 @@ export function updateSatelliteFilterSummary(count) {
     filterSummary.classList.add("hidden");
   }
 }
-
-/**
- * Initialize advanced satellite filters
- * @deprecated Use setupSatelliteFilterHandlers instead
- */
-export function initAdvancedFilters() {
-  console.warn('initAdvancedFilters is deprecated, use setupSatelliteFilterHandlers instead');
-  setupSatelliteFilterHandlers();
-}

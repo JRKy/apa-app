@@ -2,9 +2,13 @@
 import { loadPanelPosition, savePanelPosition, loadPanelMinimized, savePanelMinimized } from '../data/storage.js';
 import { isMobileDevice } from '../core/utils.js';
 import { eventBus } from '../core/events.js';
+import { showError } from '../core/errorHandler.js';
+import { UICache } from '../core/cache.js';
 
 let isDragging = false;
 let dragOffsetX, dragOffsetY;
+let panelStates = {};
+let lastUpdate = null;
 
 /**
  * Initialize APA panel and controls
@@ -26,7 +30,7 @@ export function initPanels() {
       apaPanel.style.left = savedPosition.left;
       apaPanel.style.right = 'auto';
     } catch (e) {
-      console.error('Failed to restore panel position:', e);
+      showNotification("Failed to restore panel position", "error");
     }
   }
   
@@ -71,6 +75,64 @@ export function initPanels() {
       setupBottomSheet(apaPanel, apaPanelHeader);
     }
   });
+
+  try {
+    // Restore panel states from cache
+    const cachedStates = UICache.getPanelStates();
+    if (cachedStates) {
+      panelStates = cachedStates;
+      lastUpdate = cachedStates.timestamp;
+    }
+    
+    // Initialize each panel
+    initializePanel('map-panel');
+    initializePanel('table-panel');
+    initializePanel('polar-plot-panel');
+    initializePanel('satellite-coverage-panel');
+    
+    return panelStates;
+  } catch (error) {
+    showError(error, 'Panels');
+    return null;
+  }
+}
+
+export function updatePanelState(panelId, state) {
+  try {
+    // Update state
+    panelStates[panelId] = {
+      ...state,
+      timestamp: Date.now()
+    };
+    
+    // Cache the state
+    UICache.setPanelState(panelId, panelStates[panelId]);
+    
+    lastUpdate = Date.now();
+    
+    return panelStates[panelId];
+  } catch (error) {
+    showError(error, 'Panels');
+    throw error;
+  }
+}
+
+export function getPanelState(panelId) {
+  return panelStates[panelId];
+}
+
+export function getLastUpdate() {
+  return lastUpdate;
+}
+
+export function clearPanelStates() {
+  try {
+    panelStates = {};
+    lastUpdate = null;
+    UICache.clearPanelCache();
+  } catch (error) {
+    showError(error, 'Panels');
+  }
 }
 
 /**

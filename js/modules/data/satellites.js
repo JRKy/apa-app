@@ -29,7 +29,7 @@ export function loadCustomSatellites() {
       // Notify other components of the update
       eventBus.publish('satellitesUpdated', satellites);
     } catch (e) {
-      console.error('Failed to load custom satellites:', e);
+      showNotification("Failed to load custom satellites", "error");
     }
   }
 }

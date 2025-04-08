@@ -3,62 +3,94 @@ import { getMap } from './map.js';
 import { goToLocation } from '../data/locations.js';
 import { showNotification } from '../core/utils.js';
 import { eventBus } from '../core/events.js';
+import { showError } from '../core/errorHandler.js';
+import { UICache } from '../core/cache.js';
+
+let geocoder = null;
+let lastSearch = null;
 
 /**
  * Initialize the geocoder control
  */
 export function initGeocoder() {
-  const map = getMap();
-  if (!map) return;
-  
-  // Create a custom geocoder control
-  const GeocoderControl = L.Control.extend({
-    options: {
-      position: 'topleft'
-    },
+  try {
+    if (geocoder) return geocoder;
     
-    onAdd: function(map) {
-      const container = L.DomUtil.create('div', 'leaflet-control leaflet-control-geocoder');
-      const form = L.DomUtil.create('form', 'leaflet-control-geocoder-form', container);
-      const input = L.DomUtil.create('input', 'leaflet-control-geocoder-input', form);
-      
-      input.type = 'text';
-      input.placeholder = 'Search for location...';
-      input.autocomplete = 'off';
-      
-      L.DomEvent.disableClickPropagation(container);
-      L.DomEvent.disableScrollPropagation(container);
-      
-      // Prevent map zoom when double-clicking on the control
-      L.DomEvent.on(container, 'dblclick', L.DomEvent.stopPropagation);
-      
-      // Handle search on form submit
-      L.DomEvent.on(form, 'submit', function(e) {
-        L.DomEvent.preventDefault(e);
-        const query = input.value.trim();
-        if (query) {
-          searchLocation(query)
-            .then(results => {
-              if (results.length > 0) {
-                const result = results[0];
-                goToLocation(result.lat, result.lon, result.name);
-                input.value = '';
-              } else {
-                showNotification('No results found', 'error');
-              }
-            })
-            .catch(error => {
-              showNotification(error.message, 'error');
-            });
+    geocoder = new google.maps.Geocoder();
+    
+    // Restore last search from cache
+    const cachedSearch = UICache.getLastSearch();
+    if (cachedSearch) {
+      lastSearch = cachedSearch;
+    }
+    
+    return geocoder;
+  } catch (error) {
+    showError(error, 'Geocoder');
+    return null;
+  }
+}
+
+export function getGeocoder() {
+  if (!geocoder) {
+    return initGeocoder();
+  }
+  return geocoder;
+}
+
+export function geocodeAddress(address) {
+  try {
+    const geocoder = getGeocoder();
+    if (!geocoder) {
+      throw new Error('Geocoder not initialized');
+    }
+    
+    // Check cache for address
+    const cacheKey = `geocode_${address}`;
+    let cachedResult = UICache.getGeocodeResult(cacheKey);
+    
+    if (cachedResult !== null) {
+      lastSearch = cachedResult;
+      return cachedResult;
+    }
+    
+    return new Promise((resolve, reject) => {
+      geocoder.geocode({ address }, (results, status) => {
+        if (status === 'OK' && results[0]) {
+          const location = {
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+          };
+          
+          // Cache the result
+          UICache.setGeocodeResult(cacheKey, location);
+          lastSearch = location;
+          
+          resolve(location);
+        } else {
+          const error = new Error(`Geocoding failed: ${status}`);
+          showError(error, 'Geocoder');
+          reject(error);
         }
       });
-      
-      return container;
-    }
-  });
-  
-  // Add the control to the map
-  new GeocoderControl().addTo(map);
+    });
+  } catch (error) {
+    showError(error, 'Geocoder');
+    throw error;
+  }
+}
+
+export function getLastSearch() {
+  return lastSearch;
+}
+
+export function clearGeocoder() {
+  try {
+    lastSearch = null;
+    UICache.clearGeocodeCache();
+  } catch (error) {
+    showError(error, 'Geocoder');
+  }
 }
 
 /**
@@ -67,30 +99,40 @@ export function initGeocoder() {
  * @returns {Promise} Promise that resolves with geocoding results
  */
 export function searchLocation(query) {
-  const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`;
-  
-  return fetch(apiUrl, {
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'APA App Geocoder'
+  return new Promise((resolve, reject) => {
+    if (!query) {
+      reject(new Error("Please enter a location to search"));
+      return;
     }
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json();
-  })
-  .then(data => {
-    if (data && data.length > 0) {
-      // Transform the data to a simpler format
-      return data.map(item => ({
-        name: item.display_name,
-        lat: parseFloat(item.lat),
-        lon: parseFloat(item.lon)
-      }));
-    } else {
-      return [];
-    }
+    
+    // Use OpenStreetMap Nominatim API
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`;
+    
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to search for location");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.length === 0) {
+          reject(new Error("No locations found"));
+          return;
+        }
+        
+        // Format results
+        const results = data.map(item => ({
+          name: item.display_name,
+          lat: parseFloat(item.lat),
+          lon: parseFloat(item.lon)
+        }));
+        
+        resolve(results);
+      })
+      .catch(error => {
+        showNotification("Failed to search for location", "error");
+        reject(error);
+      });
   });
 }

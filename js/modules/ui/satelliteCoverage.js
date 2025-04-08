@@ -1,22 +1,38 @@
 // satelliteCoverage.js - Enhanced satellite coverage visualization
 import { getMap } from '../ui/map.js';
-import { getElevationClass, getCoverageStyleClass } from '../core/config.js';
+import { getCoverageStyleClass } from '../core/config.js';
 import { calculateElevation, calculateAzimuth, calculateCoverageRadius } from '../calculations/angles.js';
 import { showNotification } from '../core/utils.js';
 import { eventBus } from '../core/events.js';
+import { showError } from '../core/errorHandler.js';
+import { UICache } from '../core/cache.js';
+import { SatelliteCache } from '../core/cache.js';
 
 // State variables
 let coverageElements = [];
 let coverageVisible = true;
+let coverageData = null;
+let lastUpdate = null;
 
 /**
  * Initialize satellite coverage visualization
  */
 export function initSatelliteCoverage() {
-  // Set up initial state and event handlers
-  setupEventHandlers();
-  
-  console.log('Satellite coverage visualization initialized');
+  try {
+    if (coverageData) return coverageData;
+    
+    // Restore from cache
+    const cachedData = UICache.getCoverageData();
+    if (cachedData) {
+      coverageData = cachedData;
+      lastUpdate = cachedData.timestamp;
+    }
+    
+    return coverageData;
+  } catch (error) {
+    showError(error, 'SatelliteCoverage');
+    return null;
+  }
 }
 
 /**
@@ -261,6 +277,57 @@ export function toggleCoverageVisibility() {
   eventBus.publish('coverageVisibilityChanged', coverageVisible);
   
   return coverageVisible;
+}
+
+export function updateSatelliteCoverage(lat, lon) {
+  try {
+    // Check cache for coverage data
+    const cacheKey = `coverage_${lat}_${lon}`;
+    let cachedResult = SatelliteCache.getCoverageData(cacheKey);
+    
+    if (cachedResult !== null) {
+      coverageData = cachedResult;
+      lastUpdate = Date.now();
+      return coverageData;
+    }
+    
+    // Calculate new coverage data
+    const satellites = getSatellites();
+    const newCoverageData = calculateCoverageData(lat, lon, satellites);
+    
+    // Cache the result
+    SatelliteCache.setCoverageData(cacheKey, newCoverageData);
+    UICache.setCoverageData({
+      data: newCoverageData,
+      timestamp: Date.now()
+    });
+    
+    coverageData = newCoverageData;
+    lastUpdate = Date.now();
+    
+    return coverageData;
+  } catch (error) {
+    showError(error, 'SatelliteCoverage');
+    throw error;
+  }
+}
+
+export function getCoverageData() {
+  return coverageData;
+}
+
+export function getLastUpdate() {
+  return lastUpdate;
+}
+
+export function clearCoverageData() {
+  try {
+    coverageData = null;
+    lastUpdate = null;
+    UICache.clearCoverageCache();
+  } catch (error) {
+    showError(error, 'SatelliteCoverage');
+  }
 }
 
 // Export for use in main.js

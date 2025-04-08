@@ -1,297 +1,240 @@
-/* responsive.css - Media queries and responsive design - v2.4.0 */
+/* responsive.css - Responsive design breakpoints and adjustments - v2.5.0 */
 
-/* ===== Mobile Styles (< 768px) ===== */
-@media (max-width: 768px) {
-  :root {
-    --space-md: 12px;
-    --space-lg: 20px;
+/* ===== Breakpoints ===== */
+/* Mobile: 0px - 767px */
+/* Tablet: 768px - 1023px */
+/* Desktop: 1024px and above */
+
+/* ===== Mobile Styles ===== */
+@media (max-width: 767px) {
+  /* Layout Adjustments */
+  .header {
+    padding: var(--spacing-sm);
   }
-  
-  .drawer-buttons.top button {
-    width: 44px; /* Larger touch targets */
-    height: 44px;
-    font-size: 18px;
-  }
-  
-  .drawer-buttons.top {
-    top: 55px;
-    left: 10px;
-  }
-  
+
   .drawer {
-    width: calc(100% - 40px);
-    max-width: 320px;
-  }
-  
-  /* Drawer as side panel for mobile */
-  .drawer {
-    transition: transform var(--transition-normal);
-    transform: translateX(-120%);
-    display: block;
-    left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
-    max-width: 85%;
-    margin: 0;
-    border-radius: 0;
-    box-shadow: var(--shadow-lg);
-  }
-  
-  .drawer.visible {
-    transform: translateX(0);
-  }
-  
-  #location-drawer {
-    overflow-y: auto;
-    max-height: 80vh;
-  }
-  
-  /* Bottom sheet for mobile */
-  #apa-panel.leaflet-control.apa-control {
     width: 100%;
-    max-width: 100%;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
-    max-height: 50vh;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    resize: none;
-  }
-  
-  #apa-panel.minimized {
-    z-index: 1005; /* Higher than current location indicator */
-  }
-  
-  #current-location-indicator {
-    bottom: 60px; /* Increased to provide more space */
-    left: 10px;
-    transform: none; /* Remove any transforms that might be repositioning it */
-    max-width: 80%;
-  }
-  
-  .apa-panel-header {
-    position: sticky;
-    top: 0;
-    background: inherit;
-    z-index: 11;
-    padding-top: var(--space-xs);
-  }
-  
-  /* Drag indicator for bottom sheet */
-  .apa-panel-header::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 4px;
-    background-color: var(--color-border);
-    border-radius: 4px;
-  }
-  
-  body.dark-mode .apa-panel-header::before {
-    background-color: var(--color-dark-border);
-  }
-  
-  #toggle-apa-panel {
-    bottom: 10px;
-    right: 10px;
-    max-width: calc(100% - 100px);
-    margin: 0 auto;
-    text-align: center;
-    border-radius: var(--radius-md);
-  }
-  
-  /* FAB layout for mobile */
-  .floating-control {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-  }
-  
-  #legend-toggle {
-    bottom: 70px;
-    right: 20px;
-  }
-  
-  #dark-mode-toggle {
-    bottom: 130px;
-    right: 20px;
+    max-width: none;
   }
 
-  #toggle-polar-plot {
-    bottom: 190px;
-    right: 20px;
+  .panel {
+    width: 100%;
+    max-width: none;
+    margin: var(--spacing-sm);
   }
-  
-  .polar-plot-container {
-    top: var(--space-lg);
-    right: var(--space-md);
-    left: auto;
-    bottom: auto;
-    width: 150px;
-    height: 150px;
+
+  /* Panel Adjustments */
+  #apa-panel {
+    height: 50vh;
   }
-  
-  /* Simplified location selector for mobile */
-  .location-list-container {
-    max-height: 50vh;
+
+  .panel-header {
+    padding: var(--spacing-sm);
   }
-  
-  /* Simplified table for mobile */
-  #apa-table th:nth-child(3),
-  #apa-table td:nth-child(3) {
-    display: none; /* Hide longitude column on small screens */
+
+  .panel-content {
+    padding: var(--spacing-sm);
   }
-  
-  /* Smaller modals on mobile */
-  .modal-content {
-    width: 95%;
-    max-width: 95%;
-    max-height: 80vh;
+
+  /* Control Adjustments */
+  .control-group {
+    flex-direction: column;
+    gap: var(--spacing-sm);
   }
-  
-  /* Geocoder styles for mobile */
-  .leaflet-control-geocoder-input {
-    min-width: 150px;
+
+  .control-button {
+    width: 100%;
+  }
+
+  /* Table Adjustments */
+  #apa-table {
+    font-size: var(--font-size-xs);
+  }
+
+  #apa-table th,
+  #apa-table td {
+    padding: var(--spacing-xs);
+  }
+
+  /* Legend Adjustments */
+  #apa-legend {
+    width: 100%;
+    max-width: none;
+  }
+
+  .legend-content {
+    grid-template-columns: 1fr;
   }
 }
 
-/* ===== Tablet Styles (768px - 1024px) ===== */
-@media (min-width: 769px) and (max-width: 1024px) {
-  /* Adjust panel sizes for tablet */
-  #apa-panel.leaflet-control.apa-control {
-    width: 380px;
-    max-height: 60vh;
+/* ===== Tablet Styles ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Layout Adjustments */
+  .header {
+    padding: var(--spacing-md);
   }
-  
+
   .drawer {
-    width: 320px;
+    width: 300px;
   }
-  
-  /* Adjust command region tooltips for tablet */
-  .command-region-label {
-    max-width: 150px;
-    font-size: var(--font-size-xs) !important;
+
+  .panel {
+    width: 400px;
+  }
+
+  /* Panel Adjustments */
+  #apa-panel {
+    height: 60vh;
+  }
+
+  .panel-header {
+    padding: var(--spacing-md);
+  }
+
+  .panel-content {
+    padding: var(--spacing-md);
+  }
+
+  /* Control Adjustments */
+  .control-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .control-button {
+    width: auto;
+  }
+
+  /* Table Adjustments */
+  #apa-table {
+    font-size: var(--font-size-sm);
+  }
+
+  #apa-table th,
+  #apa-table td {
+    padding: var(--spacing-sm);
+  }
+
+  /* Legend Adjustments */
+  #apa-legend {
+    width: 300px;
+  }
+
+  .legend-content {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* ===== Larger Screens (> 1440px) ===== */
-@media (min-width: 1441px) {
-  /* Increase panel sizes for larger screens */
-  #apa-panel.leaflet-control.apa-control {
-    width: 500px;
-    max-height: 75vh;
+/* ===== Desktop Styles ===== */
+@media (min-width: 1024px) {
+  /* Layout Adjustments */
+  .header {
+    padding: var(--spacing-lg);
   }
-  
+
   .drawer {
     width: 350px;
   }
-  
-  /* Larger polar plot on big screens */
-  .polar-plot-container {
-    width: 250px;
-    height: 250px;
+
+  .panel {
+    width: 450px;
+  }
+
+  /* Panel Adjustments */
+  #apa-panel {
+    height: 70vh;
+  }
+
+  .panel-header {
+    padding: var(--spacing-lg);
+  }
+
+  .panel-content {
+    padding: var(--spacing-lg);
+  }
+
+  /* Control Adjustments */
+  .control-group {
+    flex-direction: row;
+    gap: var(--spacing-md);
+  }
+
+  .control-button {
+    width: auto;
+  }
+
+  /* Table Adjustments */
+  #apa-table {
+    font-size: var(--font-size-base);
+  }
+
+  #apa-table th,
+  #apa-table td {
+    padding: var(--spacing-md);
+  }
+
+  /* Legend Adjustments */
+  #apa-legend {
+    width: 350px;
+  }
+
+  .legend-content {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* ===== Print Styles ===== */
 @media print {
-  .drawer-buttons, 
-  .floating-control,
-  #toggle-apa-panel,
-  .tutorial-overlay,
+  /* Base Print Styles */
+  * {
+    color: black !important;
+    background: white !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Layout Print Styles */
+  .header,
   .drawer,
-  #help-tooltip {
+  .control-group {
     display: none !important;
   }
-  
-  #apa-panel.leaflet-control.apa-control {
-    display: block !important;
-    position: static;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 100%;
-    box-shadow: none;
-    background: white;
-    color: black;
-    overflow: visible;
-    height: auto;
-    max-height: none;
-  }
-  
-  #apa-table th {
-    background-color: #eee !important;
-    color: black !important;
-  }
-  
-  body, html {
-    background: white;
-    color: black;
-  }
-  
-  header {
-    background: #eee;
-    color: black;
-    box-shadow: none;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .elevation-excellent,
-  .elevation-good,
-  .elevation-marginal,
-  .elevation-poor,
-  .elevation-negative {
-    background-color: white !important;
-    color: black !important;
-  }
-  
-  .elevation-negative {
-    font-style: italic;
-  }
-}
 
-/* ===== High Contrast Mode ===== */
-@media (prefers-contrast: high) {
-  :root {
-    --color-primary: #0050C9;
-    --color-primary-dark: #00308A;
-    --color-accent-green: #008800;
-    --color-accent-red: #CC0000;
-    --color-accent-yellow: #AA6600;
-    --color-border: #000000;
+  .panel {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
   }
-  
-  body {
-    color: #000000;
-    background-color: #FFFFFF;
-  }
-  
-  body.dark-mode {
-    color: #FFFFFF;
-    background-color: #000000;
-  }
-  
-  /* Increase contrast for all elements */
-  .drawer, #apa-panel, #apa-legend, .modal-content, .tutorial-card {
-    border: 2px solid var(--color-border);
-  }
-}
 
-/* ===== Prefers Reduced Motion ===== */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
+  /* Content Print Styles */
+  #apa-table {
+    width: 100% !important;
+    border: 1px solid black !important;
   }
-  
-  .pulse, .loading, .fade-in, .slide-down, .slide-up, .slide-left, .slide-right {
-    animation: none !important;
+
+  #apa-table th,
+  #apa-table td {
+    border: 1px solid black !important;
+    padding: var(--spacing-sm) !important;
+  }
+
+  /* Map Print Styles */
+  .leaflet-container {
+    height: 500px !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Page Breaks */
+  .page-break {
+    page-break-before: always !important;
+  }
+
+  /* Links */
+  a[href]::after {
+    content: " (" attr(href) ")";
   }
 }

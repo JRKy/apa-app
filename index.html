@@ -20,11 +20,11 @@
       var script = document.createElement('script');
       script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
       script.onerror = function() {
-        console.log('Primary Leaflet CDN failed, trying backup CDN 1...');
+        showNotification('Primary Leaflet CDN failed, trying backup CDN 1...', 'warning');
         var backupScript = document.createElement('script');
         backupScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';
         backupScript.onerror = function() {
-          console.log('Backup CDN 1 failed, trying backup CDN 2...');
+          showNotification('Backup CDN 1 failed, trying backup CDN 2...', 'warning');
           var fallbackScript = document.createElement('script');
           fallbackScript.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
           document.head.appendChild(fallbackScript);
@@ -411,12 +411,5 @@
   <script src="data.js?v=2.4.0"></script>
   <!-- Replace the original script reference with the modular entry point -->
   <script type="module" src="js/main.js?v=2.4.0"></script>
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.4.0").then(reg => {
-        console.log("Service Worker registered with scope:", reg.scope);
-      });
-    }
-  </script>
 </body>
 </html>

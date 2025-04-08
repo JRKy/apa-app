@@ -6,44 +6,64 @@ import { calculateElevation, calculateAzimuth } from '../calculations/angles.js'
 import { clearVisualization, drawEquator, drawLine, removeLine } from '../calculations/visibility.js';
 import { loadSortState, saveSortState } from '../data/storage.js';
 import { eventBus } from '../core/events.js';
+import { showError } from '../core/errorHandler.js';
+import { UICache } from '../core/cache.js';
 
 // Table state
 let sortState = { column: null, direction: 'none' };
+let tableData = null;
+let lastUpdate = null;
 
 /**
  * Initialize APA table functionality
  */
 export function initTable() {
-  const apaTableBody = document.querySelector("#apa-table tbody");
-  const apaTableHeaders = document.querySelectorAll("#apa-table th");
-  
-  if (!apaTableBody || !apaTableHeaders) return;
-  
-  // Load saved sort state
-  sortState = loadSortState();
-  
-  // Set up sortable columns
-  setupTableSorting(apaTableHeaders);
-  
-  // Set up keyboard navigation for the table
-  setupKeyboardNavigation(apaTableBody);
-  
-  // Initialize export button
-  initExportButton();
-  
-  // Listen for satellite updates
-  eventBus.subscribe('satellitesUpdated', () => {
-    const lastLocation = document.getElementById('current-location-indicator');
-    if (lastLocation && !lastLocation.classList.contains('hidden')) {
-      // We have an active location, update the table
-      const dataLat = document.querySelector("input[type=checkbox][data-lat]")?.dataset.lat;
-      const dataLon = document.querySelector("input[type=checkbox][data-lon]")?.dataset.lon;
-      
-      if (dataLat && dataLon) {
-        updateApaTable(parseFloat(dataLat), parseFloat(dataLon));
-      }
+  try {
+    if (tableData) return tableData;
+    
+    // Restore from cache
+    const cachedData = UICache.getTableData();
+    if (cachedData) {
+      tableData = cachedData;
+      lastUpdate = cachedData.timestamp;
     }
-  });
+    
+    const apaTableBody = document.querySelector("#apa-table tbody");
+    const apaTableHeaders = document.querySelectorAll("#apa-table th");
+    
+    if (!apaTableBody || !apaTableHeaders) return;
+    
+    // Load saved sort state
+    sortState = loadSortState();
+    
+    // Set up sortable columns
+    setupTableSorting(apaTableHeaders);
+    
+    // Set up keyboard navigation for the table
+    setupKeyboardNavigation(apaTableBody);
+    
+    // Initialize export button
+    initExportButton();
+    
+    // Listen for satellite updates
+    eventBus.subscribe('satellitesUpdated', () => {
+      const lastLocation = document.getElementById('current-location-indicator');
+      if (lastLocation && !lastLocation.classList.contains('hidden')) {
+        // We have an active location, update the table
+        const dataLat = document.querySelector("input[type=checkbox][data-lat]")?.dataset.lat;
+        const dataLon = document.querySelector("input[type=checkbox][data-lon]")?.dataset.lon;
+        
+        if (dataLat && dataLon) {
+          updateTable(parseFloat(dataLat), parseFloat(dataLon));
+        }
+      }
+    });
+    
+    return tableData;
+  } catch (error) {
+    showError(error, 'Table');
+    return null;
+  }
 }
 
 /**
@@ -51,115 +71,36 @@ export function initTable() {
  * @param {number} lat - Observer latitude
  * @param {number} lon - Observer longitude
  */
-export function updateApaTable(lat, lon) {
-  const apaTableBody = document.querySelector("#apa-table tbody");
-  const noResultsMessage = document.getElementById("apa-no-results");
-  
-  if (!apaTableBody) return;
-  
-  // Clear table
-  apaTableBody.innerHTML = "";
-  
-  // Clear visualization layers
-  clearVisualization();
-  
-  // Get satellites
-  const satellites = getSatellites();
-  let count = 0;
-  
-  // Create orbit line for equator
-  drawEquator();
-  
-  // Add rows for each satellite
-  satellites.forEach((sat, idx) => {
-    const az = calculateAzimuth(lat, lon, sat.longitude).toFixed(1);
-    const el = calculateElevation(lat, lon, sat.longitude).toFixed(1);
-    const elNum = parseFloat(el);
-    const isNegative = elNum < 0;
-    const id = `sat-${idx}`;
-    const elClass = getElevationClass(elNum);
-    const qualityLabel = getElevationLabel(elNum);
+export function updateTable(lat, lon) {
+  try {
+    // Check cache for table data
+    const cacheKey = `table_${lat}_${lon}`;
+    let cachedResult = UICache.getTableData(cacheKey);
     
-    // Create table row
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>
-        <label class="toggle-switch">
-          <input type="checkbox" id="${id}" data-lat="${lat}" data-lon="${lon}" data-satlon="${sat.longitude}" data-name="${sat.name}" ${isNegative ? "" : "checked"}>
-          <span class="toggle-slider"></span>
-        </label>
-      </td>
-      <td class="satellite-name" data-satellite-id="${idx}">${sat.name}</td>
-      <td>${sat.longitude.toFixed(1)}°</td>
-      <td class="${elClass}">${el}° <span class="quality-badge">${qualityLabel}</span></td>
-      <td>${az}°</td>
-      <td class="actions-cell">
-        ${sat.custom ? 
-          `<button class="delete-sat" data-name="${sat.name}" title="Delete Satellite">
-             <span class="material-icons-round">delete</span>
-           </button>` 
-          : ""}
-      </td>`;
+    if (cachedResult !== null) {
+      tableData = cachedResult;
+      lastUpdate = Date.now();
+      return tableData;
+    }
     
-    apaTableBody.appendChild(row);
-    count++;
-  });
-  
-  // Show/hide no results message
-  if (noResultsMessage) {
-    noResultsMessage.classList.toggle("hidden", count > 0);
-  }
-  
-  // Add event listeners for delete buttons
-  apaTableBody.querySelectorAll(".delete-sat").forEach(btn => {
-    btn.addEventListener("click", () => handleDeleteSatellite(btn));
-  });
-  
-  // Add event listeners for visibility toggles
-  apaTableBody.querySelectorAll("input[type=checkbox]").forEach(cb => {
-    cb.addEventListener("change", function() {
-      handleVisibilityToggle(this);
+    // Calculate new table data
+    const satellites = getSatellites();
+    const newTableData = calculateTableData(lat, lon, satellites);
+    
+    // Cache the result
+    UICache.setTableData(cacheKey, {
+      data: newTableData,
+      timestamp: Date.now()
     });
-  });
-  
-  // Add event listeners for satellite name clicks
-  apaTableBody.querySelectorAll(".satellite-name").forEach(cell => {
-    cell.addEventListener("click", function() {
-      const satId = parseInt(this.dataset.satelliteId);
-      const satellite = satellites[satId];
-      
-      if (satellite) {
-        // Publish event
-        eventBus.publish('satelliteSelected', {
-          satellite,
-          lat,
-          lon
-        });
-      }
-    });
-  });
-  
-  // Trigger change event to draw lines for checked satellites
-  apaTableBody.querySelectorAll("input[type=checkbox]:checked").forEach(cb => {
-    cb.dispatchEvent(new Event("change"));
-  });
-  
-  // Apply sorting if active
-  if (sortState.column !== null && sortState.direction !== 'none') {
-    sortTable(sortState.column, sortState.direction);
+    
+    tableData = newTableData;
+    lastUpdate = Date.now();
+    
+    return tableData;
+  } catch (error) {
+    showError(error, 'Table');
+    throw error;
   }
-  
-  // Calculate accessibility announcement data
-  const visibleSats = satellites.filter(sat => {
-    const el = calculateElevation(lat, lon, sat.longitude);
-    return el >= 0;
-  }).length;
-  
-  // Create meaningful announcement
-  const announcement = `APA data updated for ${count} satellites. ${visibleSats} satellites are visible from current location.`;
-  
-  // Use the existing makeAnnouncement utility
-  makeAnnouncement(announcement, 'polite', 2000);
 }
 
 /**
@@ -179,7 +120,7 @@ function handleDeleteSatellite(button) {
       if (checkbox) {
         const lat = parseFloat(checkbox.dataset.lat);
         const lon = parseFloat(checkbox.dataset.lon);
-        updateApaTable(lat, lon);
+        updateTable(lat, lon);
       }
       
       showNotification(result.message, "info");
@@ -459,4 +400,22 @@ export function initExportButton() {
   
   // Add button to panel controls
   panelControls.insertBefore(exportButton, panelControls.firstChild);
+}
+
+export function getTableData() {
+  return tableData;
+}
+
+export function getLastUpdate() {
+  return lastUpdate;
+}
+
+export function clearTableData() {
+  try {
+    tableData = null;
+    lastUpdate = null;
+    UICache.clearTableCache();
+  } catch (error) {
+    showError(error, 'Table');
+  }
 }

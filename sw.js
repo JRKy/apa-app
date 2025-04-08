@@ -48,7 +48,6 @@ self.addEventListener("install", (event) => {
       ]);
     })
   );
-  console.log("Installed SW Version: v2.4.0");
 });
 
 self.addEventListener("fetch", (event) => {

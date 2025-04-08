@@ -42,37 +42,29 @@ export function getCurrentLocation() {
  * Navigate to a location
  * @param {number} lat - Latitude
  * @param {number} lon - Longitude
- * @param {string} label - Location label
+ * @param {string} name - Location name
  */
-export function goToLocation(lat, lon, label = "") {
-  // Update current location
-  currentLocation = { lat, lon, label };
-  
-  // Set map view and marker
-  const marker = setMapLocation(lat, lon);
-  if (marker) {
-    marker.bindPopup(`<strong>${label || 'Selected Location'}</strong><br>Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`);
+export function goToLocation(lat, lon, name) {
+  if (isNaN(lat) || isNaN(lon)) {
+    showNotification("Invalid location coordinates", "error");
+    return;
   }
   
-  // Show APA panel
-  const apaPanel = document.getElementById("apa-panel");
-  const toggleApaBtn = document.getElementById("toggle-apa-panel");
+  // Update current location
+  currentLocation = { lat, lon, name };
   
-  if (apaPanel) apaPanel.style.display = "block";
-  if (toggleApaBtn) toggleApaBtn.style.display = "none";
+  // Update map
+  setMapLocation(lat, lon);
   
-  // Update data visualizations
+  // Update UI
   updateApaTable(lat, lon);
   updatePolarPlot(lat, lon);
   
-  // Show location indicator
-  updateLocationIndicator(lat, lon, label);
+  // Save last location
+  saveLastLocation(lat, lon, name);
   
-  // Save to localStorage
-  saveLastLocation(lat, lon, label);
-  
-  // Notify other components
-  eventBus.publish('locationChanged', { lat, lon, label });
+  // Publish event
+  eventBus.publish('locationChanged', { lat, lon, name });
 }
 
 /**
@@ -145,8 +137,6 @@ export function useMyLocation() {
         locateBtn.innerHTML = '<span class="material-icons-round">my_location</span>';
         locateBtn.disabled = false;
       }
-      
-      console.error("Geolocation error:", error);
     },
     {
       enableHighAccuracy: true,

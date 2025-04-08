@@ -150,8 +150,6 @@ const ConfigManager = {
     
     // Only migrate if versions don't match
     if (storedVersion !== VERSION) {
-      console.log(`Migrating configuration from ${storedVersion || 'unknown'} to ${VERSION}`);
-      
       // For now, just update the version
       this.config.version = VERSION;
       
@@ -197,7 +195,7 @@ const ConfigManager = {
           // Optionally remove the legacy key
           // localStorage.removeItem(legacyKey);
         } catch (e) {
-          console.error(`Failed to migrate legacy setting ${legacyKey}:`, e);
+          showNotification(`Failed to migrate legacy setting ${legacyKey}`, "error");
         }
       }
     });

@@ -1,0 +1,30 @@
+# APA App Commit Message Template
+# Type: feat|fix|docs|style|refactor|perf|test|chore|revert|ci|build|wip
+# Scope: ui|api|css|js|test|docs|build|ci|etc.
+# Subject: brief description of the change
+#
+# Examples:
+# feat(ui): add dark mode toggle
+# fix(api): resolve authentication timeout
+# docs(readme): update installation instructions
+# style(css): format code according to style guide
+# refactor(components): extract common button styles
+#
+# Body: (optional) detailed description of the change
+#
+# Footer: (optional) references to issues, breaking changes, etc.
+# Fixes #123
+# BREAKING CHANGE: description of breaking change
+#
+# Note: Subject line should be 72 characters or less
+#       Body should be wrapped at 72 characters
+#       Use present tense in the subject line
+#       Don't end the subject line with a period
+
+# Type: 
+# Scope: 
+# Subject: 
+
+# Body:
+
+# Footer: 

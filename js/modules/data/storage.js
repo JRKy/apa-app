@@ -1,6 +1,7 @@
 // storage.js - LocalStorage management functions
 import { getStoredValue, storeValue } from '../core/utils.js';
 import { goToLocation } from './locations.js';
+import { showNotification } from '../core/notifications.js';
 
 // Storage key constants
 const STORAGE_KEYS = {
@@ -42,7 +43,7 @@ export function restoreLastLocation() {
     try {
       goToLocation(savedLocation.lat, savedLocation.lon, savedLocation.label);
     } catch (e) {
-      console.error('Failed to restore last location:', e);
+      showNotification("Failed to restore last location", "error");
     }
   }
 }

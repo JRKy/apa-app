@@ -22,8 +22,6 @@ export function initLocationSelector() {
   
   // Restore expanded state
   restoreExpandedState();
-  
-  console.log('Location selector initialized');
 }
 
 /**
