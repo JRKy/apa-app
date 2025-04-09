@@ -1,12 +1,20 @@
 {
-  "version": "2.4.4",
+  "version": "2.4.5",
   "versionInfo": {
     "major": 2,
     "minor": 4,
-    "patch": 4
+    "patch": 5
   },
   "buildDate": "2024-04-09T01:30:00.000Z",
   "changelog": {
+    "2.4.5": {
+      "date": "2024-04-09",
+      "changes": [
+        "Removed unused save location button",
+        "Fixed extra horizontal line in location drawer",
+        "Improved drawer section spacing"
+      ]
+    },
     "2.4.4": {
       "date": "2024-04-09",
       "changes": [
