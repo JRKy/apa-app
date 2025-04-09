@@ -284,29 +284,49 @@
 
 /* Range slider */
 .range-slider {
+  appearance: none;
   -webkit-appearance: none;
   height: 6px;
   background: var(--color-border);
   border-radius: 3px;
+  width: 100%;
+  margin: var(--space-sm) 0;
+  cursor: pointer;
 }
 
 .range-slider::-webkit-slider-thumb {
+  appearance: none;
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
   background: var(--color-primary);
+  border-radius: 50%;
   cursor: pointer;
-  border: none;
+  transition: background var(--transition-fast);
 }
 
 .range-slider::-moz-range-thumb {
   width: 16px;
   height: 16px;
-  border-radius: 50%;
   background: var(--color-primary);
-  cursor: pointer;
+  border-radius: 50%;
   border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.range-slider::-webkit-slider-thumb:hover,
+.range-slider::-moz-range-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+.range-slider:focus {
+  outline: none;
+}
+
+.range-slider:focus::-webkit-slider-thumb,
+.range-slider:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--color-primary-light);
 }
 
 /* ===== Cards & Panels ===== */
