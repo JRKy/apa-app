@@ -406,12 +406,12 @@
   </div>
 
   <!-- Scripts -->
-  <script type="module" src="data.js?v=2.4.3"></script>
+  <script src="data.js?v=2.4.3"></script>
   <!-- Replace the original script reference with the modular entry point -->
   <script type="module" src="js/main.js?v=2.4.3"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.4.3", { type: "module" }).then(reg => {
+      navigator.serviceWorker.register("sw.js?v=2.4.3").then(reg => {
         console.log("Service Worker registered with scope:", reg.scope);
       });
     }
