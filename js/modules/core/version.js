@@ -1,5 +1,5 @@
 // version.js - Version information
-import versionData from '../../../version.json';
+import { versionData } from './version-data.js';
 
 export const VERSION = versionData.version;
 export const BUILD_DATE = versionData.buildDate;
