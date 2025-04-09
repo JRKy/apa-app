@@ -1,6 +1,6 @@
 // version.js - Version information
 
-export const VERSION = '2.4.0';
+export const VERSION = '2.4.1';
 export const BUILD_DATE = '2025-04-07';
 export const VERSION_INFO = {
   major: 2,
