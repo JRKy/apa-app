@@ -1,6 +1,6 @@
 // drawers.js - Drawer UI components
 import { showNotification } from '../core/utils.js';
-import { goToLocation } from '../data/locations.js';
+import { goToLocation, getLocations } from '../data/locations.js';
 import { addSatellite } from '../data/satellites.js';
 import { searchLocation } from './geocoder.js';
 import { eventBus } from '../core/events.js';
