@@ -1,4 +1,4 @@
-const CACHE_NAME = "apa-app-cache-v2.4.2";
+const CACHE_NAME = "apa-app-cache-v2.4.3";
 const OFFLINE_URL = "offline.html";
 
 self.addEventListener("install", (event) => {
@@ -8,38 +8,39 @@ self.addEventListener("install", (event) => {
         "./",
         "index.html",
         // New modular CSS files
-        "css/base.css?v=2.4.2",
-        "css/layout.css?v=2.4.2",
-        "css/components.css?v=2.4.2",
-        "css/modules.css?v=2.4.2",
-        "css/dark-mode.css?v=2.4.2",
-        "css/animations.css?v=2.4.2",
-        "css/responsive.css?v=2.4.2",
+        "css/base.css?v=2.4.3",
+        "css/layout.css?v=2.4.3",
+        "css/components.css?v=2.4.3",
+        "css/modules.css?v=2.4.3",
+        "css/dark-mode.css?v=2.4.3",
+        "css/animations.css?v=2.4.3",
+        "css/responsive.css?v=2.4.3",
+        "css/offline.css?v=2.4.3",
         // JavaScript files
-        "js/main.js?v=2.4.2",
-        "js/modules/core/config.js?v=2.4.2",
-        "js/modules/core/configManager.js?v=2.4.2",
-        "js/modules/core/utils.js?v=2.4.2",
-        "js/modules/core/events.js?v=2.4.2",
-        "js/modules/core/version.js?v=2.4.2",
-        "js/modules/ui/map.js?v=2.4.2",
-        "js/modules/ui/panels.js?v=2.4.2",
-        "js/modules/ui/drawers.js?v=2.4.2",
-        "js/modules/ui/table.js?v=2.4.2",
-        "js/modules/ui/polarPlot.js?v=2.4.2",
-        "js/modules/ui/tutorial.js?v=2.4.2",
-        "js/modules/ui/filters.js?v=2.4.2",
-        "js/modules/ui/legend.js?v=2.4.2",
-        "js/modules/ui/geocoder.js?v=2.4.2",
-        "js/modules/ui/locationSelector.js?v=2.4.2",
-        "js/modules/ui/satelliteCoverage.js?v=2.4.2",
-        "js/modules/ui/whatsNew.js?v=2.4.2",
-        "js/modules/data/storage.js?v=2.4.2",
-        "js/modules/data/satellites.js?v=2.4.2",
-        "js/modules/data/locations.js?v=2.4.2",
-        "js/modules/data/commandRegions.js?v=2.4.2",
-        "js/modules/calculations/angles.js?v=2.4.2",
-        "js/modules/calculations/visibility.js?v=2.4.2",
+        "js/main.js?v=2.4.3",
+        "js/modules/core/config.js?v=2.4.3",
+        "js/modules/core/configManager.js?v=2.4.3",
+        "js/modules/core/utils.js?v=2.4.3",
+        "js/modules/core/events.js?v=2.4.3",
+        "js/modules/core/version.js?v=2.4.3",
+        "js/modules/ui/map.js?v=2.4.3",
+        "js/modules/ui/panels.js?v=2.4.3",
+        "js/modules/ui/drawers.js?v=2.4.3",
+        "js/modules/ui/table.js?v=2.4.3",
+        "js/modules/ui/polarPlot.js?v=2.4.3",
+        "js/modules/ui/tutorial.js?v=2.4.3",
+        "js/modules/ui/filters.js?v=2.4.3",
+        "js/modules/ui/legend.js?v=2.4.3",
+        "js/modules/ui/geocoder.js?v=2.4.3",
+        "js/modules/ui/locationSelector.js?v=2.4.3",
+        "js/modules/ui/satelliteCoverage.js?v=2.4.3",
+        "js/modules/ui/whatsNew.js?v=2.4.3",
+        "js/modules/data/storage.js?v=2.4.3",
+        "js/modules/data/satellites.js?v=2.4.3",
+        "js/modules/data/locations.js?v=2.4.3",
+        "js/modules/data/commandRegions.js?v=2.4.3",
+        "js/modules/calculations/angles.js?v=2.4.3",
+        "js/modules/calculations/visibility.js?v=2.4.3",
         "manifest.json",
         "icons/icon-192.png",
         "icons/icon-512.png",
@@ -47,7 +48,7 @@ self.addEventListener("install", (event) => {
       ]);
     })
   );
-  console.log("Installed SW Version: v2.4.0");
+  console.log("Installed SW Version: v2.4.2");
 });
 
 self.addEventListener("fetch", (event) => {

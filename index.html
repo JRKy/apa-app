@@ -40,18 +40,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
   <!-- Modular CSS Files -->
-  <link rel="stylesheet" href="css/base.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/layout.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/components.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/modules.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/dark-mode.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/animations.css?v=2.4.2" />
-  <link rel="stylesheet" href="css/responsive.css?v=2.4.2" />
+  <link rel="stylesheet" href="css/base.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/layout.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/components.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/modules.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/dark-mode.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/animations.css?v=2.4.3" />
+  <link rel="stylesheet" href="css/responsive.css?v=2.4.3" />
 </head>
 <body>
   <header>
     <h1>APA App</h1>
-    <span id="version">Version: 2.4.2</span>
+    <span id="version">Version: 2.4.3</span>
   </header>
 
   <!-- Drawer Buttons -->
@@ -319,27 +319,27 @@
     <div class="legend-section command-region-legend">
       <div class="legend-subtitle">Command Regions</div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #9c27b0;"></div>
+        <div class="legend-color northcom"></div>
         <span>NORTHCOM</span>
       </div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #ffeb3b;"></div>
+        <div class="legend-color southcom"></div>
         <span>SOUTHCOM</span>
       </div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #2196f3;"></div>
+        <div class="legend-color eucom"></div>
         <span>EUCOM</span>
       </div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #ff9800;"></div>
+        <div class="legend-color africom"></div>
         <span>AFRICOM</span>
       </div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #ff5722;"></div>
+        <div class="legend-color centcom"></div>
         <span>CENTCOM</span>
       </div>
       <div class="legend-item">
-      <div class="legend-color" style="background-color: #4caf50;"></div>
+        <div class="legend-color indopacom"></div>
         <span>INDOPACOM</span>
       </div>
     </div>
@@ -361,12 +361,12 @@
   </div>
 
   <!-- Scripts -->
-  <script src="data.js?v=2.4.2"></script>
+  <script src="data.js?v=2.4.3"></script>
   <!-- Replace the original script reference with the modular entry point -->
-  <script type="module" src="js/main.js?v=2.4.2"></script>
+  <script type="module" src="js/main.js?v=2.4.3"></script>
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.4.2").then(reg => {
+      navigator.serviceWorker.register("sw.js?v=2.4.3").then(reg => {
         console.log("Service Worker registered with scope:", reg.scope);
       });
     }

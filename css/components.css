@@ -575,3 +575,266 @@
     margin-top: var(--space-xs);
   }
 }
+
+/* ===== Base Component Styles ===== */
+.component {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+}
+
+.component:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== Drawer System ===== */
+.drawer {
+  position: fixed;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-md);
+  z-index: 1000;
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.drawer-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.drawer-content {
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  padding-right: var(--space-sm);
+}
+
+.drawer-footer {
+  padding-top: var(--space-md);
+  margin-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+/* ===== Button System ===== */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+  gap: var(--space-xs);
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.button-secondary {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+}
+
+.button-secondary:hover {
+  background-color: var(--color-surface);
+}
+
+.button-icon {
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.button-icon:hover {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+/* ===== Table System ===== */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.table th {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.table tr:hover td {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+/* ===== Form Elements ===== */
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.form-select {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  background-color: var(--color-surface);
+  cursor: pointer;
+}
+
+/* ===== Card System ===== */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.card-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.card-content {
+  color: var(--color-text-secondary);
+}
+
+/* ===== Status Indicators ===== */
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.status-success {
+  background-color: var(--color-accent-green);
+  color: white;
+}
+
+.status-warning {
+  background-color: var(--color-accent-yellow);
+  color: var(--color-text-primary);
+}
+
+.status-error {
+  background-color: var(--color-accent-red);
+  color: white;
+}
+
+/* ===== Dark Mode Overrides ===== */
+body.dark-mode .component {
+  background-color: var(--color-dark-surface);
+}
+
+body.dark-mode .drawer {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .button-secondary {
+  background-color: var(--color-dark-background);
+  border-color: var(--color-dark-border);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .table th {
+  background-color: var(--color-dark-background);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .table td {
+  color: var(--color-dark-text-secondary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .form-input,
+body.dark-mode .form-select {
+  background-color: var(--color-dark-surface);
+  border-color: var(--color-dark-border);
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .card {
+  background-color: var(--color-dark-surface);
+}
+
+body.dark-mode .card-title {
+  color: var(--color-dark-text-primary);
+}
+
+body.dark-mode .card-content {
+  color: var(--color-dark-text-secondary);
+}

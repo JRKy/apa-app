@@ -1,9 +1,9 @@
 {
-  "version": "2.4.2",
-  "buildDate": "2025-04-07",
+  "version": "2.4.3",
   "versionInfo": {
     "major": 2,
     "minor": 4,
-    "patch": 2
-  }
+    "patch": 3
+  },
+  "buildDate": "2024-04-09T01:30:00.000Z"
 } 
