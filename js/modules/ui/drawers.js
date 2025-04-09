@@ -4,6 +4,7 @@ import { goToLocation, getLocations } from '../data/locations.js';
 import { addSatellite } from '../data/satellites.js';
 import { searchLocation } from './geocoder.js';
 import { eventBus } from '../core/events.js';
+import { saveCustomLocation } from './locationSelector.js';
 
 /**
  * Populate the location filter drawer with locations
