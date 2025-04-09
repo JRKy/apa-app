@@ -1,66 +1,23 @@
 {
-  "version": "2.4.6",
+  "version": "2.4.4",
+  "buildDate": "2024-04-09T01:12:09.064Z",
   "versionInfo": {
     "major": 2,
     "minor": 4,
-    "patch": 6
+    "patch": 4
   },
-  "buildDate": "2024-04-09T01:30:00.000Z",
-  "changelog": {
-    "2.4.6": {
-      "date": "2024-03-21",
-      "changes": [
-        "Added location filter drawer with search and AOR filtering",
-        "Integrated fixed locations from data.js into the location filter",
-        "Improved location selection with pin drop button"
-      ]
-    },
-    "2.4.5": {
-      "date": "2024-03-21",
-      "changes": [
-        "Removed unused 'Save Location' button",
-        "Fixed extra horizontal line in location drawer",
-        "Improved drawer section spacing"
-      ]
-    },
-    "2.4.4": {
-      "date": "2024-03-21",
-      "changes": [
-        "Improved consistency between location and satellite drawers",
-        "Added input validation for satellite name and longitude",
-        "Added preview feature for satellite position"
-      ]
-    },
-    "2.4.3": {
-      "date": "2024-03-21",
-      "changes": [
-        "Fixed drawer z-index and overlay issues",
-        "Improved search input group styling",
-        "Added satellite filter drawer initialization"
-      ]
-    },
-    "2.4.2": {
-      "date": "2024-03-21",
-      "changes": [
-        "Fixed MIME type issue with version.json",
-        "Added version-data.js module",
-        "Improved version handling"
-      ]
-    },
-    "2.4.1": {
-      "date": "2024-03-21",
-      "changes": [
-        "Added legend color styles",
-        "Improved range slider compatibility",
-        "Enhanced drawer interaction"
-      ]
-    },
-    "2.4.0": {
-      "date": "2024-04-09",
-      "changes": [
-        "Initial release of version 2.4",
-        "Added new features and improvements"
-      ]
-    }
-  }
+  "features": [
+    "Improved custom location name handling",
+    "Fixed map indicator to show custom location names",
+    "Enhanced location storage with proper name persistence"
+  ],
+  "changelog": [
+    "Fixed: Custom location names now properly display in map indicator",
+    "Fixed: Custom location names are correctly stored and retrieved",
+    "Improved: Better validation for custom location names"
+  ],
+  "whatsNew": [
+    "Custom locations now show your chosen name in the map indicator",
+    "Location names are properly saved and displayed throughout the app"
+  ]
 } 
