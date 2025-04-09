@@ -1,5 +1,10 @@
 // data.js - Satellite and location data
-import { versionData } from './js/modules/core/version-data.js';
+
+// Global version data
+const versionData = {
+    version: "2.4.3",
+    buildDate: "2024-04-09"
+};
 
 const SATELLITES = [
   { name: "MUOS-2", longitude: -177 },
