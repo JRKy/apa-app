@@ -162,13 +162,13 @@ function setupDrawerToggles() {
 function showDrawer(drawerId) {
   // Hide all drawers first
   document.querySelectorAll('.drawer').forEach(drawer => {
-    drawer.classList.remove('visible');
+    drawer.classList.remove('active');
   });
   
   // Show this drawer
   const drawer = document.getElementById(drawerId);
   if (drawer) {
-    drawer.classList.add('visible');
+    drawer.classList.add('active');
     
     // If this is an input drawer, focus the first input
     const firstInput = drawer.querySelector('input, select');
@@ -195,11 +195,11 @@ export function toggleDrawer(drawerId, others = []) {
  */
 export function closeAllDrawers() {
   document.querySelectorAll('.drawer').forEach(drawer => {
-    drawer.classList.remove('visible');
+    drawer.classList.remove('active');
   });
   
   // Publish event
-  eventBus.publish('drawersAllClosed');
+  eventBus.publish('allDrawersClosed');
 }
 
 /**
@@ -395,7 +395,7 @@ function handlePreviewSatellite() {
 function closeDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
-    drawer.classList.remove('visible');
+    drawer.classList.remove('active');
     eventBus.publish('drawerClosed', { drawerId });
   }
 }
