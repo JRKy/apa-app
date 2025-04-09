@@ -1,6 +1,4 @@
-// Version 2.2.0
-
-// Data initialization
+// data.js - Satellite and location data
 import { versionData } from './js/modules/core/version-data.js';
 
 const SATELLITES = [
