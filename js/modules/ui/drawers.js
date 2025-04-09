@@ -56,15 +56,6 @@ export function initDrawers() {
   
   // Set up direct drawer toggle event handlers
   setupDrawerToggles();
-  
-  // Add click handler to the drawer overlay for closing
-  const drawerOverlay = document.getElementById('drawer-overlay');
-  if (drawerOverlay) {
-    drawerOverlay.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeAllDrawers();
-    });
-  }
 }
 
 /**
@@ -103,7 +94,6 @@ function showDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
     drawer.classList.add('visible');
-    document.getElementById('drawer-overlay').classList.add('visible');
     
     // If this is an input drawer, focus the first input
     const firstInput = drawer.querySelector('input, select');
@@ -132,7 +122,6 @@ export function closeAllDrawers() {
   document.querySelectorAll('.drawer').forEach(drawer => {
     drawer.classList.remove('visible');
   });
-  document.getElementById('drawer-overlay').classList.remove('visible');
   
   // Publish event
   eventBus.publish('drawersAllClosed');
@@ -322,7 +311,6 @@ function closeDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
     drawer.classList.remove('visible');
-    document.getElementById('drawer-overlay').classList.remove('visible');
     eventBus.publish('drawerClosed', { drawerId });
   }
 }
