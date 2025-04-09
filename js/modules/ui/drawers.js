@@ -11,14 +11,11 @@ import { eventBus } from '../core/events.js';
 export function initDrawers() {
   // Set up close buttons for all drawers
   document.querySelectorAll('.drawer-close').forEach(closeBtn => {
-    closeBtn.addEventListener('click', function() {
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent event bubbling
       const drawerId = this.dataset.drawer;
       if (drawerId) {
-        const drawer = document.getElementById(drawerId);
-        if (drawer) {
-          drawer.classList.remove('visible');
-          document.getElementById('drawer-overlay').classList.remove('visible');
-        }
+        closeDrawer(drawerId);
       }
     });
   });
@@ -57,7 +54,10 @@ export function initDrawers() {
   // Add click handler to the drawer overlay for closing
   const drawerOverlay = document.getElementById('drawer-overlay');
   if (drawerOverlay) {
-    drawerOverlay.addEventListener('click', closeAllDrawers);
+    drawerOverlay.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllDrawers();
+    });
   }
 }
 
@@ -254,5 +254,18 @@ function handleAddSatellite() {
     }
   } else {
     showNotification(result.message, "error");
+  }
+}
+
+/**
+ * Close a specific drawer
+ * @param {string} drawerId - ID of the drawer to close
+ */
+function closeDrawer(drawerId) {
+  const drawer = document.getElementById(drawerId);
+  if (drawer) {
+    drawer.classList.remove('visible');
+    document.getElementById('drawer-overlay').classList.remove('visible');
+    eventBus.publish('drawerClosed', { drawerId });
   }
 }
