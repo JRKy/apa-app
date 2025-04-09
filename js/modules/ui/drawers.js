@@ -61,6 +61,22 @@ export function initDrawers() {
     });
   });
   
+  // Set up overlay click handler
+  const overlay = document.querySelector('.drawer-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeAllDrawers();
+    });
+  }
+  
+  // Set up drawer click handler to prevent closing when clicking inside
+  document.querySelectorAll('.drawer').forEach(drawer => {
+    drawer.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  });
+  
   // Set up custom location form submission
   const customLocationBtn = document.getElementById("custom-location-btn");
   if (customLocationBtn) {
