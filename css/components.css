@@ -652,6 +652,8 @@
 
 .button-primary:hover {
   background-color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .button-secondary {
@@ -662,6 +664,8 @@
 
 .button-secondary:hover {
   background-color: var(--color-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 
 .button-icon {
@@ -669,11 +673,14 @@
   border-radius: var(--radius-md);
   background-color: transparent;
   color: var(--color-text-secondary);
+  width: 40px;
+  height: 40px;
 }
 
 .button-icon:hover {
   background-color: var(--color-background);
   color: var(--color-text-primary);
+  transform: translateY(-2px);
 }
 
 /* ===== Table System ===== */
@@ -791,6 +798,21 @@
 .status-error {
   background-color: var(--color-accent-red);
   color: white;
+}
+
+/* ===== Search Components ===== */
+.search-input-group {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.search-input-group .form-input {
+  flex: 1;
+}
+
+.search-input-group .button {
+  flex-shrink: 0;
 }
 
 /* ===== Dark Mode Overrides ===== */
