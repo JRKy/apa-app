@@ -1,12 +1,8 @@
 {
-  "name": "Antenna Pointing Angles (APA)",
+  "name": "APA App",
   "short_name": "APA",
-  "description": "A tool for calculating and visualizing antenna pointing angles for satellite communication.",
-  "version": "2.4.3",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#003087",
-  "theme_color": "#003087",
+  "description": "Advanced Polar Analysis Application",
+  "version": "2.4.4",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -19,28 +15,8 @@
       "type": "image/png"
     }
   ],
-  "shortcuts": [
-    {
-      "name": "New Location",
-      "url": "index.html?action=new-location",
-      "icons": [
-        {
-          "src": "icons/location-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
-    },
-    {
-      "name": "Command Regions",
-      "url": "index.html?action=command-regions",
-      "icons": [
-        {
-          "src": "icons/regions-192.png",
-          "sizes": "192x192",
-          "type": "image/png"
-        }
-      ]
-    }
-  ]
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a73e8",
+  "background_color": "#ffffff"
 }

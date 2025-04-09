@@ -375,3 +375,5 @@ header h1 {
 .drawer-section + .drawer-section {
   border-top: 1px solid var(--color-border);
 }
+
+/* v${versionData.version} */

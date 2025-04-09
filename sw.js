@@ -1,4 +1,6 @@
-const CACHE_NAME = "apa-app-cache-v2.4.3";
+import { versionData } from './js/modules/core/version-data.js';
+
+const CACHE_NAME = `apa-app-cache-v${versionData.version}`;
 const OFFLINE_URL = "offline.html";
 
 self.addEventListener("install", (event) => {
@@ -48,7 +50,7 @@ self.addEventListener("install", (event) => {
       ]);
     })
   );
-  console.log("Installed SW Version: v2.4.2");
+  console.log(`Installed SW Version: v${versionData.version}`);
 });
 
 self.addEventListener("fetch", (event) => {

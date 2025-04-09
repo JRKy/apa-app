@@ -1,5 +1,8 @@
 // Version 2.2.0
 
+// Data initialization
+import { versionData } from './js/modules/core/version-data.js';
+
 const SATELLITES = [
   { name: "MUOS-2", longitude: -177 },
   { name: "MUOS-5", longitude: -100 },
@@ -35,4 +38,5 @@ const LOCATIONS = [
   { name: "Schriever SFB, CO", latitude: 38.801244686130765, longitude: -104.5260869617432, country: "USA", aor: "NORTHCOM" }
 ];
 
-console.log(`Data Loaded: ${SATELLITES.length} satellites, ${LOCATIONS.length} locations (v2.2.0)`);
+// Log data loading
+console.log(`Data Loaded: ${SATELLITES.length} satellites, ${LOCATIONS.length} locations (v${versionData.version})`);
