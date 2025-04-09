@@ -455,3 +455,10 @@ export default {
   deleteCustomLocation,
   filterLocations
 };
+
+// Named exports for use in other modules
+export {
+  saveCustomLocation,
+  deleteCustomLocation,
+  filterLocations
+};
