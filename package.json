@@ -1,6 +1,6 @@
 {
   "name": "apa-app",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Antenna Pointing Angles Calculator PWA",
   "main": "index.html",
   "scripts": {
@@ -19,4 +19,4 @@
   "dependencies": {
     "leaflet": "^1.9.4"
   }
-} 
+}
