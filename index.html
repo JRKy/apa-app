@@ -126,22 +126,30 @@
   <!-- Satellite Drawer -->
   <div id="satellite-drawer" class="drawer" aria-labelledby="satellite-drawer-title">
     <div class="drawer-header">
-      <h3 id="satellite-drawer-title">Custom Satellite</h3>
+      <h3 id="satellite-drawer-title">Add Custom Satellite</h3>
       <button class="drawer-close" title="Close" data-drawer="satellite-drawer" aria-label="Close satellite drawer">
         <span class="material-icons-round">close</span>
       </button>
     </div>
-    <label for="sat-name">Name:</label>
-    <input type="text" id="sat-name" maxlength="32" placeholder="Satellite Name" aria-describedby="sat-name-hint" />
-    <span id="sat-name-hint" class="sr-only">Enter a unique satellite name</span>
     
-    <label for="sat-lon">Longitude:</label>
-    <input type="number" id="sat-lon" step="0.01" placeholder="Satellite Longitude" aria-describedby="sat-lon-hint" />
-    <span id="sat-lon-hint" class="sr-only">Enter satellite longitude in decimal degrees</span>
-    
-    <button id="add-satellite-btn">
-      <span class="material-icons-round">add_circle</span> Add Satellite
-    </button>
+    <!-- Add Custom Satellite -->
+    <div class="add-custom-satellite">
+      <label for="sat-name">Satellite Name:</label>
+      <input type="text" id="sat-name" maxlength="32" placeholder="e.g. My Satellite" aria-describedby="sat-name-hint" />
+      <span id="sat-name-hint" class="sr-only">Enter a unique name for the satellite</span>
+      
+      <label for="sat-lon">Longitude:</label>
+      <input type="number" id="sat-lon" step="0.01" placeholder="e.g. -100.0" aria-describedby="sat-lon-hint" />
+      <span id="sat-lon-hint" class="sr-only">Enter satellite longitude in decimal degrees (-180 to 180)</span>
+      
+      <button id="add-satellite-btn" class="primary-btn">
+        <span class="material-icons-round">add_circle</span> Add Satellite
+      </button>
+      
+      <button id="preview-satellite-btn" class="secondary-btn">
+        <span class="material-icons-round">visibility</span> Preview Position
+      </button>
+    </div>
   </div>
 
   <!-- Location Filter Drawer -->

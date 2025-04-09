@@ -48,6 +48,12 @@ export function initDrawers() {
     addSatelliteBtn.addEventListener("click", handleAddSatellite);
   }
   
+  // Set up satellite preview functionality
+  const previewSatelliteBtn = document.getElementById("preview-satellite-btn");
+  if (previewSatelliteBtn) {
+    previewSatelliteBtn.addEventListener("click", handlePreviewSatellite);
+  }
+  
   // Set up direct drawer toggle event handlers
   setupDrawerToggles();
   
@@ -230,6 +236,22 @@ function handleAddSatellite() {
   const name = nameInput.value.trim();
   const lon = parseFloat(lonInput.value);
   
+  // Validate inputs
+  if (!name) {
+    showNotification("Please enter a satellite name.", "error");
+    return;
+  }
+  
+  if (isNaN(lon)) {
+    showNotification("Please enter a valid longitude value.", "error");
+    return;
+  }
+  
+  if (lon < -180 || lon > 180) {
+    showNotification("Longitude must be between -180 and 180 degrees.", "error");
+    return;
+  }
+  
   // Add the satellite
   const result = addSatellite(name, lon);
   
@@ -255,6 +277,41 @@ function handleAddSatellite() {
   } else {
     showNotification(result.message, "error");
   }
+}
+
+/**
+ * Handle satellite position preview
+ */
+function handlePreviewSatellite() {
+  const nameInput = document.getElementById("sat-name");
+  const lonInput = document.getElementById("sat-lon");
+  
+  if (!nameInput || !lonInput) return;
+  
+  const name = nameInput.value.trim();
+  const lon = parseFloat(lonInput.value);
+  
+  // Validate inputs
+  if (!name) {
+    showNotification("Please enter a satellite name.", "error");
+    return;
+  }
+  
+  if (isNaN(lon)) {
+    showNotification("Please enter a valid longitude value.", "error");
+    return;
+  }
+  
+  if (lon < -180 || lon > 180) {
+    showNotification("Longitude must be between -180 and 180 degrees.", "error");
+    return;
+  }
+  
+  // Preview the satellite position
+  eventBus.publish('previewSatellite', { name, longitude: lon });
+  
+  // Show notification
+  showNotification(`Previewing satellite position at ${lon}° longitude`, "info");
 }
 
 /**
