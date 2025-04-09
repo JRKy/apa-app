@@ -6,6 +6,46 @@ import { searchLocation } from './geocoder.js';
 import { eventBus } from '../core/events.js';
 
 /**
+ * Populate the location filter drawer with locations
+ */
+function populateLocationFilterDrawer() {
+  const locationsList = document.getElementById("filtered-locations-list");
+  if (!locationsList) return;
+  
+  // Get all locations
+  const locations = getLocations();
+  
+  // Clear existing content
+  locationsList.innerHTML = "";
+  
+  // Add each location to the list
+  locations.forEach(location => {
+    const locationItem = document.createElement("div");
+    locationItem.className = "location-item";
+    locationItem.innerHTML = `
+      <div class="location-info">
+        <strong>${location.name}</strong>
+        <span>${location.country}</span>
+      </div>
+      <button class="select-location-btn" data-lat="${location.latitude}" data-lon="${location.longitude}">
+        <span class="material-icons-round">pin_drop</span>
+      </button>
+    `;
+    
+    // Add click handler to select location
+    const selectBtn = locationItem.querySelector(".select-location-btn");
+    if (selectBtn) {
+      selectBtn.addEventListener("click", () => {
+        goToLocation(location.latitude, location.longitude, location.name);
+        closeAllDrawers();
+      });
+    }
+    
+    locationsList.appendChild(locationItem);
+  });
+}
+
+/**
  * Initialize drawer components
  */
 export function initDrawers() {
@@ -56,6 +96,40 @@ export function initDrawers() {
   
   // Set up direct drawer toggle event handlers
   setupDrawerToggles();
+  
+  // Populate location filter drawer
+  populateLocationFilterDrawer();
+  
+  // Set up location filter search
+  const locationFilterSearch = document.getElementById("location-filter-search");
+  if (locationFilterSearch) {
+    locationFilterSearch.addEventListener("input", (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const locationItems = document.querySelectorAll(".location-item");
+      
+      locationItems.forEach(item => {
+        const locationName = item.querySelector("strong").textContent.toLowerCase();
+        const locationCountry = item.querySelector("span").textContent.toLowerCase();
+        const isVisible = locationName.includes(searchTerm) || locationCountry.includes(searchTerm);
+        item.style.display = isVisible ? "flex" : "none";
+      });
+    });
+  }
+  
+  // Set up AOR filter
+  const aorFilter = document.getElementById("aor-filter");
+  if (aorFilter) {
+    aorFilter.addEventListener("change", (e) => {
+      const selectedAOR = e.target.value;
+      const locationItems = document.querySelectorAll(".location-item");
+      
+      locationItems.forEach(item => {
+        const locationAOR = item.dataset.aor;
+        const isVisible = !selectedAOR || locationAOR === selectedAOR;
+        item.style.display = isVisible ? "flex" : "none";
+      });
+    });
+  }
 }
 
 /**

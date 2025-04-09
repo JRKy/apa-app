@@ -34,7 +34,7 @@ header h1 {
   position: fixed;
   top: 90px;
   left: 10px;
-  z-index: 1005;
+  z-index: 1006;
   width: 280px;
   display: none;
   animation: slide-down var(--transition-normal);
@@ -104,7 +104,7 @@ header h1 {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1004;
+  z-index: 1005;
   display: none;
 }
 
@@ -176,6 +176,17 @@ header h1 {
   text-overflow: ellipsis;
 }
 
+/* ===== Map Controls ===== */
+.map-controls {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
 /* ===== APA Panel Layout ===== */
 #apa-panel.leaflet-control.apa-control {
   padding: var(--space-md);
@@ -199,7 +210,7 @@ header h1 {
   overflow: hidden !important;
   padding: var(--space-xs) var(--space-md) !important;
   resize: none !important;
-  z-index: 1005 !important;
+  z-index: 1006 !important;
 }
 
 /* ===== Panel Controls Layout ===== */

@@ -1,46 +1,58 @@
 {
-  "version": "2.4.5",
+  "version": "2.4.6",
   "versionInfo": {
     "major": 2,
     "minor": 4,
-    "patch": 5
+    "patch": 6
   },
   "buildDate": "2024-04-09T01:30:00.000Z",
   "changelog": {
-    "2.4.5": {
-      "date": "2024-04-09",
+    "2.4.6": {
+      "date": "2024-03-21",
       "changes": [
-        "Removed unused save location button",
+        "Added location filter drawer with search and AOR filtering",
+        "Integrated fixed locations from data.js into the location filter",
+        "Improved location selection with pin drop button"
+      ]
+    },
+    "2.4.5": {
+      "date": "2024-03-21",
+      "changes": [
+        "Removed unused 'Save Location' button",
         "Fixed extra horizontal line in location drawer",
         "Improved drawer section spacing"
       ]
     },
     "2.4.4": {
-      "date": "2024-04-09",
+      "date": "2024-03-21",
       "changes": [
-        "Fixed drawer dimming issue by removing overlay",
-        "Improved drawer visibility and interaction"
+        "Improved consistency between location and satellite drawers",
+        "Added input validation for satellite name and longitude",
+        "Added preview feature for satellite position"
       ]
     },
     "2.4.3": {
-      "date": "2024-04-09",
+      "date": "2024-03-21",
       "changes": [
-        "Improved drawer visibility and scrolling",
-        "Fixed drawer header styling"
+        "Fixed drawer z-index and overlay issues",
+        "Improved search input group styling",
+        "Added satellite filter drawer initialization"
       ]
     },
     "2.4.2": {
-      "date": "2024-04-09",
+      "date": "2024-03-21",
       "changes": [
-        "Implemented centralized versioning system",
-        "Added version.json as source of truth"
+        "Fixed MIME type issue with version.json",
+        "Added version-data.js module",
+        "Improved version handling"
       ]
     },
     "2.4.1": {
-      "date": "2024-04-09",
+      "date": "2024-03-21",
       "changes": [
-        "Fixed CSS organization and component styles",
-        "Improved range slider compatibility"
+        "Added legend color styles",
+        "Improved range slider compatibility",
+        "Enhanced drawer interaction"
       ]
     },
     "2.4.0": {
