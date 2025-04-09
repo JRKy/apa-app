@@ -135,6 +135,56 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.2] - 2025-04-09
+
+### Added
+- Centralized version management system
+- Automated version updates across all files
+- Cache-busting for all assets
+- Version-based cache management in service worker
+
+### Changed
+- Updated version references across all files
+- Improved version display in UI
+- Enhanced cache management strategy
+
+## [2.4.1] - 2025-04-08
+
+### Added
+- Centralized configuration management
+- Enhanced storage system with automatic migration
+- Improved error handling throughout the app
+
+### Changed
+- Restructured configuration management
+- Optimized performance for large datasets
+- Enhanced error recovery mechanisms
+
+### Fixed
+- Resolved issues with configuration persistence
+- Improved error handling for invalid configurations
+- Fixed edge cases in storage migration
+
+## [2.4.0] - 2025-04-07
+
+### Added
+- Improved location selector with search and grouping by CCMD
+- Enhanced satellite coverage visualization
+- Centralized configuration management
+- Custom locations can now be saved and managed
+- Direct location search with geocoding results list
+
+### Changed
+- Restructured location filtering to focus on preset and custom locations
+- Improved command regions visualization
+- Optimized storage and retrieval of app settings
+- Updated UI components for better usability
+
+### Fixed
+- Location persistence issues across sessions
+- Edge cases with International Date Line satellite visibility
+- Performance improvements for large datasets
+
 ## [1.6.9.12] - 2025-03-23
 ### Fixed
 - Toolbar buttons moved to avoid overlapping map zoom controls

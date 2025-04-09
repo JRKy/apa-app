@@ -18,31 +18,26 @@ A Progressive Web App (PWA) for calculating and visualizing antenna pointing ang
 - Draggable APA table panel with persistent layout and sorting  
 - Dark mode with optimized map layers  
 - Interactive tutorial and help system  
-- Create components in a modular way
-- Follow
+- Centralized version management
+- Automated version updates
 
-## Recent Refactoring (v2.4.0)
+## Recent Updates (v2.4.2)
 
-The codebase underwent a major refactoring in v2.4.0 to improve maintainability and performance:
+### Version Management System
 
-### CSS Modularization
+The app now uses a centralized version management system:
 
-The monolithic `styles.css` has been split into specialized files:
-
-- **css/base.css**: Variables, reset, base elements
-- **css/layout.css**: Structural layout and positioning
-- **css/components.css**: Reusable UI components
-- **css/modules.css**: App-specific modules
-- **css/dark-mode.css**: Dark mode styles
-- **css/animations.css**: Animation keyframes
-- **css/responsive.css**: Media queries
+- Single source of truth in `version.json`
+- Automated version updates across all files
+- Cache-busting for all assets
+- Consistent version display throughout the app
 
 ### Code Structure Improvements
 
-- Fixed circular dependencies in JS modules
-- Removed redundant code
-- Implemented proper ES module patterns
-- Added dynamic imports for better separation of concerns
+- Centralized configuration management
+- Improved error handling
+- Enhanced storage system
+- Optimized performance for large datasets
 
 ### File Structure
 
@@ -61,11 +56,22 @@ The monolithic `styles.css` has been split into specialized files:
     /ui            # UI components 
     /data          # Data management
     /calculations  # Calculation utilities
+/scripts           # Build and utility scripts
+  - update-version.js
 /icons             # App icons
 index.html         # Main HTML
 manifest.json      # PWA manifest
 sw.js              # Service worker
+version.json       # Version management
 ```
+
+## 🆕 What's New in v2.4.0
+
+- Improved location selector with search and grouping by CCMD
+- Enhanced satellite coverage visualization
+- Centralized configuration management
+- Custom locations can now be saved and managed
+- Direct location search with geocoding results list
 
 ## 🆕 What's New in v2.3.0
 
@@ -115,7 +121,7 @@ sw.js              # Service worker
 
 ```bash
 git clone https://github.com/JRKy/apa-app.git
-cd APA-App
+cd apa-app
 # Serve with any static server
 npx serve .
 ```
