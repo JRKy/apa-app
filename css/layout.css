@@ -55,28 +55,40 @@ header h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-sm);
+  background: var(--color-background);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.drawer-header h3 {
+.drawer-header h2 {
   margin: 0;
   font-size: var(--font-size-lg);
   color: var(--color-text);
 }
 
-.drawer-header button {
+.drawer-header .close-btn {
   background: none;
   border: none;
   color: var(--color-text);
   cursor: pointer;
   padding: var(--space-xs);
-  font-size: var(--font-size-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-fast);
 }
 
-.drawer-header button:hover {
-  color: var(--color-primary);
+.drawer-header .close-btn:hover {
+  background-color: var(--color-hover);
+}
+
+.drawer-header .close-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-primary);
 }
 
 /* ===== Drawer Sections ===== */
@@ -351,4 +363,15 @@ header h1 {
   padding: var(--space-md);
   display: flex;
   justify-content: flex-end;
+}
+
+/* Remove any additional borders from drawer sections */
+.drawer-section {
+  border: none;
+  margin: 0;
+  padding: var(--space-md);
+}
+
+.drawer-section + .drawer-section {
+  border-top: 1px solid var(--color-border);
 }

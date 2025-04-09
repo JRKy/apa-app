@@ -254,13 +254,20 @@ function handleLocationSearch() {
  * Handle custom location form submission
  */
 function handleCustomLocation() {
+  const nameInput = document.getElementById("custom-loc-name");
   const latInput = document.getElementById("custom-lat");
   const lonInput = document.getElementById("custom-lon");
   
-  if (!latInput || !lonInput) return;
+  if (!nameInput || !latInput || !lonInput) return;
   
+  const name = nameInput.value.trim();
   const lat = parseFloat(latInput.value);
   const lon = parseFloat(lonInput.value);
+  
+  if (!name) {
+    showNotification("Please enter a location name.", "error");
+    return;
+  }
   
   if (isNaN(lat) || isNaN(lon)) {
     showNotification("Please enter valid latitude and longitude values.", "error");
@@ -277,14 +284,17 @@ function handleCustomLocation() {
     return;
   }
   
-  // Navigate to the location
-  goToLocation(lat, lon, `Custom (${lat.toFixed(4)}, ${lon.toFixed(4)})`);
-  
-  // Close all drawers
-  closeAllDrawers();
-  
-  // Publish event
-  eventBus.publish('customLocationAdded', { lat, lon });
+  // Save the custom location
+  if (saveCustomLocation(name, lat, lon)) {
+    // Navigate to the location using the custom name
+    goToLocation(lat, lon, name);
+    
+    // Close all drawers
+    closeAllDrawers();
+    
+    // Publish event
+    eventBus.publish('customLocationAdded', { lat, lon, name });
+  }
 }
 
 /**
