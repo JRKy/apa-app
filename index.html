@@ -368,6 +368,47 @@
     </div>
   </div>
 
+  <!-- Satellite Filter Drawer -->
+  <div id="satellite-filter-drawer" class="drawer" aria-labelledby="satellite-filter-drawer-title">
+    <div class="drawer-header">
+      <h3 id="satellite-filter-drawer-title">Satellite Filters</h3>
+      <button class="drawer-close" title="Close" data-drawer="satellite-filter-drawer" aria-label="Close satellite filter drawer">
+        <span class="material-icons-round">close</span>
+      </button>
+    </div>
+    
+    <!-- Search and filter input -->
+    <label for="satellite-filter-search">Search Satellites:</label>
+    <div class="search-input-group">
+      <input type="text" id="satellite-filter-search" placeholder="Filter by name or longitude" 
+             aria-describedby="satellite-filter-search-hint" />
+      <button id="clear-satellite-filter-search">
+        <span class="material-icons-round">clear</span>
+      </button>
+    </div>
+    <span id="satellite-filter-search-hint" class="sr-only">Type to filter satellites by name or longitude</span>
+    
+    <div class="satellite-list-container">
+      <h4>Preset Satellites</h4>
+      <div id="filtered-satellites-list" class="satellite-list">
+        <!-- Satellites will be populated dynamically -->
+      </div>
+      
+      <h4>Custom Satellites</h4>
+      <div id="custom-satellites-list" class="custom-satellite-list">
+        <!-- Custom satellites will be populated dynamically -->
+      </div>
+    </div>
+    
+    <button id="apply-satellite-filters" class="primary-btn">
+      <span class="material-icons-round">filter_alt</span> Apply Filters
+    </button>
+    
+    <button id="reset-satellite-filters" class="secondary-btn">
+      <span class="material-icons-round">clear</span> Clear Filters
+    </button>
+  </div>
+
   <!-- Scripts -->
   <script src="data.js?v=2.4.3"></script>
   <!-- Replace the original script reference with the modular entry point -->
