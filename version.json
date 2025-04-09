@@ -1,9 +1,46 @@
 {
-  "version": "2.4.3",
+  "version": "2.4.4",
   "versionInfo": {
     "major": 2,
     "minor": 4,
-    "patch": 3
+    "patch": 4
   },
-  "buildDate": "2024-04-09T01:30:00.000Z"
+  "buildDate": "2024-04-09T01:30:00.000Z",
+  "changelog": {
+    "2.4.4": {
+      "date": "2024-04-09",
+      "changes": [
+        "Fixed drawer dimming issue by removing overlay",
+        "Improved drawer visibility and interaction"
+      ]
+    },
+    "2.4.3": {
+      "date": "2024-04-09",
+      "changes": [
+        "Improved drawer visibility and scrolling",
+        "Fixed drawer header styling"
+      ]
+    },
+    "2.4.2": {
+      "date": "2024-04-09",
+      "changes": [
+        "Implemented centralized versioning system",
+        "Added version.json as source of truth"
+      ]
+    },
+    "2.4.1": {
+      "date": "2024-04-09",
+      "changes": [
+        "Fixed CSS organization and component styles",
+        "Improved range slider compatibility"
+      ]
+    },
+    "2.4.0": {
+      "date": "2024-04-09",
+      "changes": [
+        "Initial release of version 2.4",
+        "Added new features and improvements"
+      ]
+    }
+  }
 } 
