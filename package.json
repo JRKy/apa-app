@@ -1,0 +1,22 @@
+{
+  "name": "apa-app",
+  "version": "2.4.0",
+  "description": "Antenna Pointing Angles Calculator PWA",
+  "main": "index.html",
+  "scripts": {
+    "version": "node scripts/update-version.js",
+    "postversion": "git add . && git commit -m 'chore: update version to %s' && git push"
+  },
+  "keywords": [
+    "satellite",
+    "antenna",
+    "pointing",
+    "angles",
+    "pwa"
+  ],
+  "author": "JRKy",
+  "license": "MIT",
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  }
+} 
