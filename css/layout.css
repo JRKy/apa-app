@@ -31,7 +31,7 @@ header h1 {
 
 /* ===== Drawer Layout ===== */
 .drawer {
-  position: absolute;
+  position: fixed;
   top: 90px;
   left: 10px;
   z-index: 1005;
@@ -42,19 +42,39 @@ header h1 {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   padding: var(--space-md);
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
 }
 
 .drawer.visible {
   display: block !important;
 }
 
+/* ===== Drawer Header ===== */
 .drawer-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--space-md);
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-sm);
+}
+
+.drawer-header h3 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+}
+
+.drawer-header button {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: var(--space-xs);
+  font-size: var(--font-size-lg);
+}
+
+.drawer-header button:hover {
+  color: var(--color-primary);
 }
 
 /* ===== Drawer Buttons Layout ===== */
@@ -77,7 +97,6 @@ header h1 {
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 1004;
   display: none;
-  pointer-events: none;
 }
 
 .drawer-overlay.visible {
