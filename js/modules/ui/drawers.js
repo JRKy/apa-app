@@ -170,6 +170,12 @@ function showDrawer(drawerId) {
   if (drawer) {
     drawer.classList.add('active');
     
+    // Show overlay
+    const overlay = document.querySelector('.drawer-overlay');
+    if (overlay) {
+      overlay.classList.add('active');
+    }
+    
     // If this is an input drawer, focus the first input
     const firstInput = drawer.querySelector('input, select');
     if (firstInput) {
@@ -198,7 +204,12 @@ export function closeAllDrawers() {
     drawer.classList.remove('active');
   });
   
-  // Publish event
+  // Hide overlay
+  const overlay = document.querySelector('.drawer-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+  }
+  
   eventBus.publish('allDrawersClosed');
 }
 
@@ -396,6 +407,16 @@ function closeDrawer(drawerId) {
   const drawer = document.getElementById(drawerId);
   if (drawer) {
     drawer.classList.remove('active');
+    
+    // Hide overlay if no drawers are open
+    const hasOpenDrawers = document.querySelector('.drawer.active');
+    if (!hasOpenDrawers) {
+      const overlay = document.querySelector('.drawer-overlay');
+      if (overlay) {
+        overlay.classList.remove('active');
+      }
+    }
+    
     eventBus.publish('drawerClosed', { drawerId });
   }
 }

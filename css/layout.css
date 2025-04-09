@@ -105,26 +105,43 @@ header h1 {
 /* ===== Drawer Layout ===== */
 .drawer {
   position: fixed;
-  top: 60px;
-  right: 0;
-  width: 400px;
-  height: calc(100% - 60px);
+  top: 90px;
+  left: 10px;
+  width: 280px;
   background-color: var(--white-color);
-  box-shadow: var(--shadow);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
   z-index: var(--zindex-modal);
-  transform: translateX(100%);
-  transition: var(--transition-base);
+  display: none;
+  padding: var(--spacing-md);
+  max-height: calc(100vh - 100px);
   overflow-y: auto;
+  animation: slide-down var(--transition-base);
 }
 
 .drawer.active {
-  transform: translateX(0);
+  display: block;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 /* ===== Drawer Header ===== */
 .drawer-header {
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-bottom: var(--border-width) solid var(--border-color);
+  background: var(--white-color);
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -132,23 +149,25 @@ header h1 {
 
 .drawer-header h2 {
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
   color: var(--dark-color);
   margin: 0;
-  padding: 0;
 }
 
 .drawer-header .close-btn {
   background: none;
   border: none;
-  padding: var(--spacing-xs);
+  color: var(--dark-color);
   cursor: pointer;
-  color: var(--gray-600);
-  transition: var(--transition-base);
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  transition: background-color var(--transition-base);
 }
 
 .drawer-header .close-btn:hover {
-  color: var(--dark-color);
+  background-color: var(--gray-100);
 }
 
 .drawer-header .close-btn:focus {
@@ -156,19 +175,17 @@ header h1 {
   box-shadow: 0 0 0 2px var(--primary-color);
 }
 
-/* ===== Drawer Sections ===== */
-.geocoder-section,
-.add-custom-location,
-.add-custom-satellite {
-  margin-bottom: var(--spacing-lg);
+/* ===== Drawer Content ===== */
+.drawer-content {
+  padding: var(--spacing-md);
 }
 
 /* ===== Drawer Buttons Layout ===== */
 .drawer-buttons.top {
-  position: absolute;
-  top: 60px;
-  left: 60px;
-  z-index: 1002;
+  position: fixed;
+  top: 70px;
+  left: 10px;
+  z-index: var(--zindex-fixed);
   display: flex;
   gap: var(--spacing-sm);
 }
@@ -181,52 +198,46 @@ header h1 {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1005;
+  z-index: var(--zindex-modal-backdrop);
   display: none;
 }
 
-.drawer-overlay.visible {
+.drawer-overlay.active {
   display: block;
 }
 
 /* ===== Search Input Group ===== */
 .search-input-group {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
+  flex-direction: column;
+  gap: var(--spacing-xs);
   margin-bottom: var(--spacing-md);
 }
 
-.search-input {
-  flex: 1;
-  padding: var(--spacing-sm) var(--spacing-md);
+.search-input-group input {
+  width: 100%;
+  padding: var(--spacing-sm);
   border: var(--border-width) solid var(--border-color);
   border-radius: var(--border-radius);
   font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  transition: var(--transition-base);
 }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.search-button {
-  padding: var(--spacing-sm) var(--spacing-md);
-  background-color: var(--primary-color);
+.search-input-group button {
+  width: 100%;
+  padding: var(--spacing-sm);
+  background: var(--primary-color);
   color: var(--white-color);
   border: none;
   border-radius: var(--border-radius);
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
   cursor: pointer;
-  transition: var(--transition-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
 }
 
-.search-button:hover {
-  background-color: #0069d9;
+.search-input-group button:hover {
+  background: var(--primary-color-dark);
 }
 
 /* ===== List Containers ===== */
