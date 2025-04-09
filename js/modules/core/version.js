@@ -1,13 +1,9 @@
 // version.js - Version information
+import versionData from '../../../version.json';
 
-export const VERSION = '2.4.1';
-export const BUILD_DATE = '2025-04-07';
-export const VERSION_INFO = {
-  major: 2,
-  minor: 4,
-  patch: 0,
-  fullVersion: '2.4.0'
-};
+export const VERSION = versionData.version;
+export const BUILD_DATE = versionData.buildDate;
+export const VERSION_INFO = versionData.versionInfo;
 
 // Features included in this version
 export const FEATURES = {

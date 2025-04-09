@@ -3,9 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 
-// Get version from package.json
+// Get version from version.json
+const versionJson = JSON.parse(fs.readFileSync('version.json', 'utf8'));
+const version = versionJson.version;
+
+// Update package.json version to match
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-const version = packageJson.version;
+packageJson.version = version;
+fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf8');
+console.log('Updated version in package.json');
 
 // Files to update with their version patterns
 const filesToUpdate = [

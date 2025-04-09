@@ -4,8 +4,7 @@
   "description": "Antenna Pointing Angles Calculator PWA",
   "main": "index.html",
   "scripts": {
-    "version": "node scripts/update-version.js",
-    "postversion": "git add . && git commit -m 'chore: update version to %s' && git push"
+    "postversion": "node scripts/update-version.js && git add . && git commit -m 'chore: update version to %s' && git push"
   },
   "keywords": [
     "satellite",
