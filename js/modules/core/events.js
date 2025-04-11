@@ -52,9 +52,9 @@ export const eventBus = {
 };
 
 /**
- * Initialize global event listeners
+ * Initialize global event handlers
  */
-export function initEventListeners() {
+export function initEventHandlers() {
   // Dark mode toggle
   const darkModeToggle = document.getElementById("dark-mode-toggle");
   if (darkModeToggle) {
