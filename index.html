@@ -20,17 +20,36 @@
       return new Promise((resolve, reject) => {
         var script = document.createElement('script');
         script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-        script.onload = resolve;
+        script.onload = () => {
+          // Ensure L is defined before resolving
+          if (typeof L !== 'undefined') {
+            resolve();
+          } else {
+            reject(new Error('Leaflet loaded but L is not defined'));
+          }
+        };
         script.onerror = function() {
           console.log('Primary Leaflet CDN failed, trying backup CDN 1...');
           var backupScript = document.createElement('script');
           backupScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';
-          backupScript.onload = resolve;
+          backupScript.onload = () => {
+            if (typeof L !== 'undefined') {
+              resolve();
+            } else {
+              reject(new Error('Leaflet loaded but L is not defined'));
+            }
+          };
           backupScript.onerror = function() {
             console.log('Backup CDN 1 failed, trying backup CDN 2...');
             var fallbackScript = document.createElement('script');
             fallbackScript.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
-            fallbackScript.onload = resolve;
+            fallbackScript.onload = () => {
+              if (typeof L !== 'undefined') {
+                resolve();
+              } else {
+                reject(new Error('Leaflet loaded but L is not defined'));
+              }
+            };
             fallbackScript.onerror = reject;
             document.head.appendChild(fallbackScript);
           };
@@ -42,6 +61,8 @@
 
     // Load Leaflet and then initialize the app
     loadLeaflet().then(() => {
+      console.log('Leaflet loaded successfully');
+      
       // Load core modules first
       const coreModules = [
         'js/modules/core/version-data.js',
@@ -70,7 +91,10 @@
           script.type = 'module';
           script.src = src + '?v=2.4.8';
           script.onload = resolve;
-          script.onerror = reject;
+          script.onerror = (error) => {
+            console.error(`Failed to load module: ${src}`, error);
+            reject(error);
+          };
           document.body.appendChild(script);
         });
       }
