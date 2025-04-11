@@ -465,3 +465,51 @@ header h1 {
     width: 100%;
   }
 }
+
+/* Drawer button positioning */
+.drawer-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1000;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.drawer-button:hover {
+    background: var(--primary-hover);
+}
+
+.drawer-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Adjust position for each button */
+#location-drawer-button {
+    top: 1rem;
+    left: 1rem;
+}
+
+#satellite-drawer-button {
+    top: 1rem;
+    left: 9rem; /* Moved further right */
+}
+
+#filter-drawer-button {
+    top: 1rem;
+    left: 17rem; /* Moved further right */
+}
+
+/* Ensure proper spacing between buttons */
+.drawer-button + .drawer-button {
+    margin-left: 8rem; /* Increased spacing between buttons */
+}
