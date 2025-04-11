@@ -406,11 +406,12 @@
   </div>
 
   <!-- Scripts -->
-  <script src="data.js" data-versioned="true"></script>
-  <script type="module" src="js/main.js" data-versioned="true"></script>
+  <script src="js/modules/core/version-data.js?v=2.4.5"></script>
+  <script src="data.js?v=2.4.5"></script>
+  <script type="module" src="js/main.js?v=2.4.5"></script>
   <script type="module">
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js", { 
+      navigator.serviceWorker.register("sw.js?v=2.4.5", { 
         type: "module",
         scope: "./"
       }).then(registration => {

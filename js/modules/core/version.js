@@ -6,7 +6,9 @@ export const BUILD_DATE = versionData.buildDate;
 export const VERSION_INFO = versionData.versionInfo;
 
 /**
- * Updates all version references in the DOM
+ * Updates version references in the DOM
+ * Note: Only updates CSS and display versions, not script versions
+ * Script versions must be set in HTML since they load before JS executes
  */
 export function updateVersionReferences() {
   // Update version display in header
@@ -30,15 +32,6 @@ export function updateVersionReferences() {
     const link = document.querySelector(`link[href^="css/${file}"]`);
     if (link) {
       link.href = `css/${file}?v=${VERSION}`;
-    }
-  });
-
-  // Update script versions
-  const scripts = ['data.js', 'js/main.js', 'sw.js'];
-  scripts.forEach(file => {
-    const script = document.querySelector(`script[src^="${file}"]`);
-    if (script) {
-      script.src = `${file}?v=${VERSION}`;
     }
   });
 }
