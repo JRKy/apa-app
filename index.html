@@ -87,12 +87,14 @@
       ]) => {
         // Initialize modules in the correct order
         notifications.initNotifications();
-        map.initMap();
         drawers.initDrawers();
         visibility.initVisibility();
         
         // Initialize version data
         versionData.initVersionData();
+
+        // Load main.js last
+        return import('./js/main.js');
       })
       .catch(error => {
         console.error('Error loading modules:', error);
