@@ -4,9 +4,8 @@ import { saveTutorialCompleted } from '../data/storage.js';
 import { eventBus } from '../core/events.js';
 import { makeAnnouncement } from '../core/utils.js';
 
-// Tutorial state
-let tutorialStep = 1;
-let tutorialActive = false;
+let currentStep = 0;
+let isActive = false;
 
 /**
  * Initialize the tutorial system
@@ -22,35 +21,44 @@ export function initTutorial() {
   
   // Set up event handlers for tutorial navigation
   tutorialPrev.addEventListener("click", () => {
-    if (tutorialStep > 1) {
-      tutorialStep--;
+    if (currentStep > 0) {
+      currentStep--;
       updateTutorial();
       
       // Announce navigation for screen readers
-      makeAnnouncement(`Previous step. ${tutorialStep} of ${TUTORIAL_STEPS.length}`, 'polite');
+      makeAnnouncement(`Previous step. ${currentStep + 1} of ${TUTORIAL_STEPS.length}`, 'polite');
     }
   });
 
   tutorialNext.addEventListener("click", () => {
-    if (tutorialStep < TUTORIAL_STEPS.length) {
-      tutorialStep++;
+    if (currentStep < TUTORIAL_STEPS.length - 1) {
+      currentStep++;
       updateTutorial();
       
       // Announce navigation for screen readers
-      makeAnnouncement(`Next step. ${tutorialStep} of ${TUTORIAL_STEPS.length}`, 'polite');
+      makeAnnouncement(`Next step. ${currentStep + 1} of ${TUTORIAL_STEPS.length}`, 'polite');
     } else {
       // End of tutorial
       completeTutorial();
     }
   });
   
-  // Close tutorial on ESC key or when clicking outside
+  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && tutorialActive) {
+    if (!isActive) return;
+    
+    if (e.key === 'ArrowLeft' && currentStep > 0) {
+      currentStep--;
+      updateTutorial();
+    } else if (e.key === 'ArrowRight' && currentStep < TUTORIAL_STEPS.length - 1) {
+      currentStep++;
+      updateTutorial();
+    } else if (e.key === 'Escape') {
       completeTutorial();
     }
   });
   
+  // Close tutorial on ESC key or when clicking outside
   tutorialOverlay.addEventListener('click', (e) => {
     // Only close if clicking on the overlay itself, not the tutorial card
     if (e.target === tutorialOverlay) {
@@ -66,13 +74,13 @@ export function showTutorial() {
   const tutorialOverlay = document.getElementById("tutorial-overlay");
   if (!tutorialOverlay) return;
   
-  tutorialStep = 1;
-  tutorialActive = true;
+  currentStep = 0;
+  isActive = true;
   tutorialOverlay.classList.remove('hidden');
   updateTutorial();
   
   // Announce tutorial start for screen readers
-  makeAnnouncement('Tutorial started. Use the Next and Previous buttons to navigate.', 'assertive');
+  makeAnnouncement('Tutorial started. Use arrow keys to navigate.', 'assertive');
   
   // Publish event
   eventBus.publish('tutorialStarted');
@@ -86,7 +94,7 @@ function completeTutorial() {
   if (!tutorialOverlay) return;
   
   tutorialOverlay.classList.add("hidden");
-  tutorialActive = false;
+  isActive = false;
   saveTutorialCompleted(true);
   
   // Remove any highlights
@@ -112,7 +120,7 @@ function updateTutorial() {
   if (!tutorialOverlay || !tutorialContent || !tutorialPrev || !tutorialNext || !tutorialProgress) return;
   
   // Get current step
-  const step = TUTORIAL_STEPS[tutorialStep - 1];
+  const step = TUTORIAL_STEPS[currentStep];
   if (!step) return;
   
   // Update content
@@ -120,13 +128,13 @@ function updateTutorial() {
   tutorialContent.textContent = step.content;
   
   // Update progress indicator
-  tutorialProgress.textContent = `${tutorialStep}/${TUTORIAL_STEPS.length}`;
+  tutorialProgress.textContent = `${currentStep + 1}/${TUTORIAL_STEPS.length}`;
   
   // Enable/disable previous button
-  tutorialPrev.disabled = tutorialStep <= 1;
+  tutorialPrev.disabled = currentStep <= 0;
   
   // Update next button text
-  if (tutorialStep >= TUTORIAL_STEPS.length) {
+  if (currentStep >= TUTORIAL_STEPS.length - 1) {
     tutorialNext.textContent = 'Finish';
   } else {
     tutorialNext.textContent = 'Next';
@@ -141,7 +149,7 @@ function updateTutorial() {
   
   // Publish step change event
   eventBus.publish('tutorialStepChanged', {
-    currentStep: tutorialStep,
+    currentStep: currentStep + 1,
     totalSteps: TUTORIAL_STEPS.length,
     title: step.title
   });
@@ -194,16 +202,9 @@ function removeHighlight() {
 }
 
 /**
- * Restart the tutorial
- */
-export function restartTutorial() {
-  showTutorial();
-}
-
-/**
  * Check if the tutorial is active
  * @returns {boolean} Whether the tutorial is currently active
  */
 export function isTutorialActive() {
-  return tutorialActive;
+  return isActive;
 }

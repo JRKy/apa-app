@@ -10,43 +10,39 @@ import { useMyLocation } from '../data/locations.js';
  * App-wide event bus for communication between modules
  */
 export const eventBus = {
-  events: {},
+  _events: {},
   
   /**
    * Subscribe to an event
-   * @param {string} eventName - Event name to subscribe to
+   * @param {string} event - Event name to subscribe to
    * @param {Function} callback - Function to call when event occurs
    */
-  subscribe(eventName, callback) {
-    if (!this.events[eventName]) {
-      this.events[eventName] = [];
+  subscribe(event, callback) {
+    if (!this._events[event]) {
+      this._events[event] = [];
     }
-    this.events[eventName].push(callback);
+    this._events[event].push(callback);
   },
   
   /**
    * Unsubscribe from an event
-   * @param {string} eventName - Event name to unsubscribe from
+   * @param {string} event - Event name to unsubscribe from
    * @param {Function} callback - Function to remove
    */
-  unsubscribe(eventName, callback) {
-    if (this.events[eventName]) {
-      this.events[eventName] = this.events[eventName].filter(
-        func => func !== callback
-      );
+  unsubscribe(event, callback) {
+    if (this._events[event]) {
+      this._events[event] = this._events[event].filter(cb => cb !== callback);
     }
   },
   
   /**
    * Publish an event with data
-   * @param {string} eventName - Event name to publish
+   * @param {string} event - Event name to publish
    * @param {*} data - Data to pass to subscribers
    */
-  publish(eventName, data) {
-    if (this.events[eventName]) {
-      this.events[eventName].forEach(callback => {
-        callback(data);
-      });
+  publish(event, data) {
+    if (this._events[event]) {
+      this._events[event].forEach(callback => callback(data));
     }
   }
 };
@@ -74,13 +70,19 @@ export function initEventHandlers() {
     toggleDrawer("filter-drawer", ["location-drawer", "satellite-drawer"]);
   });
   
-  // My Location button
-  document.getElementById("btn-my-location")?.addEventListener("click", useMyLocation);
+  // My location button
+  const myLocationBtn = document.getElementById("btn-my-location");
+  if (myLocationBtn) {
+    myLocationBtn.addEventListener("click", useMyLocation);
+  }
   
-  // Drawer overlay close
-  document.getElementById("drawer-overlay")?.addEventListener("click", closeAllDrawers);
+  // Drawer overlay
+  const drawerOverlay = document.getElementById("drawer-overlay");
+  if (drawerOverlay) {
+    drawerOverlay.addEventListener("click", closeAllDrawers);
+  }
   
-  // Close on ESC key
+  // Global keyboard shortcuts
   document.addEventListener('keydown', handleKeyDown);
   
   // Polar plot toggle
@@ -91,9 +93,17 @@ export function initEventHandlers() {
   // Legend toggle
   document.getElementById("legend-toggle")?.addEventListener("click", toggleLegend);
   
-  // Help and tutorial
-  document.getElementById("hide-help-tooltip")?.addEventListener("click", hideHelpTooltip);
-  document.getElementById("show-tutorial")?.addEventListener("click", handleShowTutorial);
+  // Help tooltip
+  const hideHelpBtn = document.getElementById("hide-help-tooltip");
+  if (hideHelpBtn) {
+    hideHelpBtn.addEventListener("click", hideHelpTooltip);
+  }
+  
+  // Tutorial controls
+  const showTutorialBtn = document.getElementById("show-tutorial");
+  if (showTutorialBtn) {
+    showTutorialBtn.addEventListener("click", handleShowTutorial);
+  }
 }
 
 /**
