@@ -16,24 +16,33 @@ body.dark-mode :focus-visible {
 
 /* ===== Dark Mode Layout Components ===== */
 body.dark-mode .drawer,
-body.dark-mode #apa-legend {
+body.dark-mode #apa-legend,
+body.dark-mode .modal-content,
+body.dark-mode .card,
+body.dark-mode .panel {
   background-color: var(--color-dark-surface);
   color: var(--color-dark-text-primary);
   border-color: var(--color-dark-border);
 }
 
 body.dark-mode .drawer input,
-body.dark-mode .drawer select {
+body.dark-mode .drawer select,
+body.dark-mode .form-input,
+body.dark-mode .form-select {
   background-color: var(--color-dark-background);
   color: var(--color-dark-text-primary);
   border-color: var(--color-dark-border);
 }
 
-body.dark-mode .drawer-header h3 {
+body.dark-mode .drawer-header h3,
+body.dark-mode .card-title,
+body.dark-mode .panel-title {
   color: var(--color-dark-primary);
 }
 
-body.dark-mode .drawer-header {
+body.dark-mode .drawer-header,
+body.dark-mode .card-header,
+body.dark-mode .panel-header {
   border-bottom-color: var(--color-dark-border);
 }
 
@@ -44,7 +53,9 @@ body.dark-mode #apa-panel {
 body.dark-mode #toggle-apa-panel,
 body.dark-mode #legend-toggle,
 body.dark-mode #current-location-indicator,
-body.dark-mode .control-button {
+body.dark-mode .control-button,
+body.dark-mode .floating-control,
+body.dark-mode .button-icon {
   background-color: var(--color-dark-surface);
   color: var(--color-dark-text-primary);
 }
@@ -95,6 +106,13 @@ body.dark-mode .range-slider::-moz-range-thumb {
   background: var(--color-dark-primary);
 }
 
+body.dark-mode .control-button:hover,
+body.dark-mode .floating-control:hover,
+body.dark-mode .button-icon:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--color-dark-text-primary);
+}
+
 /* ===== Dark Mode Table ===== */
 body.dark-mode #apa-table {
   border-color: var(--color-dark-border);
@@ -116,30 +134,45 @@ body.dark-mode #apa-table td {
   border-bottom-color: var(--color-dark-border);
 }
 
+body.dark-mode .table th {
+  background-color: var(--color-dark-background);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .table td {
+  color: var(--color-dark-text-secondary);
+  border-color: var(--color-dark-border);
+}
+
+body.dark-mode .table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
 /* ===== Dark Mode Elevation Classes ===== */
 body.dark-mode .elevation-excellent {
-  background-color: rgba(52, 168, 83, 0.2) !important;
-  color: #4eda9d !important;
+  background-color: rgba(52, 168, 83, 0.2);
+  color: #81c784;
 }
 
 body.dark-mode .elevation-good {
-  background-color: rgba(66, 133, 244, 0.2) !important;
-  color: #7baaf7 !important;
+  background-color: rgba(66, 133, 244, 0.2);
+  color: #7baaf7;
 }
 
 body.dark-mode .elevation-marginal {
-  background-color: rgba(251, 188, 4, 0.2) !important;
-  color: #fdd663 !important;
+  background-color: rgba(251, 188, 4, 0.2);
+  color: #fdd663;
 }
 
 body.dark-mode .elevation-poor {
-  background-color: rgba(234, 134, 0, 0.2) !important;
-  color: #ffa340 !important;
+  background-color: rgba(234, 134, 0, 0.2);
+  color: #ffa340;
 }
 
 body.dark-mode .elevation-negative {
-  background-color: rgba(234, 67, 53, 0.2) !important;
-  color: #ff6c60 !important;
+  background-color: rgba(234, 67, 53, 0.2);
+  color: #ff6c60;
 }
 
 /* ===== Dark Mode Labels & Tooltips ===== */
@@ -202,8 +235,14 @@ body.dark-mode #apa-legend strong {
 }
 
 /* ===== Dark Mode Notifications ===== */
+body.dark-mode .notification {
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+}
+
 body.dark-mode .notification-success {
-  background-color: rgba(46, 125, 50, 0.2);
+  background-color: rgba(52, 168, 83, 0.2);
   color: #81c784;
 }
 
@@ -253,7 +292,6 @@ body.dark-mode .leaflet-control-geocoder-input {
 }
 
 body.dark-mode .leaflet-container {
-  /* Adjust map base colors for dark mode to avoid too much contrast */
   filter: brightness(0.8) contrast(1.2) saturate(0.8);
 }
 
@@ -261,4 +299,16 @@ body.dark-mode .leaflet-control {
   background-color: var(--color-dark-surface);
   color: var(--color-dark-text-primary);
   border-color: var(--color-dark-border);
+}
+
+/* ===== Dark Mode Tooltips ===== */
+body.dark-mode .tooltip {
+  background-color: var(--color-dark-surface);
+  color: var(--color-dark-text-primary);
+  border-color: var(--color-dark-border);
+  box-shadow: var(--shadow-lg);
+}
+
+body.dark-mode .tooltip::after {
+  border-color: transparent transparent var(--color-dark-surface) transparent;
 }

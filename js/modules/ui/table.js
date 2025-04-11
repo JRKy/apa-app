@@ -7,8 +7,14 @@ import { clearVisualization, drawEquator, drawLine, removeLine } from '../calcul
 import { loadSortState, saveSortState } from '../data/storage.js';
 import { eventBus } from '../core/events.js';
 
-// Table state
-let sortState = { column: null, direction: 'none' };
+let currentSortColumn = 'elevation';
+let sortDirection = 'desc';
+let currentFilters = {
+  search: '',
+  minElevation: -30,
+  visibility: 'all',
+  type: 'all'
+};
 
 /**
  * Initialize APA table functionality
@@ -44,6 +50,96 @@ export function initTable() {
       }
     }
   });
+
+  // Add table controls
+  const controls = document.createElement('div');
+  controls.className = 'table-controls';
+  controls.innerHTML = `
+    <div class="search-box">
+      <input type="text" id="satellite-search" placeholder="Search satellites..." aria-label="Search satellites">
+      <span class="material-icons-round">search</span>
+    </div>
+    <div class="quick-filters">
+      <button class="filter-btn" data-filter="visibility" data-value="visible">
+        <span class="material-icons-round">visibility</span> Visible Only
+      </button>
+      <button class="filter-btn" data-filter="visibility" data-value="high">
+        <span class="material-icons-round">trending_up</span> High Elevation
+      </button>
+      <button class="filter-btn" data-filter="type" data-value="custom">
+        <span class="material-icons-round">star</span> Custom Only
+      </button>
+    </div>
+    <div class="elevation-filter">
+      <label for="min-elevation">Min Elevation: <span id="min-elevation-value">-30°</span></label>
+      <input type="range" id="min-elevation" min="-30" max="90" value="-30">
+    </div>
+  `;
+
+  apaTableBody.parentNode.insertBefore(controls, apaTableBody);
+
+  // Add event listeners
+  setupTableControls();
+}
+
+/**
+ * Set up table control event listeners
+ */
+function setupTableControls() {
+  // Search input
+  const searchInput = document.getElementById('satellite-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentFilters.search = e.target.value.toLowerCase();
+      updateTable();
+    });
+  }
+
+  // Quick filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      const value = btn.dataset.value;
+      
+      // Toggle active state
+      btn.classList.toggle('active');
+      
+      // Update filter
+      if (btn.classList.contains('active')) {
+        currentFilters[filter] = value;
+      } else {
+        currentFilters[filter] = 'all';
+      }
+      
+      updateTable();
+    });
+  });
+
+  // Elevation slider
+  const elevationSlider = document.getElementById('min-elevation');
+  const elevationValue = document.getElementById('min-elevation-value');
+  if (elevationSlider && elevationValue) {
+    elevationSlider.addEventListener('input', (e) => {
+      const value = e.target.value;
+      elevationValue.textContent = `${value}°`;
+      currentFilters.minElevation = parseInt(value);
+      updateTable();
+    });
+  }
+
+  // Column sort headers
+  document.querySelectorAll('#apa-table th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const column = th.dataset.sort;
+      if (currentSortColumn === column) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+      } else {
+        currentSortColumn = column;
+        sortDirection = 'desc';
+      }
+      updateTable();
+    });
+  });
 }
 
 /**
@@ -70,8 +166,69 @@ export function updateApaTable(lat, lon) {
   // Create orbit line for equator
   drawEquator();
   
+  // Filter and sort satellites
+  const filteredSatellites = satellites
+    .filter(sat => {
+      // Apply search filter
+      if (currentFilters.search && 
+          !sat.name.toLowerCase().includes(currentFilters.search) &&
+          !sat.longitude.toString().includes(currentFilters.search)) {
+        return false;
+      }
+      
+      // Calculate elevation
+      const elevation = calculateElevation(lat, lon, sat.longitude);
+      
+      // Apply elevation filter
+      if (elevation < currentFilters.minElevation) {
+        return false;
+      }
+      
+      // Apply visibility filter
+      if (currentFilters.visibility === 'visible' && elevation < 0) {
+        return false;
+      }
+      if (currentFilters.visibility === 'high' && elevation < 30) {
+        return false;
+      }
+      
+      // Apply type filter
+      if (currentFilters.type === 'custom' && !sat.custom) {
+        return false;
+      }
+      
+      return true;
+    })
+    .sort((a, b) => {
+      const aElevation = calculateElevation(lat, lon, a.longitude);
+      const bElevation = calculateElevation(lat, lon, b.longitude);
+      
+      switch (currentSortColumn) {
+        case 'name':
+          return sortDirection === 'asc' ? 
+            a.name.localeCompare(b.name) : 
+            b.name.localeCompare(a.name);
+        case 'longitude':
+          return sortDirection === 'asc' ? 
+            a.longitude - b.longitude : 
+            b.longitude - a.longitude;
+        case 'elevation':
+          return sortDirection === 'asc' ? 
+            aElevation - bElevation : 
+            bElevation - aElevation;
+        case 'azimuth':
+          const aAzimuth = calculateAzimuth(lat, lon, a.longitude);
+          const bAzimuth = calculateAzimuth(lat, lon, b.longitude);
+          return sortDirection === 'asc' ? 
+            aAzimuth - bAzimuth : 
+            bAzimuth - aAzimuth;
+        default:
+          return 0;
+      }
+    });
+  
   // Add rows for each satellite
-  satellites.forEach((sat, idx) => {
+  filteredSatellites.forEach((sat, idx) => {
     const az = calculateAzimuth(lat, lon, sat.longitude).toFixed(1);
     const el = calculateElevation(lat, lon, sat.longitude).toFixed(1);
     const elNum = parseFloat(el);
@@ -107,59 +264,14 @@ export function updateApaTable(lat, lon) {
   
   // Show/hide no results message
   if (noResultsMessage) {
-    noResultsMessage.classList.toggle("hidden", count > 0);
+    noResultsMessage.style.display = count === 0 ? 'block' : 'none';
   }
   
-  // Add event listeners for delete buttons
-  apaTableBody.querySelectorAll(".delete-sat").forEach(btn => {
-    btn.addEventListener("click", () => handleDeleteSatellite(btn));
-  });
+  // Update satellite lines
+  updateSatelliteLines(lat, lon);
   
-  // Add event listeners for visibility toggles
-  apaTableBody.querySelectorAll("input[type=checkbox]").forEach(cb => {
-    cb.addEventListener("change", function() {
-      handleVisibilityToggle(this);
-    });
-  });
-  
-  // Add event listeners for satellite name clicks
-  apaTableBody.querySelectorAll(".satellite-name").forEach(cell => {
-    cell.addEventListener("click", function() {
-      const satId = parseInt(this.dataset.satelliteId);
-      const satellite = satellites[satId];
-      
-      if (satellite) {
-        // Publish event
-        eventBus.publish('satelliteSelected', {
-          satellite,
-          lat,
-          lon
-        });
-      }
-    });
-  });
-  
-  // Trigger change event to draw lines for checked satellites
-  apaTableBody.querySelectorAll("input[type=checkbox]:checked").forEach(cb => {
-    cb.dispatchEvent(new Event("change"));
-  });
-  
-  // Apply sorting if active
-  if (sortState.column !== null && sortState.direction !== 'none') {
-    sortTable(sortState.column, sortState.direction);
-  }
-  
-  // Calculate accessibility announcement data
-  const visibleSats = satellites.filter(sat => {
-    const el = calculateElevation(lat, lon, sat.longitude);
-    return el >= 0;
-  }).length;
-  
-  // Create meaningful announcement
-  const announcement = `APA data updated for ${count} satellites. ${visibleSats} satellites are visible from current location.`;
-  
-  // Use the existing makeAnnouncement utility
-  makeAnnouncement(announcement, 'polite', 2000);
+  // Show notification
+  showNotification(`Showing ${count} of ${satellites.length} satellites`, "info");
 }
 
 /**

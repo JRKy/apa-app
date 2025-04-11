@@ -68,6 +68,15 @@
 
 /* Layout and positioning styles */
 
+/* ===== Base Layout ===== */
+.app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ===== Header ===== */
 header {
   position: fixed;
@@ -110,24 +119,20 @@ header h1 {
 /* ===== Drawer Layout ===== */
 .drawer {
   position: fixed;
-  top: 90px;
-  left: 10px;
-  width: 280px;
-  background-color: var(--white-color);
-  border-radius: var(--border-radius);
+  top: 0;
+  right: 0;
+  width: 320px;
+  height: 100%;
+  background-color: var(--color-surface);
   box-shadow: var(--shadow-lg);
-  z-index: 1006;
-  transform: translateX(-100%);
-  transition: transform var(--transition-base);
-  padding: var(--spacing-md);
-  max-height: calc(100vh - 100px);
+  z-index: var(--z-index-drawer);
+  transform: translateX(100%);
+  transition: transform var(--transition-normal);
   overflow-y: auto;
-  visibility: hidden;
 }
 
-.drawer.active {
+.drawer.open {
   transform: translateX(0);
-  visibility: visible;
 }
 
 /* ===== Drawer Header ===== */
@@ -192,20 +197,18 @@ header h1 {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 1005;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: var(--z-index-overlay);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-base), visibility var(--transition-base);
-  pointer-events: none;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
-.drawer-overlay.active {
+.drawer-overlay.visible {
   opacity: 1;
   visibility: visible;
-  pointer-events: auto;
 }
 
 /* ===== Search Input Group ===== */
@@ -263,50 +266,49 @@ header h1 {
 /* ===== Current Location Indicator ===== */
 #current-location-indicator {
   position: fixed;
-  bottom: var(--spacing-lg);
-  left: var(--spacing-md);
-  z-index: 1004;
+  bottom: var(--space-lg);
+  left: var(--space-md);
+  z-index: var(--z-index-controls);
   max-width: 300px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
 }
 
 /* ===== Map Controls ===== */
 .map-controls {
-  position: absolute;
-  top: var(--spacing-md);
-  right: var(--spacing-md);
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-  z-index: var(--zindex-fixed);
+  gap: var(--space-sm);
+  z-index: var(--z-index-controls);
 }
 
 /* ===== APA Panel Layout ===== */
 #apa-panel.leaflet-control.apa-control {
-  padding: var(--spacing-md);
-  max-height: 70vh;
-  width: 420px;
-  overflow-y: auto;
-  z-index: 1001;
   position: fixed;
-  top: 70px;
-  right: var(--spacing-md);
-  display: none;
-  resize: both;
-  overflow: auto;
-  min-width: 360px;
-  min-height: 200px;
-  animation: fade-in var(--transition-normal);
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 420px;
+  max-height: 70vh;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-index-panel);
+  overflow-y: auto;
+  padding: var(--space-md);
 }
 
 #apa-panel.minimized {
-  max-height: 40px !important;
-  overflow: hidden !important;
-  padding: var(--spacing-xs) var(--spacing-md) !important;
-  resize: none !important;
-  z-index: 1006 !important;
+  max-height: 40px;
+  overflow: hidden;
 }
 
 /* ===== Panel Controls Layout ===== */
@@ -327,22 +329,37 @@ header h1 {
 /* ===== Floating Controls Layout ===== */
 .floating-control {
   position: fixed;
-  z-index: 1002;
+  z-index: var(--z-index-controls);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+.floating-control:hover {
+  transform: translateY(-2px);
 }
 
 #legend-toggle {
-  bottom: var(--spacing-xl);
-  right: var(--spacing-md);
+  bottom: var(--space-xl);
+  right: var(--space-md);
 }
 
 #dark-mode-toggle {
-  bottom: calc(var(--spacing-xl) + 50px);
-  right: var(--spacing-md);
+  bottom: calc(var(--space-xl) + 50px);
+  right: var(--space-md);
 }
 
 #toggle-polar-plot {
-  bottom: calc(var(--spacing-xl) + 100px);
-  right: var(--spacing-md);
+  bottom: calc(var(--space-xl) + 100px);
+  right: var(--space-md);
 }
 
 /* ===== APA Legend Layout ===== */
@@ -464,6 +481,34 @@ header h1 {
 @media (max-width: 768px) {
   .drawer {
     width: 100%;
+  }
+  
+  #apa-panel.leaflet-control.apa-control {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    top: auto;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 60vh;
+  }
+  
+  .floating-control {
+    width: 50px;
+    height: 50px;
+  }
+  
+  #legend-toggle {
+    bottom: 120px;
+  }
+  
+  #dark-mode-toggle {
+    bottom: 180px;
+  }
+  
+  #toggle-polar-plot {
+    bottom: 240px;
   }
 }
 

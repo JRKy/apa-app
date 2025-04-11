@@ -1,6 +1,6 @@
 // main.js - Main application entry point
 import { VERSION, updateVersionReferences } from './modules/core/version.js';
-import { initDrawers } from './modules/ui/drawers.js';
+import { initDrawers, toggleDrawer, openDrawer, closeDrawer } from './modules/ui/drawers.js';
 import { initMap, getMap, updateMapAppearance } from './modules/ui/map.js';
 import { initData } from './modules/data/data.js';
 import { initEventHandlers } from './modules/core/events.js';
@@ -20,6 +20,7 @@ import { initLocationSelector } from './modules/ui/locationSelector.js';
 import { initSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
 import { showWhatsNewDialog } from './modules/ui/whatsNew.js';
 import { initMobileNav } from './modules/ui/mobileNav.js';
+import { initTooltips } from './modules/ui/tooltips.js';
 
 // Initialize version references first
 updateVersionReferences();
@@ -132,3 +133,51 @@ document.addEventListener('DOMContentLoaded', () => {
   
   console.log(`APA App ${VERSION} initialized successfully`);
 });
+
+// Initialize the application
+function initApp() {
+    // Initialize UI components
+    initDrawers();
+    initTooltips();
+    
+    // Add event listeners for gesture controls
+    setupGestureControls();
+}
+
+// Setup gesture controls
+function setupGestureControls() {
+    const appContainer = document.querySelector('.app-container');
+    if (!appContainer) return;
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    appContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    });
+
+    appContainer.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+        
+        // Horizontal swipe
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            if (Math.abs(diffX) > 50) { // Minimum swipe distance
+                if (diffX > 0) {
+                    // Swipe right - open menu
+                    openDrawer('menu-drawer');
+                } else {
+                    // Swipe left - close menu
+                    closeDrawer('menu-drawer');
+                }
+            }
+        }
+    });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initApp);

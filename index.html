@@ -6,8 +6,8 @@
   <title>APA App</title>
   <meta name="description" content="Antenna Pointing Angles Calculator PWA" />
   <meta name="theme-color" content="#1a73e8" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon.png" />
+  <link rel="manifest" href="manifest.json?v=2.4.9" />
+  <link rel="icon" href="icon.png?v=2.4.9" />
 
   <!-- Improved Leaflet CSS loading with multiple fallbacks -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
@@ -104,18 +104,18 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
   <!-- Modular CSS Files -->
-  <link rel="stylesheet" href="css/base.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/layout.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/components.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/modules.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/dark-mode.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/animations.css?v=2.4.8" data-versioned="true" />
-  <link rel="stylesheet" href="css/responsive.css?v=2.4.8" data-versioned="true" />
+  <link rel="stylesheet" href="css/base.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/layout.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/components.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/modules.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/dark-mode.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/animations.css?v=2.4.9" />
+  <link rel="stylesheet" href="css/responsive.css?v=2.4.9" />
 </head>
 <body>
   <header>
     <h1>APA App</h1>
-    <span id="version">Version: 2.4.8</span>
+    <span id="version">Version: 2.4.9</span>
   </header>
 
   <!-- Drawer Buttons -->
@@ -126,14 +126,6 @@
     <button id="toggle-satellite-drawer" title="Add Custom Satellite" aria-label="Open satellite drawer">
       <span class="material-icons-round">satellite</span>
     </button>
-    <button id="toggle-location-filter-drawer" title="Location Filters" aria-label="Open location filters">
-      <span class="material-icons-round">location_city</span>
-      <span id="location-filter-summary" class="filter-badge hidden">0</span>
-    </button>
-    <button id="toggle-satellite-filter-drawer" title="Satellite Filters" aria-label="Open satellite filters">
-      <span class="material-icons-round">satellite_alt</span>
-      <span id="satellite-filter-summary" class="filter-badge hidden">0</span>
-    </button>
     <button id="btn-my-location" title="Use My Location" aria-label="Use my current location">
       <span class="material-icons-round">my_location</span>
     </button>
@@ -142,7 +134,7 @@
   <!-- Drawer Overlay for Mobile -->
   <div id="drawer-overlay" class="drawer-overlay"></div>
 
-  <!-- Location Drawer (Add Custom Location) -->
+  <!-- Location Drawer -->
   <div id="location-drawer" class="drawer" aria-labelledby="location-drawer-title">
     <div class="drawer-header">
       <h3 id="location-drawer-title">Add Custom Location</h3>
@@ -151,34 +143,22 @@
       </button>
     </div>
     
-    <!-- Geocoder Section -->
-    <div class="geocoder-section">
-      <label for="location-search">Search Location:</label>
-      <div class="search-input-group">
-        <input type="text" id="location-search" placeholder="Enter city, address, or landmark" 
-               aria-describedby="search-hint" />
-        <button id="location-search-btn">
-          <span class="material-icons-round">search</span><span>Search</span>
-        </button>
-      </div>
-      <span id="search-hint" class="sr-only">Enter a location name to search for coordinates</span>
-    </div>
-    
     <!-- Add Custom Location -->
     <div class="add-custom-location">
-      <label for="custom-loc-name">Location Name:</label>
-      <input type="text" id="custom-loc-name" placeholder="e.g. My Office" />
+      <label for="location-name">Location Name:</label>
+      <input type="text" id="location-name" maxlength="32" placeholder="e.g. My Location" aria-describedby="location-name-hint" />
+      <span id="location-name-hint" class="sr-only">Enter a unique name for the location</span>
       
-      <label for="custom-lat">Latitude:</label>
-      <input type="number" id="custom-lat" step="0.000001" placeholder="e.g. 34.05" aria-describedby="lat-hint" />
-      <span id="lat-hint" class="sr-only">Enter location latitude in decimal degrees</span>
+      <label for="location-lat">Latitude:</label>
+      <input type="number" id="location-lat" step="0.000001" placeholder="e.g. 35.6895" aria-describedby="location-lat-hint" />
+      <span id="location-lat-hint" class="sr-only">Enter location latitude in decimal degrees (-90 to 90)</span>
       
-      <label for="custom-lon">Longitude:</label>
-      <input type="number" id="custom-lon" step="0.000001" placeholder="e.g. -118.25" aria-describedby="lon-hint" />
-      <span id="lon-hint" class="sr-only">Enter location longitude in decimal degrees</span>
+      <label for="location-lon">Longitude:</label>
+      <input type="number" id="location-lon" step="0.000001" placeholder="e.g. 139.6917" aria-describedby="location-lon-hint" />
+      <span id="location-lon-hint" class="sr-only">Enter location longitude in decimal degrees (-180 to 180)</span>
       
-      <button id="custom-location-btn">
-        <span class="material-icons-round">pin_drop</span> Go to Location
+      <button id="add-location-btn" class="primary-btn">
+        <span class="material-icons-round">add_circle</span> Add Location
       </button>
     </div>
   </div>
@@ -212,110 +192,57 @@
     </div>
   </div>
 
-  <!-- Location Filter Drawer -->
-  <div id="location-filter-drawer" class="drawer" aria-labelledby="location-filter-drawer-title">
-    <div class="drawer-header">
-      <h3 id="location-filter-drawer-title">Location Filters</h3>
-      <button class="drawer-close" title="Close" data-drawer="location-filter-drawer" aria-label="Close location filter drawer">
-        <span class="material-icons-round">close</span>
-      </button>
+  <!-- Main Content -->
+  <main>
+    <!-- Map Container -->
+    <div id="map-container" class="map-container">
+      <div id="map"></div>
     </div>
-    
-    <!-- Search and filter input -->
-    <label for="location-filter-search">Search Locations:</label>
-    <div class="search-input-group">
-      <input type="text" id="location-filter-search" placeholder="Filter by name, country, or CCMD" 
-             aria-describedby="filter-search-hint" />
-      <button id="clear-filter-search">
-        <span class="material-icons-round">clear</span>
-      </button>
-    </div>
-    <span id="filter-search-hint" class="sr-only">Type to filter locations by name, country, or command</span>
-    
-    <!-- Filters -->
-    <label for="aor-filter">AOR/CCMD:</label>
-    <select id="aor-filter" aria-describedby="aor-hint">
-      <option value="">All Command Regions</option>
-      <option value="NORTHCOM">NORTHCOM</option>
-      <option value="SOUTHCOM">SOUTHCOM</option>
-      <option value="EUCOM">EUCOM</option>
-      <option value="AFRICOM">AFRICOM</option>
-      <option value="CENTCOM">CENTCOM</option>
-      <option value="INDOPACOM">INDOPACOM</option>
-    </select>
-    <span id="aor-hint" class="sr-only">Filter by Area of Responsibility</span>
-    
-    <label for="country-filter">Country:</label>
-    <select id="country-filter" aria-describedby="country-hint"></select>
-    <span id="country-hint" class="sr-only">Filter by Country</span>
-    
-    <div class="location-list-container">
-      <h4>Preset Locations</h4>
-      <div id="filtered-locations-list" class="location-list">
-        <!-- Locations will be populated dynamically -->
+
+    <!-- APA Table Panel -->
+    <div id="apa-panel" class="panel">
+      <div class="panel-header">
+        <h2>Antenna Pointing Angles</h2>
+        <button id="toggle-apa-panel" class="panel-toggle" aria-label="Toggle APA panel">
+          <span class="material-icons-round">chevron_left</span>
+        </button>
       </div>
       
-      <h4>Custom Locations</h4>
-      <div id="custom-locations-list" class="custom-location-list">
-        <!-- Custom locations will be populated dynamically -->
+      <div class="panel-content">
+        <table id="apa-table" class="data-table">
+          <thead>
+            <tr>
+              <th>Show</th>
+              <th data-sort="name">Satellite</th>
+              <th data-sort="longitude">Longitude</th>
+              <th data-sort="elevation">Elevation</th>
+              <th data-sort="azimuth">Azimuth</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Table content will be populated dynamically -->
+          </tbody>
+        </table>
+        <div id="apa-no-results" class="no-results">
+          No satellites found matching the current filters.
+        </div>
       </div>
     </div>
-    
-    <button id="apply-location-filters" class="primary-btn">
-      <span class="material-icons-round">filter_alt</span> Apply Filters
-    </button>
-    
-    <button id="reset-location-filters" class="secondary-btn">
-      <span class="material-icons-round">clear</span> Clear Filters
-    </button>
-  </div>
 
-  <!-- Current Location Display -->
-  <div id="current-location-indicator" class="hidden" aria-live="polite"></div>
-
-  <!-- Map Container -->
-  <div id="map" role="application" aria-label="Interactive map showing satellite positions and pointing angles"></div>
-
-  <!-- Polar Plot -->
-  <div id="polar-plot-container" class="polar-plot-container hidden">
-    <svg id="polar-plot" class="polar-plot" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-      <!-- Circles will be generated by JavaScript -->
-    </svg>
-  </div>
-
-  <!-- APA Panel -->
-  <div id="apa-panel" class="leaflet-control apa-control" aria-labelledby="apa-panel-title">
-    <div class="apa-panel-header">
-      <strong id="apa-panel-title">Antenna Pointing Angles</strong>
-      <div class="panel-controls">
-        <button id="minimize-apa-panel" title="Minimize" aria-label="Minimize APA panel">
-          <span class="material-icons-round">remove</span>
-        </button>
-        <button id="close-apa-panel" title="Close" aria-label="Close APA panel">
-          <span class="material-icons-round">close</span>
+    <!-- Polar Plot Panel -->
+    <div id="polar-plot-panel" class="panel">
+      <div class="panel-header">
+        <h2>Polar Plot</h2>
+        <button id="toggle-polar-plot" class="panel-toggle" aria-label="Toggle polar plot">
+          <span class="material-icons-round">chevron_left</span>
         </button>
       </div>
+      <div class="panel-content">
+        <canvas id="polar-plot"></canvas>
+      </div>
     </div>
-    <table id="apa-table" aria-describedby="apa-table-desc">
-      <caption id="apa-table-desc" class="sr-only">Antenna Pointing Angles for satellites from current location</caption>
-      <thead>
-        <tr>
-          <th scope="col">Visible</th>
-          <th scope="col">Name</th>
-          <th scope="col">Longitude</th>
-          <th scope="col">Elevation</th>
-          <th scope="col">Azimuth</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <div id="apa-no-results" class="hidden">No results. Select a location or clear filters.</div>
-  </div>
-
-  <button id="toggle-apa-panel" aria-label="Show APA Table">
-    <span class="material-icons-round">table_chart</span> Show APA Table
-  </button>
+  </main>
 
   <!-- Help Tooltip -->
   <div id="help-tooltip" aria-live="polite">
@@ -328,10 +255,6 @@
   <!-- Floating Controls -->
   <button id="dark-mode-toggle" class="floating-control" title="Toggle Dark Mode" aria-label="Switch between light and dark mode">
     <span class="material-icons-round">dark_mode</span>
-  </button>
-
-  <button id="toggle-polar-plot" class="floating-control" title="Toggle Command Regions" aria-label="Toggle combatant command regions">
-    <span class="material-icons-round">map</span>
   </button>
 
   <button id="legend-toggle" class="floating-control" title="Legend" aria-label="Toggle legend visibility">
@@ -428,54 +351,13 @@
     </div>
   </div>
 
-  <!-- Satellite Filter Drawer -->
-  <div id="satellite-filter-drawer" class="drawer" aria-labelledby="satellite-filter-drawer-title">
-    <div class="drawer-header">
-      <h3 id="satellite-filter-drawer-title">Satellite Filters</h3>
-      <button class="drawer-close" title="Close" data-drawer="satellite-filter-drawer" aria-label="Close satellite filter drawer">
-        <span class="material-icons-round">close</span>
-      </button>
-    </div>
-    
-    <!-- Search and filter input -->
-    <label for="satellite-filter-search">Search Satellites:</label>
-    <div class="search-input-group">
-      <input type="text" id="satellite-filter-search" placeholder="Filter by name or longitude" 
-             aria-describedby="satellite-filter-search-hint" />
-      <button id="clear-satellite-filter-search">
-        <span class="material-icons-round">clear</span>
-      </button>
-    </div>
-    <span id="satellite-filter-search-hint" class="sr-only">Type to filter satellites by name or longitude</span>
-    
-    <div class="satellite-list-container">
-      <h4>Preset Satellites</h4>
-      <div id="filtered-satellites-list" class="satellite-list">
-        <!-- Satellites will be populated dynamically -->
-      </div>
-      
-      <h4>Custom Satellites</h4>
-      <div id="custom-satellites-list" class="custom-satellite-list">
-        <!-- Custom satellites will be populated dynamically -->
-      </div>
-    </div>
-    
-    <button id="apply-satellite-filters" class="primary-btn">
-      <span class="material-icons-round">filter_alt</span> Apply Filters
-    </button>
-    
-    <button id="reset-satellite-filters" class="secondary-btn">
-      <span class="material-icons-round">clear</span> Clear Filters
-    </button>
-  </div>
-
   <!-- Scripts -->
-  <script type="module" src="js/modules/core/version-data.js?v=2.4.8?v=2.4.8"></script>
-  <script type="module" src="js/main.js?v=2.4.8?v=2.4.8"></script>
-  <script src="data.js?v=2.4.8"></script>
+  <script type="module" src="js/modules/core/version-data.js?v=2.4.9"></script>
+  <script type="module" src="js/main.js?v=2.4.9"></script>
+  <script src="data.js?v=2.4.9"></script>
   <script type="module">
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.4.8", { 
+      navigator.serviceWorker.register("sw.js?v=2.4.9", { 
         type: "module",
         scope: "./"
       }).then(registration => {

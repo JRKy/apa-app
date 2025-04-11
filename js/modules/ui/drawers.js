@@ -154,6 +154,25 @@ export function initDrawers() {
       });
     });
   }
+
+  // Initialize drawers
+  drawers.forEach(drawer => {
+    const drawerId = drawer.id;
+    const toggleButton = document.querySelector(`[data-drawer-toggle="${drawerId}"]`);
+    const closeButton = drawer.querySelector('.drawer-close');
+    
+    if (toggleButton) {
+      toggleButton.addEventListener('click', () => {
+        toggleDrawer(drawerId);
+      });
+    }
+    
+    if (closeButton) {
+      closeButton.addEventListener('click', () => {
+        closeDrawer(drawerId);
+      });
+    }
+  });
 }
 
 /**
@@ -206,7 +225,39 @@ function showDrawer(drawerId) {
  * @param {Array} others - IDs of other drawers to close
  */
 export function toggleDrawer(drawerId, others = []) {
-  showDrawer(drawerId);
+  const drawer = document.getElementById(drawerId);
+  if (!drawer) return;
+
+  if (drawer.classList.contains('open')) {
+    closeDrawer(drawerId);
+  } else {
+    openDrawer(drawerId);
+  }
+}
+
+/**
+ * Open a drawer
+ * @param {string} drawerId - ID of the drawer to open
+ */
+function openDrawer(drawerId) {
+  const drawer = document.getElementById(drawerId);
+  if (!drawer) return;
+
+  // Close all other drawers first
+  document.querySelectorAll('.drawer.open').forEach(openDrawer => {
+    if (openDrawer.id !== drawerId) {
+      closeDrawer(openDrawer.id);
+    }
+  });
+
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  
+  // Update toggle button state
+  const toggleButton = document.querySelector(`[data-drawer-toggle="${drawerId}"]`);
+  if (toggleButton) {
+    toggleButton.setAttribute('aria-expanded', 'true');
+  }
 }
 
 /**
