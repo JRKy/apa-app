@@ -58,6 +58,13 @@ export function initDrawers() {
     return;
   }
 
+  // Ensure all drawers are hidden on initialization
+  drawers.forEach(drawer => {
+    drawer.classList.remove('active');
+    drawer.style.visibility = 'hidden';
+  });
+  overlay.classList.remove('active');
+
   drawers.forEach(drawer => {
     // Handle all close buttons in the drawer
     const closeButtons = drawer.querySelectorAll('.close-drawer, .drawer-close, .close-btn');
@@ -185,6 +192,7 @@ function showDrawer(drawerId) {
     
     // Show the requested drawer
     drawer.classList.add('active');
+    drawer.style.visibility = 'visible';
     overlay.classList.add('active');
     
     // Prevent body scrolling
@@ -215,6 +223,7 @@ export function closeAllDrawers() {
   
   drawers.forEach(drawer => {
     drawer.classList.remove('active');
+    drawer.style.visibility = 'hidden';
   });
   
   overlay.classList.remove('active');

@@ -122,10 +122,12 @@ header h1 {
   padding: var(--spacing-md);
   max-height: calc(100vh - 100px);
   overflow-y: auto;
+  visibility: hidden;
 }
 
 .drawer.active {
   transform: translateX(0);
+  visibility: visible;
 }
 
 /* ===== Drawer Header ===== */
