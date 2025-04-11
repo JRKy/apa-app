@@ -1,7 +1,7 @@
 {
   "name": "APA App",
   "short_name": "APA",
-  "version": "2.4.6",
+  "version": "2.4.7",
   "description": "Advanced Positioning Application for satellite and location tracking",
   "start_url": "/",
   "display": "standalone",
