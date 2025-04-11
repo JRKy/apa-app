@@ -3,61 +3,57 @@
 const fs = require('fs');
 const path = require('path');
 
-// Get version from version.json
-const versionJson = JSON.parse(fs.readFileSync('version.json', 'utf8'));
-const version = versionJson.version;
-
-// Update package.json version to match
+// Get version from package.json
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-packageJson.version = version;
-fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2), 'utf8');
-console.log('Updated version in package.json');
+const version = packageJson.version;
 
-// Files to update with their version patterns
-const filesToUpdate = [
-  {
-    path: 'manifest.json',
-    pattern: /"version": ".*"/,
-    replacement: `"version": "${version}"`
-  },
-  {
-    path: 'sw.js',
-    pattern: /const CACHE_NAME = "apa-app-cache-v.*"/,
-    replacement: `const CACHE_NAME = "apa-app-cache-v${version}"`
-  },
-  {
-    path: 'index.html',
-    pattern: /<span id="version">Version: .*<\/span>/,
-    replacement: `<span id="version">Version: ${version}</span>`
-  },
-  {
-    path: 'js/modules/core/version.js',
-    pattern: /export const VERSION = '.*'/,
-    replacement: `export const VERSION = '${version}'`
+// Update version-data.js
+const versionDataPath = path.join('js', 'modules', 'core', 'version-data.js');
+const versionDataContent = `// version-data.js - Version information as a JavaScript module
+export const versionData = {
+  version: "${version}",
+  buildDate: "${new Date().toISOString().split('T')[0]}",
+  versionInfo: {
+    major: ${version.split('.')[0]},
+    minor: ${version.split('.')[1]},
+    patch: ${version.split('.')[2]}
   }
+};`;
+fs.writeFileSync(versionDataPath, versionDataContent);
+
+// Update manifest.json
+const manifestPath = 'manifest.json';
+const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+manifest.version = version;
+fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+// Update HTML version in index.html
+const indexHtmlPath = 'index.html';
+let indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
+indexHtml = indexHtml.replace(/<meta name="version" content="[^"]*">/, `<meta name="version" content="${version}">`);
+fs.writeFileSync(indexHtmlPath, indexHtml);
+
+// Update version in file headers
+const filesToUpdate = [
+    'js/main.js',
+    'js/modules/core/events.js',
+    'js/modules/core/version.js',
+    'js/modules/ui/drawers.js',
+    'js/modules/ui/map.js',
+    'js/modules/ui/notifications.js',
+    'js/modules/ui/tutorial.js',
+    'css/layout.css',
+    'css/modules.css',
+    'css/components.css'
 ];
 
-// Update each file
-filesToUpdate.forEach(file => {
-  const filePath = path.join(process.cwd(), file.path);
-  let content = fs.readFileSync(filePath, 'utf8');
-  content = content.replace(file.pattern, file.replacement);
-  fs.writeFileSync(filePath, content, 'utf8');
-  console.log(`Updated version in ${file.path}`);
+filesToUpdate.forEach(filePath => {
+    if (fs.existsSync(filePath)) {
+        let content = fs.readFileSync(filePath, 'utf8');
+        // Update version in file headers
+        content = content.replace(/@version\s+\d+\.\d+\.\d+/, `@version ${version}`);
+        fs.writeFileSync(filePath, content);
+    }
 });
 
-// Update CSS and JS file references in index.html
-const indexHtmlPath = path.join(process.cwd(), 'index.html');
-let indexHtml = fs.readFileSync(indexHtmlPath, 'utf8');
-indexHtml = indexHtml.replace(/v=\d+\.\d+\.\d+/g, `v=${version}`);
-fs.writeFileSync(indexHtmlPath, indexHtml, 'utf8');
-console.log('Updated version in CSS/JS file references');
-
-// Update service worker cache paths
-const swPath = path.join(process.cwd(), 'sw.js');
-let swContent = fs.readFileSync(swPath, 'utf8');
-swContent = swContent.replace(/v=\d+\.\d+\.\d+/g, `v=${version}`);
-fs.writeFileSync(swPath, swContent, 'utf8');
-console.log('Updated version in service worker cache paths');
-
-console.log(`Version updated to ${version} across all files`); 
+console.log(`Updated version to ${version} in all files`); 
