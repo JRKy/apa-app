@@ -53,11 +53,19 @@ export function initDrawers() {
   const drawers = document.querySelectorAll('.drawer');
   const overlay = document.querySelector('.drawer-overlay');
 
+  if (!overlay) {
+    console.error('Drawer overlay not found');
+    return;
+  }
+
   drawers.forEach(drawer => {
-    const closeBtn = drawer.querySelector('.close-drawer');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', () => closeAllDrawers());
-    }
+    // Handle all close buttons in the drawer
+    const closeButtons = drawer.querySelectorAll('.close-drawer, .drawer-close, .close-btn');
+    closeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        closeAllDrawers();
+      });
+    });
 
     // Prevent drawer from closing when clicking inside
     drawer.addEventListener('click', (e) => {
@@ -66,10 +74,8 @@ export function initDrawers() {
   });
 
   // Close drawer when clicking overlay
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      closeAllDrawers();
-    }
+  overlay.addEventListener('click', () => {
+    closeAllDrawers();
   });
 
   // Setup drawer toggle buttons
@@ -202,6 +208,11 @@ export function closeAllDrawers() {
   const drawers = document.querySelectorAll('.drawer');
   const overlay = document.querySelector('.drawer-overlay');
   
+  if (!overlay) {
+    console.error('Drawer overlay not found');
+    return;
+  }
+  
   drawers.forEach(drawer => {
     drawer.classList.remove('active');
   });
@@ -210,6 +221,9 @@ export function closeAllDrawers() {
   
   // Restore body scrolling
   document.body.style.overflow = '';
+  
+  // Publish event
+  eventBus.publish('allDrawersClosed');
 }
 
 /**

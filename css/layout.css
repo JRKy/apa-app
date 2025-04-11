@@ -99,7 +99,7 @@ header h1 {
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100vw;
+  width: 100%;
   height: calc(100vh - 60px);
   background-color: var(--gray-100);
   margin: 0;
