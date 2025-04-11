@@ -1,3 +1,23 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [2.4.5] - 2025-04-10
+
+### Added
+- Enhanced search input group styling for better consistency
+- Improved drawer layout and interaction
+
+### Changed
+- Updated satellite drawer to match location drawer functionality
+- Improved input validation and preview features
+- Enhanced drawer styling and positioning
+
+### Fixed
+- Removed white bar artifact from left side of map
+- Fixed drawer z-index and overlay interaction issues
+- Improved cross-browser compatibility for range inputs
+
 ## [2.3.1] - 2025-04-03
 
 ### Added
@@ -130,10 +150,6 @@
 ### Fixed
 - Overlapping drawer behavior on smaller screens
 - Inconsistent APA panel positioning
-
-# Changelog
-
-All notable changes to this project will be documented in this file.
 
 ## [2.4.2] - 2025-04-09
 
