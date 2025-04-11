@@ -72,10 +72,75 @@ export function initDrawers() {
     }
   });
 
-  // Initialize specific drawer functionality
-  initLocationDrawer();
-  initSatelliteDrawer();
-  initFilterDrawers();
+  // Setup drawer toggle buttons
+  setupDrawerToggles();
+  
+  // Initialize location drawer
+  const customLocationBtn = document.getElementById("custom-location-btn");
+  if (customLocationBtn) {
+    customLocationBtn.addEventListener("click", handleCustomLocation);
+  }
+  
+  // Initialize location search
+  const locationSearchBtn = document.getElementById("location-search-btn");
+  if (locationSearchBtn) {
+    locationSearchBtn.addEventListener("click", handleLocationSearch);
+    
+    // Enable search on Enter key
+    const locationSearchInput = document.getElementById("location-search");
+    if (locationSearchInput) {
+      locationSearchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          handleLocationSearch();
+        }
+      });
+    }
+  }
+  
+  // Initialize satellite drawer
+  const addSatelliteBtn = document.getElementById("add-satellite-btn");
+  if (addSatelliteBtn) {
+    addSatelliteBtn.addEventListener("click", handleAddSatellite);
+  }
+  
+  const previewSatelliteBtn = document.getElementById("preview-satellite-btn");
+  if (previewSatelliteBtn) {
+    previewSatelliteBtn.addEventListener("click", handlePreviewSatellite);
+  }
+  
+  // Initialize filter drawers
+  populateLocationFilterDrawer();
+  
+  // Set up location filter search
+  const locationFilterSearch = document.getElementById("location-filter-search");
+  if (locationFilterSearch) {
+    locationFilterSearch.addEventListener("input", (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const locationItems = document.querySelectorAll(".location-item");
+      
+      locationItems.forEach(item => {
+        const locationName = item.querySelector("strong").textContent.toLowerCase();
+        const locationCountry = item.querySelector("span").textContent.toLowerCase();
+        const isVisible = locationName.includes(searchTerm) || locationCountry.includes(searchTerm);
+        item.style.display = isVisible ? "flex" : "none";
+      });
+    });
+  }
+  
+  // Set up AOR filter
+  const aorFilter = document.getElementById("aor-filter");
+  if (aorFilter) {
+    aorFilter.addEventListener("change", (e) => {
+      const selectedAOR = e.target.value;
+      const locationItems = document.querySelectorAll(".location-item");
+      
+      locationItems.forEach(item => {
+        const locationAOR = item.dataset.aor;
+        const isVisible = !selectedAOR || locationAOR === selectedAOR;
+        item.style.display = isVisible ? "flex" : "none";
+      });
+    });
+  }
 }
 
 /**
