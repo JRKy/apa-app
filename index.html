@@ -65,7 +65,6 @@
         console.log('Leaflet loaded successfully');
         // Now load the app modules
         return Promise.all([
-          import('./js/modules/core/version-data.js'),
           import('./js/modules/core/config.js'),
           import('./js/modules/core/events.js'),
           import('./js/modules/core/utils.js'),
@@ -76,7 +75,6 @@
         ]);
       })
       .then(([
-        versionData,
         config,
         events,
         utils,
@@ -89,9 +87,6 @@
         notifications.initNotifications();
         drawers.initDrawers();
         
-        // Initialize version data
-        versionData.initVersionData();
-
         // Load main.js last
         return import('./js/main.js');
       })
