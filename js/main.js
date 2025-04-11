@@ -19,6 +19,7 @@ import { initCommandRegions } from './modules/data/commandRegions.js';
 import { initLocationSelector } from './modules/ui/locationSelector.js';
 import { initSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
 import { showWhatsNewDialog } from './modules/ui/whatsNew.js';
+import { initMobileNav } from './modules/ui/mobileNav.js';
 
 // Initialize version references first
 updateVersionReferences();
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMap();
   initDrawers();
   initEventHandlers();
+  initMobileNav(); // Initialize mobile navigation
   
   // Initialize configuration manager
   ConfigManager.init();

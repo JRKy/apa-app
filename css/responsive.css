@@ -12,6 +12,45 @@
     --font-size-md: 16px;
   }
   
+  /* Mobile Navigation Bar */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--color-surface);
+    display: flex;
+    justify-content: space-around;
+    padding: var(--space-sm);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xs);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-xs);
+    transition: all var(--transition-fast);
+  }
+
+  .mobile-nav-item.active {
+    color: var(--color-primary);
+  }
+
+  .mobile-nav-item .material-icons-round {
+    font-size: 24px;
+    margin-bottom: 2px;
+  }
+
+  /* Adjust map container for bottom nav */
+  #map {
+    padding-bottom: 60px; /* Space for bottom navigation */
+  }
+
   /* Improved touch targets */
   .button-icon,
   .floating-control,
@@ -20,6 +59,107 @@
     height: 48px;
     font-size: 20px;
     padding: var(--space-sm);
+    touch-action: manipulation;
+  }
+  
+  /* Enhanced drawer interactions */
+  .drawer {
+    width: calc(100% - 24px);
+    max-width: 360px;
+    padding: var(--space-md);
+    margin: var(--space-md) auto;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .drawer.visible {
+    transform: translateX(0);
+    animation: slide-in 0.3s ease-out;
+  }
+
+  /* Improved bottom sheet */
+  #apa-panel.leaflet-control.apa-control {
+    width: 100%;
+    max-width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 60px; /* Adjusted for bottom nav */
+    top: auto;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    max-height: 60vh;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+
+  /* Enhanced touch feedback */
+  .button-icon:active,
+  .floating-control:active,
+  .control-button:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+  }
+
+  /* Improved search experience */
+  .search-input-group {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+  
+  .search-input-group input {
+    font-size: 16px; /* Prevents iOS zoom */
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  /* Enhanced map controls */
+  .map-controls {
+    right: var(--space-sm);
+    top: var(--space-sm);
+    gap: var(--space-sm);
+    touch-action: manipulation;
+  }
+
+  /* Improved floating controls */
+  .floating-control {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    touch-action: manipulation;
+  }
+
+  /* Adjust floating control positions */
+  #legend-toggle {
+    bottom: 120px; /* Adjusted for bottom nav */
+    right: 20px;
+  }
+  
+  #dark-mode-toggle {
+    bottom: 180px; /* Adjusted for bottom nav */
+    right: 20px;
+  }
+
+  #toggle-polar-plot {
+    bottom: 240px; /* Adjusted for bottom nav */
+    right: 20px;
+  }
+
+  /* Enhanced table view for mobile */
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table th,
+  .table td {
+    min-width: 100px;
+    padding: var(--space-sm);
+  }
+
+  /* Improved notifications */
+  .notification {
+    margin-bottom: 60px; /* Space for bottom nav */
   }
   
   .drawer-buttons.top {
@@ -39,21 +179,6 @@
   .drawer.visible {
     transform: translateX(0);
     animation: slide-in 0.3s ease-out;
-  }
-  
-  /* Bottom sheet improvements */
-  #apa-panel.leaflet-control.apa-control {
-    width: 100%;
-    max-width: 100%;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    max-height: 60vh;
-    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
   
   /* Improved panel header */
