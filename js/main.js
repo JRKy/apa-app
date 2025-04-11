@@ -1,7 +1,7 @@
 // main.js - Main application entry point
 import { VERSION, updateVersionReferences } from './modules/core/version.js';
 import { initDrawers } from './modules/ui/drawers.js';
-import { initMap } from './modules/ui/map.js';
+import { initMap, getMap, updateMapAppearance } from './modules/ui/map.js';
 import { initData } from './modules/data/data.js';
 import { initEventHandlers } from './modules/core/events.js';
 import ConfigManager from './modules/core/configManager.js';
