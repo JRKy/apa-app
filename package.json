@@ -1,8 +1,8 @@
 {
   "name": "apa-app",
-  "version": "2.4.4",
-  "description": "Advanced Polar Analysis Application",
-  "main": "js/main.js",
+  "version": "2.4.6",
+  "description": "APA App - Advanced Positioning Application",
+  "main": "index.html",
   "scripts": {
     "start": "http-server -c-1",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,13 +10,14 @@
   },
   "keywords": [
     "satellite",
-    "communication",
-    "analysis",
-    "visualization"
+    "positioning",
+    "map",
+    "geolocation"
   ],
   "author": "Josh Kennedy",
   "license": "MIT",
   "dependencies": {
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "mapbox-gl": "^3.1.2"
   }
 }
