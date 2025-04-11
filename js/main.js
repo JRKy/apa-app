@@ -1,10 +1,12 @@
-// main.js - Application entry point - v2.4.0
+// main.js - Main application entry point
+import { VERSION, updateVersionReferences } from './modules/core/version.js';
+import { initDrawers } from './modules/ui/drawers.js';
+import { initMap } from './modules/ui/map.js';
+import { initData } from './modules/data/data.js';
+import { initEventHandlers } from './modules/core/events.js';
 import ConfigManager from './modules/core/configManager.js';
 import { showNotification } from './modules/core/utils.js';
-import { initEventListeners } from './modules/core/events.js';
-import { initMap, updateMapAppearance, getMap } from './modules/ui/map.js';
 import { initPanels } from './modules/ui/panels.js';
-import { initDrawers } from './modules/ui/drawers.js';
 import { initTable } from './modules/ui/table.js';
 import { initPolarPlot } from './modules/ui/polarPlot.js';
 import { initTutorial, showTutorial } from './modules/ui/tutorial.js';
@@ -16,21 +18,25 @@ import { restoreLastLocation, loadLastLocation } from './modules/data/storage.js
 import { initCommandRegions } from './modules/data/commandRegions.js';
 import { initLocationSelector } from './modules/ui/locationSelector.js';
 import { initSatelliteCoverage } from './modules/ui/satelliteCoverage.js';
-import { VERSION } from './modules/core/version.js';
 import { showWhatsNewDialog } from './modules/ui/whatsNew.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log(`APA App ${VERSION} initializing...`);
+// Initialize version references first
+updateVersionReferences();
+
+console.log(`APA App ${VERSION} initializing...`);
+
+// Initialize core functionality
+document.addEventListener('DOMContentLoaded', () => {
+  initData();
+  initMap();
+  initDrawers();
+  initEventHandlers();
   
   // Initialize configuration manager
   ConfigManager.init();
   
-  // Initialize map
-  initMap();
-  
   // Initialize UI components
   initPanels();
-  initDrawers();
   initTable();
   initPolarPlot();
   initLegend();
@@ -41,9 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initCommandRegions();
   initLocationSelector();
   initSatelliteCoverage();
-  
-  // Set up event listeners
-  initEventListeners();
   
   // Initialize filters
   initFilters();

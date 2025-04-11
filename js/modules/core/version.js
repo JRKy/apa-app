@@ -5,6 +5,44 @@ export const VERSION = versionData.version;
 export const BUILD_DATE = versionData.buildDate;
 export const VERSION_INFO = versionData.versionInfo;
 
+/**
+ * Updates all version references in the DOM
+ */
+export function updateVersionReferences() {
+  // Update version display in header
+  const versionElement = document.getElementById('version');
+  if (versionElement) {
+    versionElement.textContent = `Version: ${VERSION}`;
+  }
+
+  // Update CSS file versions
+  const cssFiles = [
+    'base.css',
+    'layout.css',
+    'components.css',
+    'modules.css',
+    'dark-mode.css',
+    'animations.css',
+    'responsive.css'
+  ];
+
+  cssFiles.forEach(file => {
+    const link = document.querySelector(`link[href^="css/${file}"]`);
+    if (link) {
+      link.href = `css/${file}?v=${VERSION}`;
+    }
+  });
+
+  // Update script versions
+  const scripts = ['data.js', 'js/main.js', 'sw.js'];
+  scripts.forEach(file => {
+    const script = document.querySelector(`script[src^="${file}"]`);
+    if (script) {
+      script.src = `${file}?v=${VERSION}`;
+    }
+  });
+}
+
 // Features included in this version
 export const FEATURES = {
   IMPROVED_LOCATION_SELECTOR: true,

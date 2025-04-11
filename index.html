@@ -40,13 +40,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
   <!-- Modular CSS Files -->
-  <link rel="stylesheet" href="css/base.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/layout.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/components.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/modules.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/dark-mode.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/animations.css?v=2.4.5" />
-  <link rel="stylesheet" href="css/responsive.css?v=2.4.5" />
+  <link rel="stylesheet" href="css/base.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/layout.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/components.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/modules.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/dark-mode.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/animations.css" data-versioned="true" />
+  <link rel="stylesheet" href="css/responsive.css" data-versioned="true" />
 </head>
 <body>
   <header>
@@ -406,18 +406,17 @@
   </div>
 
   <!-- Scripts -->
-  <script src="data.js?v=2.4.5"></script>
-  <!-- Replace the original script reference with the modular entry point -->
-  <script type="module" src="js/main.js?v=2.4.5"></script>
+  <script src="data.js" data-versioned="true"></script>
+  <script type="module" src="js/main.js" data-versioned="true"></script>
   <script type="module">
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js?v=2.4.5", { 
+      navigator.serviceWorker.register("sw.js", { 
         type: "module",
         scope: "./"
-      }).then(reg => {
-        console.log("Service Worker registered with scope:", reg.scope);
-      }).catch(err => {
-        console.error("Service Worker registration failed:", err);
+      }).then(registration => {
+        console.log("Service Worker registered with scope:", registration.scope);
+      }).catch(error => {
+        console.error("Service Worker registration failed:", error);
       });
     }
   </script>
