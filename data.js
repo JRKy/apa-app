@@ -2,8 +2,8 @@
 
 // Global version data
 const versionData = {
-    version: "2.4.3",
-    buildDate: "2024-04-09"
+    version: "2.4.5",
+    buildDate: "2024-04-10"
 };
 
 const SATELLITES = [
