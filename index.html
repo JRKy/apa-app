@@ -42,26 +42,46 @@
 
     // Load Leaflet and then initialize the app
     loadLeaflet().then(() => {
-      // Load app scripts after Leaflet is loaded
-      const scripts = [
+      // Load core modules first
+      const coreModules = [
         'js/modules/core/version-data.js',
         'js/modules/core/data.js',
-        'js/modules/core/events.js',
+        'js/modules/core/events.js'
+      ];
+
+      // Load UI modules after core
+      const uiModules = [
         'js/modules/ui/map.js',
         'js/modules/ui/drawers.js',
         'js/modules/ui/notifications.js',
         'js/modules/ui/tutorial.js',
         'js/modules/ui/locationSelector.js',
         'js/modules/ui/satelliteCoverage.js',
-        'js/modules/ui/polarPlot.js',
-        'js/main.js'
+        'js/modules/ui/polarPlot.js'
       ];
 
-      scripts.forEach(src => {
-        const script = document.createElement('script');
-        script.src = src + '?v=2.4.8';
-        document.body.appendChild(script);
-      });
+      // Load main.js last
+      const mainScript = 'js/main.js';
+
+      // Function to load a script as a module
+      function loadModule(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.type = 'module';
+          script.src = src + '?v=2.4.8';
+          script.onload = resolve;
+          script.onerror = reject;
+          document.body.appendChild(script);
+        });
+      }
+
+      // Load modules in sequence
+      Promise.all(coreModules.map(loadModule))
+        .then(() => Promise.all(uiModules.map(loadModule)))
+        .then(() => loadModule(mainScript))
+        .catch(error => {
+          console.error('Failed to load module:', error);
+        });
     }).catch(error => {
       console.error('Failed to load Leaflet:', error);
     });
