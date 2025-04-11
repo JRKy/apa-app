@@ -50,103 +50,32 @@ function populateLocationFilterDrawer() {
  * Initialize drawer components
  */
 export function initDrawers() {
-  // Set up close buttons for all drawers
-  document.querySelectorAll('.drawer-close').forEach(closeBtn => {
-    closeBtn.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent event bubbling
-      const drawerId = this.dataset.drawer;
-      if (drawerId) {
-        closeDrawer(drawerId);
-      }
-    });
-  });
-  
-  // Set up overlay click handler
+  const drawers = document.querySelectorAll('.drawer');
   const overlay = document.querySelector('.drawer-overlay');
-  if (overlay) {
-    overlay.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeAllDrawers();
-    });
-  }
-  
-  // Set up drawer click handler to prevent closing when clicking inside
-  document.querySelectorAll('.drawer').forEach(drawer => {
+
+  drawers.forEach(drawer => {
+    const closeBtn = drawer.querySelector('.close-drawer');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => closeAllDrawers());
+    }
+
+    // Prevent drawer from closing when clicking inside
     drawer.addEventListener('click', (e) => {
       e.stopPropagation();
     });
   });
-  
-  // Set up custom location form submission
-  const customLocationBtn = document.getElementById("custom-location-btn");
-  if (customLocationBtn) {
-    customLocationBtn.addEventListener("click", handleCustomLocation);
-  }
-  
-  // Set up location search functionality
-  const locationSearchBtn = document.getElementById("location-search-btn");
-  if (locationSearchBtn) {
-    locationSearchBtn.addEventListener("click", handleLocationSearch);
-    
-    // Also enable search on Enter key
-    const locationSearchInput = document.getElementById("location-search");
-    if (locationSearchInput) {
-      locationSearchInput.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          handleLocationSearch();
-        }
-      });
+
+  // Close drawer when clicking overlay
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closeAllDrawers();
     }
-  }
-  
-  // Set up custom satellite form submission
-  const addSatelliteBtn = document.getElementById("add-satellite-btn");
-  if (addSatelliteBtn) {
-    addSatelliteBtn.addEventListener("click", handleAddSatellite);
-  }
-  
-  // Set up satellite preview functionality
-  const previewSatelliteBtn = document.getElementById("preview-satellite-btn");
-  if (previewSatelliteBtn) {
-    previewSatelliteBtn.addEventListener("click", handlePreviewSatellite);
-  }
-  
-  // Set up direct drawer toggle event handlers
-  setupDrawerToggles();
-  
-  // Populate location filter drawer
-  populateLocationFilterDrawer();
-  
-  // Set up location filter search
-  const locationFilterSearch = document.getElementById("location-filter-search");
-  if (locationFilterSearch) {
-    locationFilterSearch.addEventListener("input", (e) => {
-      const searchTerm = e.target.value.toLowerCase();
-      const locationItems = document.querySelectorAll(".location-item");
-      
-      locationItems.forEach(item => {
-        const locationName = item.querySelector("strong").textContent.toLowerCase();
-        const locationCountry = item.querySelector("span").textContent.toLowerCase();
-        const isVisible = locationName.includes(searchTerm) || locationCountry.includes(searchTerm);
-        item.style.display = isVisible ? "flex" : "none";
-      });
-    });
-  }
-  
-  // Set up AOR filter
-  const aorFilter = document.getElementById("aor-filter");
-  if (aorFilter) {
-    aorFilter.addEventListener("change", (e) => {
-      const selectedAOR = e.target.value;
-      const locationItems = document.querySelectorAll(".location-item");
-      
-      locationItems.forEach(item => {
-        const locationAOR = item.dataset.aor;
-        const isVisible = !selectedAOR || locationAOR === selectedAOR;
-        item.style.display = isVisible ? "flex" : "none";
-      });
-    });
-  }
+  });
+
+  // Initialize specific drawer functionality
+  initLocationDrawer();
+  initSatelliteDrawer();
+  initFilterDrawers();
 }
 
 /**
@@ -176,30 +105,19 @@ function setupDrawerToggles() {
  * @param {string} drawerId - ID of the drawer to show
  */
 function showDrawer(drawerId) {
-  // Hide all drawers first
-  document.querySelectorAll('.drawer').forEach(drawer => {
-    drawer.classList.remove('active');
-  });
-  
-  // Show this drawer
   const drawer = document.getElementById(drawerId);
-  if (drawer) {
+  const overlay = document.querySelector('.drawer-overlay');
+  
+  if (drawer && overlay) {
+    // Close any open drawers first
+    closeAllDrawers();
+    
+    // Show the requested drawer
     drawer.classList.add('active');
+    overlay.classList.add('active');
     
-    // Show overlay
-    const overlay = document.querySelector('.drawer-overlay');
-    if (overlay) {
-      overlay.classList.add('active');
-    }
-    
-    // If this is an input drawer, focus the first input
-    const firstInput = drawer.querySelector('input, select');
-    if (firstInput) {
-      setTimeout(() => firstInput.focus(), 100);
-    }
-    
-    // Publish event
-    eventBus.publish('drawerOpened', { drawerId });
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
   }
 }
 
@@ -216,17 +134,17 @@ export function toggleDrawer(drawerId, others = []) {
  * Close all open drawers
  */
 export function closeAllDrawers() {
-  document.querySelectorAll('.drawer').forEach(drawer => {
+  const drawers = document.querySelectorAll('.drawer');
+  const overlay = document.querySelector('.drawer-overlay');
+  
+  drawers.forEach(drawer => {
     drawer.classList.remove('active');
   });
   
-  // Hide overlay
-  const overlay = document.querySelector('.drawer-overlay');
-  if (overlay) {
-    overlay.classList.remove('active');
-  }
+  overlay.classList.remove('active');
   
-  eventBus.publish('allDrawersClosed');
+  // Restore body scrolling
+  document.body.style.overflow = '';
 }
 
 /**

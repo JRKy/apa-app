@@ -94,12 +94,17 @@ header h1 {
 
 /* ===== Map Container ===== */
 #map {
-  position: fixed;
+  position: absolute;
   top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100vw;
+  height: calc(100vh - 60px);
   background-color: var(--gray-100);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 /* ===== Drawer Layout ===== */
@@ -111,7 +116,7 @@ header h1 {
   background-color: var(--white-color);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-lg);
-  z-index: var(--zindex-modal);
+  z-index: 1006;
   transform: translateX(-100%);
   transition: transform var(--transition-base);
   padding: var(--spacing-md);
@@ -187,15 +192,17 @@ header h1 {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
-  z-index: var(--zindex-modal-backdrop);
+  z-index: 1005;
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--transition-base), visibility var(--transition-base);
+  pointer-events: none;
 }
 
 .drawer-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 /* ===== Search Input Group ===== */
