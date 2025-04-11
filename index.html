@@ -17,23 +17,54 @@
   <!-- Improved Leaflet JS loading with multiple fallbacks -->
   <script>
     function loadLeaflet() {
-      var script = document.createElement('script');
-      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-      script.onerror = function() {
-        console.log('Primary Leaflet CDN failed, trying backup CDN 1...');
-        var backupScript = document.createElement('script');
-        backupScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';
-        backupScript.onerror = function() {
-          console.log('Backup CDN 1 failed, trying backup CDN 2...');
-          var fallbackScript = document.createElement('script');
-          fallbackScript.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
-          document.head.appendChild(fallbackScript);
+      return new Promise((resolve, reject) => {
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+        script.onload = resolve;
+        script.onerror = function() {
+          console.log('Primary Leaflet CDN failed, trying backup CDN 1...');
+          var backupScript = document.createElement('script');
+          backupScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js';
+          backupScript.onload = resolve;
+          backupScript.onerror = function() {
+            console.log('Backup CDN 1 failed, trying backup CDN 2...');
+            var fallbackScript = document.createElement('script');
+            fallbackScript.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
+            fallbackScript.onload = resolve;
+            fallbackScript.onerror = reject;
+            document.head.appendChild(fallbackScript);
+          };
+          document.head.appendChild(backupScript);
         };
-        document.head.appendChild(backupScript);
-      };
-      document.head.appendChild(script);
+        document.head.appendChild(script);
+      });
     }
-    loadLeaflet();
+
+    // Load Leaflet and then initialize the app
+    loadLeaflet().then(() => {
+      // Load app scripts after Leaflet is loaded
+      const scripts = [
+        'js/modules/core/version-data.js',
+        'js/modules/core/data.js',
+        'js/modules/core/events.js',
+        'js/modules/ui/map.js',
+        'js/modules/ui/drawers.js',
+        'js/modules/ui/notifications.js',
+        'js/modules/ui/tutorial.js',
+        'js/modules/ui/locationSelector.js',
+        'js/modules/ui/satelliteCoverage.js',
+        'js/modules/ui/polarPlot.js',
+        'js/main.js'
+      ];
+
+      scripts.forEach(src => {
+        const script = document.createElement('script');
+        script.src = src + '?v=2.4.8';
+        document.body.appendChild(script);
+      });
+    }).catch(error => {
+      console.error('Failed to load Leaflet:', error);
+    });
   </script>
 
   <!-- Google Icons -->
