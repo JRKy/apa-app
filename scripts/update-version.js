@@ -38,8 +38,20 @@ indexHtml = indexHtml.replace(/<meta name="version" content="[^"]*">/, `<meta na
 // Update version span
 indexHtml = indexHtml.replace(/<span id="version">Version: [^<]*<\/span>/, `<span id="version">Version: ${version}</span>`);
 
-// Update script and css version query parameters
-indexHtml = indexHtml.replace(/\?v=\d+\.\d+\.\d+/g, `?v=${version}`);
+// Remove all existing version query parameters
+indexHtml = indexHtml.replace(/\?v=\d+\.\d+\.\d+/g, '');
+
+// Add version query parameters to all script and css files in index.html
+const scripts = indexHtml.match(/<script[^>]*src="[^"]*"[^>]*>/g) || [];
+const styles = indexHtml.match(/<link[^>]*href="[^"]*"[^>]*>/g) || [];
+
+[...scripts, ...styles].forEach(tag => {
+    const file = tag.match(/(src|href)="([^"?]*)/)[2];
+    if (file.startsWith('js/') || file.startsWith('css/')) {
+        const newTag = tag.replace(file, `${file}?v=${version}`);
+        indexHtml = indexHtml.replace(tag, newTag);
+    }
+});
 
 fs.writeFileSync(indexHtmlPath, indexHtml);
 
@@ -50,7 +62,7 @@ swContent = swContent.replace(/const APP_VERSION = '[^']*'/, `const APP_VERSION 
 swContent = swContent.replace(/const CACHE_NAME = '[^']*'/, `const CACHE_NAME = 'apa-app-cache-v${version}'`);
 fs.writeFileSync(swPath, swContent);
 
-// Update version in file headers
+// Update version in file headers and hardcoded versions
 const filesToUpdate = [
     'js/main.js',
     'js/modules/core/events.js',
@@ -62,6 +74,7 @@ const filesToUpdate = [
     'js/modules/ui/tutorial.js',
     'js/modules/ui/locationSelector.js',
     'js/modules/ui/satelliteCoverage.js',
+    'js/modules/ui/polarPlot.js',
     'css/layout.css',
     'css/modules.css',
     'css/components.css',
@@ -79,22 +92,9 @@ filesToUpdate.forEach(filePath => {
         // Update any hardcoded version strings in the file
         content = content.replace(/version\s+\d+\.\d+\.\d+/gi, `version ${version}`);
         content = content.replace(/v\d+\.\d+\.\d+/g, `v${version}`);
+        content = content.replace(/\(v\d+\.\d+\.\d+\)/g, `(v${version})`);
         fs.writeFileSync(filePath, content);
     }
 });
-
-// Add version query parameters to all script and css files in index.html
-const scripts = indexHtml.match(/<script[^>]*src="[^"]*"[^>]*>/g) || [];
-const styles = indexHtml.match(/<link[^>]*href="[^"]*"[^>]*>/g) || [];
-
-[...scripts, ...styles].forEach(tag => {
-    const file = tag.match(/(src|href)="([^"?]*)/)[2];
-    if (file.startsWith('js/') || file.startsWith('css/')) {
-        const newTag = tag.replace(file, `${file}?v=${version}`);
-        indexHtml = indexHtml.replace(tag, newTag);
-    }
-});
-
-fs.writeFileSync(indexHtmlPath, indexHtml);
 
 console.log(`Updated version to ${version} in all files`); 
