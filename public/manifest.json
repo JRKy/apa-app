@@ -1,0 +1,17 @@
+{
+  "name": "APA App",
+  "short_name": "APA",
+  "version": "2.5.0",
+  "description": "Advanced Positioning Application for satellite and location tracking",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ]
+}

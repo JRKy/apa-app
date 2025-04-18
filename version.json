@@ -1,0 +1,18 @@
+{
+  "version": "2.5.0",
+  "buildDate": "${new Date().toISOString()}",
+  "versionInfo": {
+    "major": 2,
+    "minor": 5,
+    "patch": 0
+  },
+  "features": [
+    "Version baseline update to 2.5.0"
+  ],
+  "changelog": [
+    "Updated: Baseline version set to 2.5.0"
+  ],
+  "whatsNew": [
+    "Baseline version update to 2.5.0"
+  ]
+} 

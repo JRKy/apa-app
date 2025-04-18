@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
+
+.satellite-marker {
+  background: transparent;
+  border: none;
+}
+
+.satellite-icon {
+  background: #1976d2;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.satellite-icon .material-icons-round {
+  font-size: 16px;
+  font-family: 'Material Icons Round';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.satellite-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: #1976d2;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+
+.satellite-solar-panel {
+  position: absolute;
+  width: 4px;
+  height: 16px;
+  background: #1976d2;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.satellite-solar-panel.left {
+  left: -6px;
+}
+
+.satellite-solar-panel.right {
+  right: -6px;
+}
+
+.location-marker {
+  background: transparent;
+  border: none;
+}
+
+.location-icon {
+  background: #4caf50;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+} 
