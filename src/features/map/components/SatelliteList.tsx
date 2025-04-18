@@ -1,5 +1,5 @@
 import { SATELLITES } from '@/constants/satellites';
 
-{SATELLITES.map((satellite) => {
+{SATELLITES.map((_) => {
   // ... existing code ...
 })} 

@@ -1,12 +1,15 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { calculatePointingAngles } from '../utils/pointingAngles';
 import { SATELLITES } from '@/constants/satellites';
 
+const KM_TO_MILES = 0.621371;
+
 interface Satellite {
   id: string;
   name: string;
+  timestamp: number;
   position: {
     latitude: number;
     longitude: number;
@@ -17,17 +20,12 @@ interface Satellite {
     y: number;
     z: number;
   };
-  timestamp: number;
 }
 
 interface PointingAngles {
   azimuth: number;
   elevation: number;
 }
-
-const KM_TO_MILES = 0.621371;
-const KM_TO_FEET = 3280.84; // Keeping this for reference
-const MILES_TO_FEET = 5280; // 1 mile = 5280 feet
 
 export const useSatelliteTracking = (satelliteId: string) => {
   const [satellite, setSatellite] = useState<Satellite | null>(null);
@@ -58,6 +56,7 @@ export const useSatelliteTracking = (satelliteId: string) => {
       if (foundSatellite) {
         const convertedSatellite = {
           ...foundSatellite,
+          timestamp: Date.now(),
           position: {
             ...foundSatellite.position,
             altitude: convertAltitude(foundSatellite.position.altitude)

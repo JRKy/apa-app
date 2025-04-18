@@ -13,7 +13,7 @@ export const isGoodElevation = (elevation: number | null, threshold: number = 10
   return elevation !== null && elevation >= threshold;
 };
 
-export const getSatelliteStatus = (satellite: Satellite, elevation: number | null): 'good' | 'poor' | 'below' => {
+export const getSatelliteStatus = (_satellite: Satellite, elevation: number | null): 'good' | 'poor' | 'below' => {
   if (elevation === null) return 'below';
   if (elevation >= 10) return 'good';
   if (elevation >= 0) return 'poor';
@@ -44,7 +44,6 @@ export const calculateElevationAngle = (
   
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   const R = 6371; // Earth's radius in km
-  const surfaceDistance = R * c;
 
   // Calculate elevation angle using more accurate spherical geometry
   const h = satAlt; // Satellite altitude in km

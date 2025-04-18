@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Circle, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import { Circle, Polyline } from 'react-leaflet';
 
 interface SatelliteTrackProps {
   satelliteId: string;
@@ -14,7 +13,6 @@ interface SatellitePosition {
 }
 
 const SatelliteTrack = ({ satelliteId, groundTrackPoints = 50 }: SatelliteTrackProps) => {
-  const map = useMap();
   const [positions, setPositions] = useState<SatellitePosition[]>([]);
   const [currentPosition, setCurrentPosition] = useState<SatellitePosition | null>(null);
 

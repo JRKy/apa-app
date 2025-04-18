@@ -1,8 +1,7 @@
-import { Box, Typography, Paper, CircularProgress, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Box, Typography, Paper, Alert, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useSatelliteTracking } from '@/hooks/useSatelliteTracking';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { useEffect } from 'react';
 import { SATELLITES, Satellite } from '@/constants/satellites';
 
 const GOOD_ELEVATION_THRESHOLD = 10; // degrees

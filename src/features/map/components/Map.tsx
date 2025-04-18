@@ -1,20 +1,10 @@
-import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Box } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, Polyline, LayersControl, ScaleControl, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
 import { setCenter, setZoom, setSelectedLocation } from '@/store/mapSlice';
-import { Box, IconButton, Tooltip, Typography, Button, Stack, CircularProgress } from '@mui/material';
-import MyLocationIcon from '@mui/icons-material/MyLocation';
-import SatelliteIcon from '@mui/icons-material/Satellite';
-import SatelliteAltIcon from '@mui/icons-material/SatelliteAlt';
-import { debounce } from 'lodash';
-
-// Import marker icons
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 // MUOS and ALT satellite positions (geostationary)
 const SATELLITES = [
@@ -59,29 +49,6 @@ const SATELLITES = [
     position: [0.0, 170.0, 35786],
   },
 ];
-
-// Fix for default marker icons in Leaflet with React
-const icon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
-});
-
-const locationIcon = L.icon({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  tooltipAnchor: [16, -28],
-  shadowSize: [41, 41],
-  className: 'location-marker'
-});
 
 // Create satellite icon
 const satelliteIcon = L.divIcon({
@@ -147,7 +114,6 @@ export const calculateElevationAngle = (observerLat: number, observerLon: number
   
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   const R = 6371; // Earth's radius in km
-  const surfaceDistance = R * c;
 
   // Calculate elevation angle using more accurate spherical geometry
   const h = satAlt; // Satellite altitude in km
@@ -194,80 +160,14 @@ const getMarkerIcon = (category: string) => {
   }
 };
 
-// Add spin animation
-const spinKeyframes = `
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-`;
-
-const CurrentLocationMarker: React.FC<{ location: [number, number] | null }> = ({ location }) => {
-  if (!location) return null;
-  
-  return (
-    <Marker
-      position={location}
-      icon={locationIcon}
-    >
-      <Popup>
-        Your Location<br />
-        Latitude: {location[0].toFixed(6)}°<br />
-        Longitude: {location[1].toFixed(6)}°
-      </Popup>
-    </Marker>
-  );
-};
-
-// Add custom layer control styles
-const layerControlStyle = `
-  .leaflet-control-layers {
-    background-color: white;
-    padding: 5px;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    margin-bottom: 20px;
-  }
-`;
-
-const calculateArea = (points: L.LatLng[]) => {
-  if (points.length < 3) return 0;
-  
-  let area = 0;
-  const R = 6378137; // Earth's radius in meters
-  
-  for (let i = 0; i < points.length; i++) {
-    const j = (i + 1) % points.length;
-    const p1 = points[i];
-    const p2 = points[j];
-    
-    area += p1.lng * p2.lat;
-    area -= p1.lat * p2.lng;
-  }
-  
-  area = Math.abs(area) / 2;
-  return area * Math.pow(R, 2) * Math.PI / 180;
-};
-
 interface MapProps {
   mapRef: React.RefObject<L.Map | null>;
 }
 
 const Map: React.FC<MapProps> = ({ mapRef }) => {
-  const dispatch = useDispatch();
   const center = useSelector((state: RootState) => state.map.center);
   const zoom = useSelector((state: RootState) => state.map.zoom);
   const selectedLocation = useSelector((state: RootState) => state.map.selectedLocation);
-
-  useEffect(() => {
-    // Add custom styles to the document
-    const style = document.createElement('style');
-    style.textContent = layerControlStyle;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
 
   return (
     <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -307,7 +207,7 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         {selectedLocation && (
           <Marker
             position={selectedLocation}
-            icon={locationIcon}
+            icon={satelliteIcon}
           >
             <Popup>
               Latitude: {selectedLocation[0].toFixed(6)}°<br />

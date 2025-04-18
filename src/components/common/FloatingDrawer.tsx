@@ -3,7 +3,6 @@ import {
   Drawer,
   IconButton,
   Box,
-  Typography,
   useTheme,
   useMediaQuery,
   Fade,
@@ -11,8 +10,8 @@ import {
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpIcon from '@mui/icons-material/Help';
 import CloseIcon from '@mui/icons-material/Close';
-import Settings from '@/features/settings/Settings';
-import Help from '@/features/settings/Help';
+import Settings from '@/features/settings/components/Settings';
+import Help from '@/features/settings/components/Help';
 
 interface FloatingDrawerProps {
   active: 'settings' | 'help' | null;

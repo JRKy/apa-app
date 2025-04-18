@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { Map } from '@/features/map';
 import { Settings, Help } from '@/features/settings';
@@ -22,7 +21,6 @@ import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 const MainLayout: React.FC = () => {
-  const theme = useTheme();
   const dispatch = useDispatch();
   const { showSatelliteInfo, settingsOpen, helpOpen } = useSelector((state: RootState) => state.ui);
   const mapRef = React.useRef<L.Map | null>(null);

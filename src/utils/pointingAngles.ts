@@ -70,9 +70,6 @@ export const calculateElevationAngle = (
     Math.cos(lat1) * Math.cos(lat2) * Math.cos(dLon)
   );
 
-  // Calculate the distance from observer to satellite's sub-point
-  const surfaceDistance = R * centralAngle;
-
   // Calculate the elevation angle using basic trigonometry
   const elevation = Math.atan2(
     Math.cos(centralAngle) * (R + h) - R,

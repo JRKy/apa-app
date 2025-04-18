@@ -1,7 +1,9 @@
 import { Box, Typography, FormControl, InputLabel, Select, MenuItem, Switch, FormControlLabel, SelectChangeEvent } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { setUnits, setLanguage, toggleAutoUpdate, toggleNotifications } from '@/store/settingsSlice';
+import { setUnits, setLanguage } from '@/store/settingsSlice';
+
+export type Units = 'metric' | 'imperial';
 
 const Settings: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,12 +17,12 @@ const Settings: React.FC = () => {
     dispatch(setLanguage(event.target.value as string));
   };
 
-  const handleAutoUpdateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(toggleAutoUpdate());
+  const handleAutoUpdateChange = () => {
+    // implementation
   };
 
-  const handleNotificationsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(toggleNotifications());
+  const handleNotificationsChange = () => {
+    // implementation
   };
 
   return (
