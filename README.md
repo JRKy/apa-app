@@ -2,20 +2,29 @@
 
 A web-based application for tracking and visualizing satellite positions and antenna pointing angles.
 
+[![Version](https://img.shields.io/badge/version-2.4.5-blue.svg)](https://github.com/JRKy/apa-app)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://reactjs.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/JRKy/apa-app/blob/main/LICENSE)
+
 ## Features
 
-- Interactive world map with satellite positions
-- Real-time satellite tracking
-- Antenna pointing angle calculations
-- Location search functionality
-- Unit conversion support
-- Responsive design
+- 🌍 Interactive world map with satellite positions
+- 🛰️ Real-time satellite tracking
+- 📡 Antenna pointing angle calculations
+- 🔍 Location search functionality
+- 🔄 Unit conversion support
+- 📱 Responsive design
+
+## Live Demo
+
+Visit the live application at: [https://apa-app.vercel.app](https://apa-app.vercel.app)
 
 ## Tech Stack
 
 - React 19
-- TypeScript
-- Vite
+- TypeScript 5.7
+- Vite 6.3
 - Material-UI v7
 - Redux Toolkit
 - Leaflet for mapping
@@ -32,8 +41,8 @@ A web-based application for tracking and visualizing satellite positions and ant
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/apa-app-cursor-mac.git
-cd apa-app-cursor-mac
+git clone https://github.com/JRKy/apa-app.git
+cd apa-app
 ```
 
 2. Install dependencies
@@ -46,19 +55,39 @@ npm install
 npm run dev
 ```
 
-4. Build for production
+The application will be available at `http://localhost:5173`
+
+### Production Build
+
+To create a production build:
+
 ```bash
 npm run build
 ```
 
-## Environment Variables
+The built files will be in the `dist` directory.
 
-No environment variables are required for basic functionality.
+## Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/JRKy/apa-app/blob/main/LICENSE) file for details.
+
+## Changelog
+
+See [CHANGELOG.md](https://github.com/JRKy/apa-app/blob/main/CHANGELOG.md) for a list of changes and updates.

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+Repository: [https://github.com/JRKy/apa-app](https://github.com/JRKy/apa-app)
+
+[Current version: 2.4.5]
+
+For the latest updates, please visit the [releases page](https://github.com/JRKy/apa-app/releases).
+
 ## [2.4.5] - 2025-04-10
 
 ### Added
