@@ -256,10 +256,20 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         zoomControl={false}
         aria-label="Interactive map"
       >
-        <ZoomControl position="topleft" />
-        <ScaleControl position="bottomleft" />
-        <LayersControl position="topright">
-          <LayersControl.BaseLayer checked={!isDarkMode} name="OpenStreetMap">
+        <ZoomControl 
+          position="topleft"
+          zoomInText="+"
+          zoomOutText="-"
+        />
+        <ScaleControl 
+          position="bottomleft"
+          imperial={false}
+        />
+        <LayersControl 
+          position="topright"
+          collapsed={window.innerWidth <= 768}
+        >
+          <LayersControl.BaseLayer checked={!isDarkMode} name="Light">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -61,6 +61,19 @@ export const LocationButton: React.FC<LocationButtonProps> = ({ mapRef, onLocati
             color: theme.palette.mode === 'dark' 
               ? theme.palette.grey[100] 
               : theme.palette.grey[900],
+            backgroundColor: theme.palette.mode === 'dark'
+              ? theme.palette.grey[800]
+              : theme.palette.grey[100],
+            boxShadow: theme.palette.mode === 'dark'
+              ? '0 2px 4px rgba(0, 0, 0, 0.3)'
+              : '0 2px 4px rgba(0, 0, 0, 0.1)',
+            '&:hover': {
+              backgroundColor: theme.palette.mode === 'dark'
+                ? theme.palette.grey[700]
+                : theme.palette.grey[200],
+            },
+            padding: { xs: '8px', sm: '6px' },
+            fontSize: { xs: '1.25rem', sm: '1rem' },
           }}
         >
           <LocationOnIcon sx={{ fontSize: 'inherit' }} />

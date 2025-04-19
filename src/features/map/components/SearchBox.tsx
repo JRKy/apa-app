@@ -73,7 +73,8 @@ const SearchBox: React.FC = () => {
       sx={{
         position: 'absolute',
         top: '10px',
-        left: '50px',
+        left: { xs: '10px', sm: '50px' },
+        right: { xs: '10px', sm: 'auto' },
         zIndex: 400,
       }}
     >
@@ -91,6 +92,7 @@ const SearchBox: React.FC = () => {
           boxShadow: theme.palette.mode === 'dark' 
             ? '0 2px 4px rgba(0, 0, 0, 0.3)' 
             : '0 2px 4px rgba(0, 0, 0, 0.1)',
+          width: { xs: '100%', sm: 'auto' },
         }}
         role="search"
         aria-label="Search location"
@@ -115,6 +117,9 @@ const SearchBox: React.FC = () => {
           onInputChange={(_, newInputValue) => {
             setSearchQuery(newInputValue);
           }}
+          sx={{
+            width: { xs: '100%', sm: 200 },
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -122,12 +127,13 @@ const SearchBox: React.FC = () => {
               variant="standard"
               size="small"
               sx={{
-                width: 200,
+                width: '100%',
                 '& .MuiInputBase-root': {
                   color: theme.palette.mode === 'dark' 
                     ? theme.palette.grey[100] 
                     : theme.palette.grey[900],
                   padding: '4px 8px',
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
                 },
                 '& .MuiInput-underline:before': {
                   borderBottomColor: theme.palette.mode === 'dark' 
