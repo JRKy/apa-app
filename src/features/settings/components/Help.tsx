@@ -32,11 +32,21 @@ const Help = ({ open, onClose }: HelpProps) => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                You can select a location in two ways:
+                You can select a location in three ways:
               </Typography>
               <ul>
                 <li>Click directly on the map</li>
-                <li>Use the search box to find a specific location</li>
+                <li>Use the search box with autocomplete to find a specific location</li>
+                <li>Use the location button to get your current position</li>
+              </ul>
+              <Typography>
+                The search box supports:
+              </Typography>
+              <ul>
+                <li>City names</li>
+                <li>Addresses</li>
+                <li>Landmarks</li>
+                <li>Coordinates (latitude, longitude)</li>
               </ul>
               <Typography>
                 Once selected, the application will calculate pointing angles to all satellites from that location.
@@ -66,18 +76,23 @@ const Help = ({ open, onClose }: HelpProps) => {
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>What information is shown for each satellite?</Typography>
+              <Typography>What are the Combatant Command regions?</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                For each satellite, you can see:
+                The map shows color-coded regions for different Combatant Commands:
               </Typography>
               <ul>
-                <li>Elevation angle (Elev)</li>
-                <li>Azimuth angle (Az)</li>
-                <li>Longitude (Lon)</li>
-                <li>Altitude (Alt) - toggleable between km and mi</li>
+                <li>NORTHCOM (North American Command)</li>
+                <li>SOUTHCOM (Southern Command)</li>
+                <li>EUCOM (European Command)</li>
+                <li>AFRICOM (African Command)</li>
+                <li>CENTCOM (Central Command)</li>
+                <li>INDOPACOM (Indo-Pacific Command)</li>
               </ul>
+              <Typography>
+                These regions help visualize the geographic areas of responsibility for each command.
+              </Typography>
             </AccordionDetails>
           </Accordion>
 
@@ -89,6 +104,25 @@ const Help = ({ open, onClose }: HelpProps) => {
               <Typography>
                 Use the km/mi toggle in the satellite information panel to switch between metric (kilometers) 
                 and imperial (miles) units for altitude measurements.
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>How do I change the map theme?</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                Click the theme toggle button in the top-right corner to switch between:
+              </Typography>
+              <ul>
+                <li>Light mode</li>
+                <li>Dark mode</li>
+                <li>System preference</li>
+              </ul>
+              <Typography>
+                The map tiles will automatically adjust to match your selected theme.
               </Typography>
             </AccordionDetails>
           </Accordion>

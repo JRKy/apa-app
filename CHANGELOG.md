@@ -4,11 +4,31 @@ All notable changes to this project will be documented in this file.
 
 Repository: [https://github.com/JRKy/apa-app](https://github.com/JRKy/apa-app)
 
-[Current version: 2.4.5]
+[Current version: 3.0]
 
 For the latest updates, please visit the [releases page](https://github.com/JRKy/apa-app/releases).
 
-## [2.4.5] - 2025-04-10
+## [3.0] - 2024-04-10
+
+### Added
+- Enhanced search functionality with autocomplete
+- Improved location search with debounced API calls
+- Loading indicators for search operations
+- Better error handling for geocoding operations
+
+### Changed
+- Updated search box UI for better usability
+- Improved search result display
+- Enhanced mobile responsiveness
+- Optimized map controls positioning
+
+### Fixed
+- Search box autocomplete functionality
+- Map control overlap issues
+- Theme consistency across components
+- TypeScript type definitions
+
+## [2.4.5] - 2024-04-10
 
 ### Added
 - Enhanced search input group styling for better consistency

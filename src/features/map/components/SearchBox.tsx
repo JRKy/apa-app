@@ -1,45 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Box, TextField, IconButton, Paper } from '@mui/material';
+import { Box, TextField, IconButton, Paper, Autocomplete, CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { setSelectedLocation } from '@/store/mapSlice';
 
-interface SearchBoxProps {
-  mapRef: React.RefObject<L.Map | null>;
+interface SearchResult {
+  display_name: string;
+  lat: string;
+  lon: string;
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ mapRef }) => {
+const SearchBox: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const map = useMap();
   const theme = useTheme();
   const dispatch = useDispatch();
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
+  useEffect(() => {
+    let timeoutId: number;
 
-    try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`
-      );
-      const data = await response.json();
-
-      if (data && data.length > 0) {
-        const { lat, lon } = data[0];
-        const location: [number, number] = [parseFloat(lat), parseFloat(lon)];
-        
-        // Update the map view
-        map.setView(location, 13);
-        
-        // Update the selected location in the store
-        dispatch(setSelectedLocation(location));
+    const fetchResults = async () => {
+      if (!searchQuery.trim()) {
+        setSearchResults([]);
+        return;
       }
-    } catch (error) {
-      console.error('Error searching location:', error);
+
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
+          {
+            headers: {
+              'User-Agent': 'APA-App/1.0',
+              'Accept-Language': 'en',
+            },
+          }
+        );
+        const data = await response.json();
+        setSearchResults(data);
+      } catch (error) {
+        console.error('Error searching location:', error);
+        setSearchResults([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (searchQuery.trim()) {
+      timeoutId = window.setTimeout(fetchResults, 500); // Debounce search
     }
+
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery]);
+
+  const handleLocationSelect = (result: SearchResult) => {
+    const location: [number, number] = [parseFloat(result.lat), parseFloat(result.lon)];
+    map.setView(location, 13);
+    dispatch(setSelectedLocation(location));
+    setSearchQuery(result.display_name);
+    setOpen(false);
   };
 
   return (
@@ -70,58 +96,75 @@ const SearchBox: React.FC<SearchBoxProps> = ({ mapRef }) => {
         aria-label="Search location"
         onClick={(e) => e.stopPropagation()}
       >
-        <TextField
+        <Autocomplete
+          freeSolo
+          open={open}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          options={searchResults}
+          getOptionLabel={(option) => 
+            typeof option === 'string' ? option : option.display_name
+          }
+          loading={loading}
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder="Search location..."
-          variant="standard"
-          size="small"
-          sx={{
-            width: 200,
-            '& .MuiInputBase-root': {
-              color: theme.palette.mode === 'dark' 
-                ? theme.palette.grey[100] 
-                : theme.palette.grey[900],
-              padding: '4px 8px',
-            },
-            '& .MuiInput-underline:before': {
-              borderBottomColor: theme.palette.mode === 'dark' 
-                ? theme.palette.grey[700] 
-                : theme.palette.grey[300],
-            },
-            '& .MuiInput-underline:after': {
-              borderBottomColor: theme.palette.mode === 'dark' 
-                ? theme.palette.grey[500] 
-                : theme.palette.grey[400],
-            },
+          onChange={(_, newValue) => {
+            if (newValue && typeof newValue !== 'string') {
+              handleLocationSelect(newValue);
+            }
           }}
-          InputProps={{
-            disableUnderline: true,
-            'aria-label': 'Search location input',
+          onInputChange={(_, newInputValue) => {
+            setSearchQuery(newInputValue);
           }}
-          onClick={(e) => e.stopPropagation()}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search location..."
+              variant="standard"
+              size="small"
+              sx={{
+                width: 200,
+                '& .MuiInputBase-root': {
+                  color: theme.palette.mode === 'dark' 
+                    ? theme.palette.grey[100] 
+                    : theme.palette.grey[900],
+                  padding: '4px 8px',
+                },
+                '& .MuiInput-underline:before': {
+                  borderBottomColor: theme.palette.mode === 'dark' 
+                    ? theme.palette.grey[700] 
+                    : theme.palette.grey[300],
+                },
+                '& .MuiInput-underline:after': {
+                  borderBottomColor: theme.palette.mode === 'dark' 
+                    ? theme.palette.grey[500] 
+                    : theme.palette.grey[400],
+                },
+              }}
+              InputProps={{
+                ...params.InputProps,
+                disableUnderline: true,
+                'aria-label': 'Search location input',
+                endAdornment: (
+                  <>
+                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                    {params.InputProps.endAdornment}
+                  </>
+                ),
+              }}
+            />
+          )}
+          renderOption={(props, option) => (
+            <li {...props}>
+              {option.display_name}
+            </li>
+          )}
         />
-        <IconButton
-          onClick={(e) => {
-            e.stopPropagation();
-            handleSearch();
-          }}
-          size="small"
-          sx={{
-            color: theme.palette.mode === 'dark' 
-              ? theme.palette.grey[100] 
-              : theme.palette.grey[900],
-          }}
-          aria-label="Search"
-        >
-          <SearchIcon />
-        </IconButton>
         {searchQuery && (
           <IconButton
             onClick={(e) => {
               e.stopPropagation();
               setSearchQuery('');
+              setSearchResults([]);
             }}
             size="small"
             sx={{

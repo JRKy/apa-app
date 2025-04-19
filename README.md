@@ -2,7 +2,7 @@
 
 A web-based application for calculating antenna pointing angles to MUOS and ALT satellites.
 
-[![Version](https://img.shields.io/badge/version-2.4.5-blue.svg)](https://github.com/JRKy/apa-app)
+[![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/JRKy/apa-app)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://reactjs.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/JRKy/apa-app/blob/main/LICENSE)
@@ -12,9 +12,12 @@ A web-based application for calculating antenna pointing angles to MUOS and ALT 
 - 🌍 Interactive world map with satellite positions
 - 🛰️ Real-time satellite tracking
 - 📡 Antenna pointing angle calculations
-- 🔍 Location search functionality
-- 🔄 Unit conversion support
+- 🔍 Advanced location search with autocomplete
+- 🔄 Unit conversion support (km/mi)
 - 📱 Responsive design
+- 🌙 Dark/Light theme support
+- 🗺️ Combatant Command region visualization
+- 📊 Satellite visibility indicators
 
 ## Live Demo
 
