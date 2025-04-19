@@ -11,7 +11,7 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 ## [3.0.1] - 2024-04-11
 
 ### Changed
-- Updated application name to consistently use "Antenna Pointing Angles Application" (APAA)
+- Updated application name to "APAA"
 - Improved APAA badge styling and readability
 - Standardized naming across all documentation and UI elements
 
@@ -53,18 +53,15 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 
 ## [2.3.1] - 2025-04-03
 
-### Added
-- Combatant Command region visualization feature
-- Toggle to display geographic command boundaries on the map
-- Color-coded regions for NORTHCOM, SOUTHCOM, EUCOM, AFRICOM, CENTCOM, and INDOPACOM
-
 ### Changed
-- Replaced satellite footprint visualization with command regions
-- Updated map legend to show command region colors
-- Changed "language" icon to "map" icon for the command regions toggle button
+- Updated map layer options and visibility controls
+- Improved satellite position indicators
+- Enhanced map control positioning for better mobile access
 
 ### Fixed
 - Resolved issues with visualization near the International Date Line
+- Improved satellite tracking accuracy
+- Enhanced mobile UI responsiveness
 
 ## [2.3.0] - 2025-04-02
 
@@ -75,8 +72,8 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 - Fixed global satellite coverage across the 180/-180 longitude boundary
 
 ### Changed
-- Repositioned APAA panel toggle button to prevent overlap with help button
-- Enhanced mobile responsive layout for APAA table button
+- Repositioned APAA panel toggle button
+- Enhanced mobile responsive layout
 - Optimized search input field for better usability
 - Improved satellite visibility calculation for global coverage
 

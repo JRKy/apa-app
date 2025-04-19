@@ -116,7 +116,6 @@ const MainLayout: React.FC = () => {
                 letterSpacing: '-0.01em',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1,
               }}
             >
               <span style={{ 
@@ -129,7 +128,6 @@ const MainLayout: React.FC = () => {
               }}>
                 APAA
               </span>
-              by J. Kennedy
             </Box>
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>

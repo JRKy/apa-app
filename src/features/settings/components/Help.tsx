@@ -56,43 +56,40 @@ const Help = ({ open, onClose }: HelpProps) => {
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>What do the satellite colors and lines mean?</Typography>
+              <Typography>What do the different map layers show?</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                The satellite information and connection lines are color-coded based on elevation angle:
+                The application offers four different map layers:
               </Typography>
               <ul>
-                <li>Green (solid line): Good visibility (elevation ≥ 10°)</li>
-                <li>Blue (dashed line): Poor visibility (elevation between 0° and 10°)</li>
-                <li>Red (dashed line): Not visible/below horizon (elevation ≤ 0°)</li>
+                <li><strong>Light Mode:</strong> Standard map view with good visibility in daylight</li>
+                <li><strong>Dark Mode:</strong> High-contrast theme for better visibility in low-light conditions</li>
+                <li><strong>Satellite:</strong> Satellite imagery for detailed terrain visualization</li>
+                <li><strong>Terrain:</strong> Topographic view showing elevation contours</li>
               </ul>
-              <Typography>
-                The lines on the map show the direct path between your selected location and each satellite,
-                with the line style indicating the satellite's visibility from that location.
-              </Typography>
             </AccordionDetails>
           </Accordion>
 
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography>What are the Combatant Command regions?</Typography>
+              <Typography>How do I interpret the satellite information?</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <Typography>
-                The map shows color-coded regions for different Combatant Commands:
+                For each satellite, the application shows:
               </Typography>
               <ul>
-                <li>NORTHCOM (North American Command)</li>
-                <li>SOUTHCOM (Southern Command)</li>
-                <li>EUCOM (European Command)</li>
-                <li>AFRICOM (African Command)</li>
-                <li>CENTCOM (Central Command)</li>
-                <li>INDOPACOM (Indo-Pacific Command)</li>
+                <li><strong>Elevation Angle:</strong> The angle above the horizon (higher is better)</li>
+                <li><strong>Azimuth:</strong> The horizontal direction to point your antenna</li>
+                <li><strong>Line Quality:</strong> Visual indicator of signal quality based on elevation:
+                  <ul>
+                    <li>Solid Green: Good visibility (elevation {'>'} 20°)</li>
+                    <li>Dashed Blue: Poor visibility (5° - 20°)</li>
+                    <li>Dotted Red: Below horizon or blocked ({'<'} 5°)</li>
+                  </ul>
+                </li>
               </ul>
-              <Typography>
-                These regions help visualize the geographic areas of responsibility for each command.
-              </Typography>
             </AccordionDetails>
           </Accordion>
 
