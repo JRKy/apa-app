@@ -94,3 +94,6 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 ## Changelog
 
 See [CHANGELOG.md](https://github.com/JRKy/apa-app/blob/main/CHANGELOG.md) for a list of changes and updates.
+
+## Deployment
+This application is deployed on Vercel and automatically updates when changes are pushed to the stable-ui-version branch.
