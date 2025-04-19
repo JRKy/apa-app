@@ -102,7 +102,7 @@ const MainLayout: React.FC = () => {
               flexGrow: 1, 
               ml: 2,
               display: 'flex',
-              flexDirection: 'column',
+              alignItems: 'center',
               color: theme.palette.mode === 'dark' 
                 ? theme.palette.grey[100] 
                 : theme.palette.grey[900],
@@ -111,51 +111,26 @@ const MainLayout: React.FC = () => {
             <Box
               component="span"
               sx={{
-                fontSize: '1.25rem',
+                fontSize: '1.125rem',
                 fontWeight: 600,
-                letterSpacing: '-0.02em',
-                lineHeight: 1.2,
-                mb: 0.5,
-              }}
-            >
-              Antenna Pointing Angles Application
-            </Box>
-            <Typography
-              component="span"
-              variant="caption"
-              sx={{
-                fontSize: '0.75rem',
-                fontWeight: 500,
-                letterSpacing: '0.02em',
-                color: theme.palette.mode === 'dark' 
-                  ? theme.palette.grey[400] 
-                  : theme.palette.grey[600],
+                letterSpacing: '-0.01em',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 0.5,
+                gap: 1,
               }}
             >
-              <Box
-                component="span"
-                sx={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '3em',
-                  height: '1.5em',
-                  borderRadius: '4px',
-                  backgroundColor: theme.palette.primary.main,
-                  color: theme.palette.primary.contrastText,
-                  fontSize: '0.85em',
-                  fontWeight: 700,
-                  mr: 0.5,
-                  padding: '0 0.75em',
-                }}
-              >
+              <span style={{ 
+                backgroundColor: theme.palette.primary.main,
+                color: '#fff',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '0.875rem',
+                fontWeight: 700,
+              }}>
                 APAA
-              </Box>
+              </span>
               by J. Kennedy
-            </Typography>
+            </Box>
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
             <IconButton
