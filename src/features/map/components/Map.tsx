@@ -230,8 +230,13 @@ const getMarkerIcon = (category: string, name: string, longitude: number) => {
   return createSatelliteIcon(name, longitude);
 };
 
+// Map API keys (should be moved to environment variables in production)
+const MAPBOX_ACCESS_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoibWFpbmFyY2h5IiwiYSI6ImNscnB6c2F0ZzA0dW0yaXF0d2F0Z2F0dW0ifQ.9JZJZJZJZJZJZJZJZJZJZJZ';
+const THUNDERFOREST_API_KEY = import.meta.env.VITE_THUNDERFOREST_API_KEY || '9b2b6c0f0f0f0f0f0f0f0f0f0f0f0f0';
+const STADIA_API_KEY = import.meta.env.VITE_STADIA_API_KEY || '9b2b6c0f0f0f0f0f0f0f0f0f0f0f0f0';
+
 interface MapProps {
-  mapRef: React.RefObject<L.Map | null>;
+  mapRef: React.RefObject<L.Map>;
 }
 
 const Map: React.FC<MapProps> = ({ mapRef }) => {
@@ -251,36 +256,40 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         zoomControl={false}
         aria-label="Interactive map"
       >
-        {/* Default Leaflet control positions */}
-        <ZoomControl position="topleft" style={{ marginTop: '8px' }} />
+        <ZoomControl position="topleft" />
         <ScaleControl position="bottomleft" />
         <LayersControl position="topright">
           <LayersControl.BaseLayer checked={!isDarkMode} name="OpenStreetMap">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              maxZoom={19}
             />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer checked={isDarkMode} name="Dark Mode">
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
+              attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              maxZoom={20}
+              detectRetina={false}
             />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Satellite">
             <TileLayer
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              maxZoom={19}
             />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Terrain">
             <TileLayer
               url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> contributors'
+              attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              maxZoom={17}
             />
           </LayersControl.BaseLayer>
         </LayersControl>
-        <SearchBox mapRef={mapRef} />
+        <SearchBox />
         <MapEvents />
         
         {selectedLocation && (

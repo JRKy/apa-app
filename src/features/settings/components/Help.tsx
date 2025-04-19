@@ -17,8 +17,8 @@ const Help = ({ open, onClose }: HelpProps) => {
           <Typography variant="h6" gutterBottom>
             Getting Started
           </Typography>
-          <Typography paragraph>
-            Welcome to the Antenna Pointing Angle (APA) Application! This tool helps you calculate 
+          <Typography variant="body1" paragraph>
+            Welcome to the Antenna Pointing Angles (APAA) Application! This tool helps you calculate 
             antenna pointing angles for MUOS and ALT satellites based on your selected location.
           </Typography>
           

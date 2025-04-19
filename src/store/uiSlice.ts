@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type Theme = 'light' | 'dark' | 'system';
+export type ContrastMode = 'normal' | 'high';
 
 interface UIState {
   showSatelliteInfo: boolean;
   helpOpen: boolean;
   showSatellitePlotLines: boolean;
   theme: Theme;
+  contrastMode: ContrastMode;
   satelliteWindow: {
     position: { x: number; y: number };
     size: { width: number; height: number };
@@ -16,6 +18,11 @@ interface UIState {
 const loadInitialTheme = (): Theme => {
   const savedTheme = localStorage.getItem('theme') as Theme | null;
   return savedTheme || 'system';
+};
+
+const loadInitialContrastMode = (): ContrastMode => {
+  const savedContrastMode = localStorage.getItem('contrastMode') as ContrastMode | null;
+  return savedContrastMode || 'normal';
 };
 
 const loadSatelliteWindow = () => {
@@ -34,6 +41,7 @@ const initialState: UIState = {
   helpOpen: false,
   showSatellitePlotLines: false,
   theme: loadInitialTheme(),
+  contrastMode: loadInitialContrastMode(),
   satelliteWindow: loadSatelliteWindow(),
 };
 
@@ -54,6 +62,10 @@ const uiSlice = createSlice({
       state.theme = action.payload;
       localStorage.setItem('theme', action.payload);
     },
+    setContrastMode: (state, action: PayloadAction<ContrastMode>) => {
+      state.contrastMode = action.payload;
+      localStorage.setItem('contrastMode', action.payload);
+    },
     setSatelliteWindow: (state, action: PayloadAction<UIState['satelliteWindow']>) => {
       state.satelliteWindow = action.payload;
       localStorage.setItem('satelliteWindow', JSON.stringify(action.payload));
@@ -66,6 +78,7 @@ export const {
   setHelpOpen,
   toggleSatellitePlotLines,
   setTheme,
+  setContrastMode,
   setSatelliteWindow,
 } = uiSlice.actions;
 

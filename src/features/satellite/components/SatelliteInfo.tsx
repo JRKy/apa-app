@@ -158,7 +158,7 @@ export const SatelliteInfo: React.FC = () => {
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`,
           {
             headers: {
-              'User-Agent': 'APA-App/1.0',
+              'User-Agent': 'APAA-App/1.0',
               'Accept-Language': 'en',
             },
           }

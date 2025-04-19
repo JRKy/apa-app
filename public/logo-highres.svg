@@ -65,7 +65,7 @@
         <rect x="-15" y="-30" width="30" height="60" class="orange" />
     </g>
 
-    <!-- Text path for "ANTENNA POINTING ANGLE APPLICATION" -->
+    <!-- Text path for "ANTENNA POINTING ANGLES APPLICATION" -->
     <path id="titlePath" 
         d="M256,100 A170,170 0 0,1 256,100" 
         fill="none" 
@@ -73,7 +73,7 @@
     />
     <text class="navy" font-family="Arial Black, sans-serif" font-size="28">
         <textPath href="#titlePath" startOffset="50%" text-anchor="middle">
-            ANTENNA POINTING ANGLE APPLICATION
+            ANTENNA POINTING ANGLES APPLICATION
         </textPath>
     </text>
 

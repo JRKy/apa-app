@@ -38,7 +38,7 @@ const SearchBox: React.FC = () => {
           `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
           {
             headers: {
-              'User-Agent': 'APA-App/1.0',
+              'User-Agent': 'APAA-App/1.0',
               'Accept-Language': 'en',
             },
           }
@@ -153,11 +153,14 @@ const SearchBox: React.FC = () => {
               }}
             />
           )}
-          renderOption={(props, option) => (
-            <li {...props}>
-              {option.display_name}
-            </li>
-          )}
+          renderOption={(props, option) => {
+            const { key, ...otherProps } = props;
+            return (
+              <li key={key} {...otherProps}>
+                {option.display_name}
+              </li>
+            );
+          }}
         />
         {searchQuery && (
           <IconButton

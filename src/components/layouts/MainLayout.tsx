@@ -101,22 +101,59 @@ const MainLayout: React.FC = () => {
             sx={{ 
               flexGrow: 1, 
               ml: 2,
+              display: 'flex',
+              flexDirection: 'column',
               color: theme.palette.mode === 'dark' 
                 ? theme.palette.grey[100] 
                 : theme.palette.grey[900],
             }}
           >
-            Antenna Pointing Angle Application
+            <Box
+              component="span"
+              sx={{
+                fontSize: '1.25rem',
+                fontWeight: 600,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                mb: 0.5,
+              }}
+            >
+              Antenna Pointing Angles Application
+            </Box>
             <Typography
               component="span"
               variant="caption"
               sx={{
-                verticalAlign: 'sub',
-                fontSize: '0.7em',
-                ml: 1,
-                opacity: 0.8,
+                fontSize: '0.75rem',
+                fontWeight: 500,
+                letterSpacing: '0.02em',
+                color: theme.palette.mode === 'dark' 
+                  ? theme.palette.grey[400] 
+                  : theme.palette.grey[600],
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
               }}
             >
+              <Box
+                component="span"
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '3em',
+                  height: '1.5em',
+                  borderRadius: '4px',
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  fontSize: '0.85em',
+                  fontWeight: 700,
+                  mr: 0.5,
+                  padding: '0 0.75em',
+                }}
+              >
+                APAA
+              </Box>
               by J. Kennedy
             </Typography>
           </Typography>

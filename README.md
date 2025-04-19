@@ -1,4 +1,4 @@
-# Antenna Pointing Angle (APA) Application
+# Antenna Pointing Angles (APAA) Application
 
 A web-based application for calculating antenna pointing angles to MUOS and ALT satellites.
 
@@ -11,7 +11,7 @@ A web-based application for calculating antenna pointing angles to MUOS and ALT 
 
 - 🌍 Interactive world map with satellite positions
 - 🛰️ Real-time satellite tracking
-- 📡 Antenna pointing angle calculations
+- 📡 Antenna pointing angles calculations
 - 🔍 Advanced location search with autocomplete
 - 🔄 Unit conversion support (km/mi)
 - 📱 Responsive design
@@ -21,7 +21,7 @@ A web-based application for calculating antenna pointing angles to MUOS and ALT 
 
 ## Live Demo
 
-Visit the live application at: [https://apa-app.vercel.app](https://apa-app.vercel.app)
+Visit the live application at: [https://apaa-app.vercel.app](https://apaa-app.vercel.app)
 
 ## Tech Stack
 
@@ -44,8 +44,8 @@ Visit the live application at: [https://apa-app.vercel.app](https://apa-app.verc
 
 1. Clone the repository
 ```bash
-git clone https://github.com/JRKy/apa-app.git
-cd apa-app
+git clone https://github.com/JRKy/apaa-app.git
+cd apaa-app
 ```
 
 2. Install dependencies
@@ -89,11 +89,11 @@ The built files will be in the `dist` directory.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/JRKy/apa-app/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/JRKy/apaa-app/blob/main/LICENSE) file for details.
 
 ## Changelog
 
-See [CHANGELOG.md](https://github.com/JRKy/apa-app/blob/main/CHANGELOG.md) for a list of changes and updates.
+See [CHANGELOG.md](https://github.com/JRKy/apaa-app/blob/main/CHANGELOG.md) for a list of changes and updates.
 
 ## Deployment
 This application is deployed on Vercel and automatically updates when changes are pushed to the stable-ui-version branch.
