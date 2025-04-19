@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "buildCommand": "npm run build",
+  "buildCommand": "rm -rf dist && npm run build",
   "devCommand": "npm run dev",
   "outputDirectory": "dist",
   "rewrites": [
