@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Box, TextField, IconButton, Paper, Autocomplete, CircularProgress } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
+import { Box, TextField, Paper, Autocomplete, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { setSelectedLocation } from '@/store/mapSlice';
@@ -76,6 +74,7 @@ const SearchBox: React.FC = () => {
         left: { xs: '10px', sm: '50px' },
         right: { xs: '10px', sm: 'auto' },
         zIndex: 400,
+        width: { xs: 'calc(100% - 20px)', sm: '400px' },
       }}
     >
       <Box
@@ -92,7 +91,7 @@ const SearchBox: React.FC = () => {
           boxShadow: theme.palette.mode === 'dark' 
             ? '0 2px 4px rgba(0, 0, 0, 0.3)' 
             : '0 2px 4px rgba(0, 0, 0, 0.1)',
-          width: { xs: '100%', sm: 'auto' },
+          width: '100%',
         }}
         role="search"
         aria-label="Search location"
@@ -118,7 +117,7 @@ const SearchBox: React.FC = () => {
             setSearchQuery(newInputValue);
           }}
           sx={{
-            width: { xs: '100%', sm: 200 },
+            width: '100%',
           }}
           renderInput={(params) => (
             <TextField
@@ -132,7 +131,7 @@ const SearchBox: React.FC = () => {
                   color: theme.palette.mode === 'dark' 
                     ? theme.palette.grey[100] 
                     : theme.palette.grey[900],
-                  padding: '4px 8px',
+                  padding: { xs: '4px 4px', sm: '4px 8px' },
                   fontSize: { xs: '0.875rem', sm: '1rem' },
                 },
                 '& .MuiInput-underline:before': {
@@ -168,24 +167,6 @@ const SearchBox: React.FC = () => {
             );
           }}
         />
-        {searchQuery && (
-          <IconButton
-            onClick={(e) => {
-              e.stopPropagation();
-              setSearchQuery('');
-              setSearchResults([]);
-            }}
-            size="small"
-            sx={{
-              color: theme.palette.mode === 'dark' 
-                ? theme.palette.grey[100] 
-                : theme.palette.grey[900],
-            }}
-            aria-label="Clear search"
-          >
-            <ClearIcon />
-          </IconButton>
-        )}
       </Box>
     </Box>
   );

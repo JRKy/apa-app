@@ -65,6 +65,9 @@ const createSatelliteIcon = (name: string, longitude: number) => {
         align-items: center;
         text-align: center;
         min-width: 120px;
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
       ">
         <div style="
           font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
@@ -78,7 +81,6 @@ const createSatelliteIcon = (name: string, longitude: number) => {
           white-space: nowrap;
           box-shadow: ${isDarkMode ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'};
           line-height: 1.4;
-          transform: translateX(-50%);
         ">
           <div style="font-weight: 600;">${name}</div>
           <div style="color: ${isDarkMode ? '#A0AEC0' : '#4A5568'};">${longitude.toFixed(1)}°</div>
@@ -102,8 +104,8 @@ const createSatelliteIcon = (name: string, longitude: number) => {
         </div>
       </div>`,
     iconSize: [28, 28],
-    iconAnchor: [14, 46],
-    popupAnchor: [0, -50]
+    iconAnchor: [14, 60],
+    popupAnchor: [0, -64]
   });
 };
 
@@ -260,9 +262,11 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         aria-label="Interactive map"
       >
         <ZoomControl 
-          position="bottomleft"
+          position="topleft"
           zoomInText="+"
           zoomOutText="-"
+          zoomInTitle="Zoom in"
+          zoomOutTitle="Zoom out"
         />
         <ScaleControl 
           position="bottomleft"

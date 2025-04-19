@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, IconButton, Tooltip, Typography, useTheme, Divider, AppBar, Toolbar } from '@mui/material';
+import { Box, IconButton, Typography, useTheme, AppBar, Toolbar } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Map } from '@/features/map';
 import Help from '@/features/settings/components/Help';
@@ -16,30 +16,16 @@ import {
 } from '@/store/uiSlice';
 import { LocationButton } from '@/features/map/components/LocationButton';
 import SearchBox from '@/features/map/components/SearchBox';
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
-import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
 import Logo from '@/components/Logo';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
 
 const MainLayout: React.FC = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const { showSatelliteInfo, helpOpen, theme: themePreference } = useSelector((state: RootState) => state.ui);
   const mapRef = React.useRef<L.Map | null>(null);
-  const [isFullscreen, setIsFullscreen] = React.useState(false);
-
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  };
 
   const handleThemeToggle = () => {
     if (themePreference === 'light') {
@@ -121,10 +107,14 @@ const MainLayout: React.FC = () => {
               <span style={{ 
                 backgroundColor: theme.palette.primary.main,
                 color: '#fff',
-                padding: '2px 6px',
-                borderRadius: '4px',
-                fontSize: '0.875rem',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                fontSize: '1rem',
                 fontWeight: 700,
+                letterSpacing: '0.02em',
+                boxShadow: theme.palette.mode === 'dark' 
+                  ? '0 2px 4px rgba(0,0,0,0.2)' 
+                  : '0 2px 4px rgba(0,0,0,0.1)',
               }}>
                 APAA
               </span>
@@ -188,35 +178,6 @@ const MainLayout: React.FC = () => {
         pt: '64px' // Add padding top to account for fixed AppBar
       }}>
         <Map mapRef={mapRef} />
-        
-        {/* Fullscreen button */}
-        <IconButton
-          onClick={toggleFullscreen}
-          color="inherit"
-          title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-          sx={{
-            position: 'absolute',
-            bottom: { xs: 80, sm: 16 }, // Increase bottom margin on mobile
-            right: { xs: 16, sm: 16 },
-            zIndex: 1000,
-            backgroundColor: theme.palette.mode === 'dark' 
-              ? theme.palette.grey[800] 
-              : theme.palette.grey[100],
-            '&:hover': {
-              backgroundColor: theme.palette.mode === 'dark' 
-                ? theme.palette.grey[700] 
-                : theme.palette.grey[200],
-            },
-            boxShadow: theme.palette.mode === 'dark' 
-              ? '0 2px 4px rgba(0, 0, 0, 0.3)' 
-              : '0 2px 4px rgba(0, 0, 0, 0.1)',
-            color: theme.palette.mode === 'dark' 
-              ? theme.palette.grey[100] 
-              : theme.palette.grey[900],
-          }}
-        >
-          {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-        </IconButton>
         
         {/* Satellite Info Panel */}
         {showSatelliteInfo && (
