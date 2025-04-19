@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-Repository: [https://github.com/JRKy/apa-app](https://github.com/JRKy/apa-app)
+Repository: [https://github.com/JRKy/apaa-app](https://github.com/JRKy/apaa-app)
 
-[Current version: 3.0]
+[Current version: 3.0.1]
 
-For the latest updates, please visit the [releases page](https://github.com/JRKy/apa-app/releases).
+For the latest updates, please visit the [releases page](https://github.com/JRKy/apaa-app/releases).
+
+## [3.0.1] - 2024-04-11
+
+### Changed
+- Updated application name to consistently use "Antenna Pointing Angles Application" (APAA)
+- Improved APAA badge styling and readability
+- Standardized naming across all documentation and UI elements
 
 ## [3.0] - 2024-04-10
 
@@ -68,8 +75,8 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 - Fixed global satellite coverage across the 180/-180 longitude boundary
 
 ### Changed
-- Repositioned APA panel toggle button to prevent overlap with help button
-- Enhanced mobile responsive layout for APA table button
+- Repositioned APAA panel toggle button to prevent overlap with help button
+- Enhanced mobile responsive layout for APAA table button
 - Optimized search input field for better usability
 - Improved satellite visibility calculation for global coverage
 
@@ -114,7 +121,7 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 
 ### Added
 - ARIA live regions for accessibility announcements
-- CSV export functionality for APA data
+- CSV export functionality for APAA data
 - Advanced satellite filtering options
   - Filter by minimum elevation
   - Filter by satellite type (predefined/custom)
@@ -123,7 +130,7 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
   
 ### Changed
 - Enhanced filter drawer with advanced satellite filtering section
-- Updated APA panel with export button
+- Updated APAA panel with export button
 
 ## [2.0.0] - 2025-03-30
 
@@ -138,14 +145,14 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 - Organized code into core, data, UI, and calculations modules
 
 ### Fixed
-- APA panel resize behavior on mobile devices
+- APAA panel resize behavior on mobile devices
 - Location button functionality issues
 - Various minor bugs and performance optimizations
 
 ## [1.9.0] - 2025-03-30
 
 ### Added
-- Keyboard navigation for APA table and controls
+- Keyboard navigation for APAA table and controls
 - Enhanced WAI-ARIA support for better screen reader compatibility
 - Smoother transitions between views
 - Expanded tutorial with step-by-step guidance
@@ -158,24 +165,24 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 
 ### Fixed
 - Polar plot disappearing on some location changes
-- APA panel resize behavior on mobile devices
+- APAA panel resize behavior on mobile devices
 - Inconsistent satellite highlighting across map views
 
 ## [1.8.0] - 2025-03-30
 
 ### Added
-- Sticky APA table header
+- Sticky APAA table header
 - Close buttons on all drawers
 - Exclusive drawer toggle behavior (only one drawer opens at a time)
 
 ### Changed
 - Updated version references to v1.8.0 across all files
-- Refined APA panel spacing for improved mobile usability
+- Refined APAA panel spacing for improved mobile usability
 - Cleaned up and synced FEATURES.md to match implemented functionality
 
 ### Fixed
 - Overlapping drawer behavior on smaller screens
-- Inconsistent APA panel positioning
+- Inconsistent APAA panel positioning
 
 ## [2.4.2] - 2025-04-09
 
@@ -244,4 +251,4 @@ For the latest updates, please visit the [releases page](https://github.com/JRKy
 
 ## [1.6.9.9] - 2025-03-23
 ### Added
-- Initial persistent APA table and satellite plot fixes
+- Initial persistent APAA table and satellite plot fixes

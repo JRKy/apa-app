@@ -1,7 +1,7 @@
 {
-  "name": "Antenna Pointing Angle (APA) Application",
-  "short_name": "APA",
-  "version": "2.5.0",
+  "name": "Antenna Pointing Angles Application",
+  "short_name": "APAA",
+  "version": "3.0.1",
   "description": "Advanced Positioning Application for satellite and location tracking",
   "start_url": "/",
   "display": "standalone",
