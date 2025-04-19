@@ -1,6 +1,6 @@
-# APA Satellite Tracking Application
+# Antenna Pointing Angle (APA) Application
 
-A web-based application for tracking and visualizing satellite positions and antenna pointing angles.
+A web-based application for calculating antenna pointing angles to MUOS and ALT satellites.
 
 [![Version](https://img.shields.io/badge/version-2.4.5-blue.svg)](https://github.com/JRKy/apa-app)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)

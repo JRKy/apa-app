@@ -1,5 +1,41 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Round');
 
+/* Map line styles with patterns */
+.line-good {
+  filter: drop-shadow(0 0 2px rgba(46, 125, 50, 0.5));
+}
+
+.line-poor {
+  filter: drop-shadow(0 0 2px rgba(21, 101, 192, 0.5));
+}
+
+.line-hidden {
+  filter: drop-shadow(0 0 2px rgba(198, 40, 40, 0.5));
+}
+
+/* Add text labels to lines */
+.line-label {
+  font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.line-good .line-label {
+  color: #2E7D32;
+}
+
+.line-poor .line-label {
+  color: #1565C0;
+}
+
+.line-hidden .line-label {
+  color: #C62828;
+}
+
 .satellite-marker {
   background: transparent;
   border: none;

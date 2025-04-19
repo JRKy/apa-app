@@ -4,6 +4,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useTheme } from '@mui/material/styles';
 import { SatelliteInfo } from '@/features/satellite';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { setSatelliteWindow } from '@/store/uiSlice';
 
 // Colors matching the elevation rules
 const ELEVATION_COLORS = {
@@ -20,11 +23,11 @@ type ResizeType = 'width' | 'height' | 'both';
 
 const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const { position, size } = useSelector((state: RootState) => state.ui.satelliteWindow);
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [resizeType, setResizeType] = useState<ResizeType | null>(null);
-  const [position, setPosition] = useState({ x: 20, y: 20 });
-  const [size, setSize] = useState({ width: 600, height: 400 });
   const panelRef = useRef<HTMLDivElement>(null);
   const dragStartPos = useRef({ x: 0, y: 0 });
   const resizeStartPos = useRef({ x: 0, y: 0 });
@@ -54,14 +57,17 @@ const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
       const newX = e.clientX - dragStartPos.current.x;
       const newY = e.clientY - dragStartPos.current.y;
       
-      // Keep panel within viewport bounds
+      // Keep panel within viewport bounds and respect header height
       const maxX = window.innerWidth - size.width;
       const maxY = window.innerHeight - size.height;
+      const minY = 64; // Header height
       
-      setPosition({
+      const newPosition = {
         x: Math.max(0, Math.min(newX, maxX)),
-        y: Math.max(0, Math.min(newY, maxY))
-      });
+        y: Math.max(minY, Math.min(newY, maxY))
+      };
+      
+      dispatch(setSatelliteWindow({ position: newPosition, size }));
     } else if (isResizing && resizeType) {
       const deltaX = e.clientX - resizeStartPos.current.x;
       const deltaY = e.clientY - resizeStartPos.current.y;
@@ -77,9 +83,12 @@ const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
         newHeight = Math.max(300, Math.min(window.innerHeight * 0.8, resizeStartSize.current.height + deltaY));
       }
       
-      setSize({ width: newWidth, height: newHeight });
+      dispatch(setSatelliteWindow({ 
+        position,
+        size: { width: newWidth, height: newHeight }
+      }));
     }
-  }, [isDragging, isResizing, resizeType, size]);
+  }, [isDragging, isResizing, resizeType, size, position, dispatch]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);

@@ -6,6 +6,7 @@ import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
 import SignalCellularAlt2BarIcon from '@mui/icons-material/SignalCellularAlt2Bar';
 import SignalCellularAlt1BarIcon from '@mui/icons-material/SignalCellularAlt1Bar';
+import { Theme } from '@mui/material/styles';
 
 interface PointingAngles {
   azimuth: number;
@@ -17,7 +18,7 @@ interface SatellitePointingDisplayProps {
   pointingAngles: PointingAngles;
 }
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+const StyledPaper = styled(Paper)(({ theme }: { theme: Theme }) => ({
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
   background: theme.palette.mode === 'dark' 
@@ -31,7 +32,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   },
 }));
 
-const AngleDisplay = styled(Box)(({ theme }) => ({
+const AngleDisplay = styled(Box)(({ theme }: { theme: Theme }) => ({
   display: 'flex',
   alignItems: 'center',
   marginBottom: theme.spacing(1),

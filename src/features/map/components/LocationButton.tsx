@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { IconButton, Tooltip } from '@mui/material';
+import { IconButton, Tooltip, useTheme } from '@mui/material';
 import { setCenter, setSelectedLocation } from '@/store/mapSlice';
 import L from 'leaflet';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 interface LocationButtonProps {
   mapRef: React.RefObject<L.Map | null>;
@@ -12,6 +13,7 @@ interface LocationButtonProps {
 export const LocationButton: React.FC<LocationButtonProps> = ({ mapRef, onLocationFound }) => {
   const dispatch = useDispatch();
   const [isLocating, setIsLocating] = useState(false);
+  const theme = useTheme();
 
   const handleLocationClick = () => {
     if (!navigator.geolocation) {
@@ -53,21 +55,15 @@ export const LocationButton: React.FC<LocationButtonProps> = ({ mapRef, onLocati
         <IconButton
           onClick={handleLocationClick}
           disabled={isLocating}
+          color="inherit"
+          title="Find my location"
           sx={{
-            backgroundColor: 'white',
-            '&:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            },
-            boxShadow: 2,
-            width: 48,
-            height: 48,
+            color: theme.palette.mode === 'dark' 
+              ? theme.palette.grey[100] 
+              : theme.palette.grey[900],
           }}
         >
-          {isLocating ? (
-            <i className="material-icons" style={{ animation: 'spin 2s linear infinite', fontSize: 32 }}>my_location</i>
-          ) : (
-            <i className="material-icons" style={{ fontSize: 32 }}>my_location</i>
-          )}
+          <LocationOnIcon sx={{ fontSize: 'inherit' }} />
         </IconButton>
       </span>
     </Tooltip>

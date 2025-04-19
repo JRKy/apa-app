@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-import { calculatePointingAngles } from '../utils/pointingAngles';
+import { RootState } from '@/store';
 import { SATELLITES } from '@/constants/satellites';
+import { calculatePointingAngles } from '@/utils/pointingAngles';
 
 const KM_TO_MILES = 0.621371;
 
@@ -34,9 +34,6 @@ export const useSatelliteTracking = (satelliteId: string) => {
   const [pointingAngles, setPointingAngles] = useState<PointingAngles | null>(null);
   const units = useSelector((state: RootState) => state.settings.units);
   const selectedLocation = useSelector((state: RootState) => state.map.selectedLocation);
-
-  console.log('useSatelliteTracking - Current units:', units);
-  console.log('useSatelliteTracking - Selected location:', selectedLocation);
 
   const convertAltitude = (altitudeKm: number) => {
     return units === 'metric' ? altitudeKm : altitudeKm * KM_TO_MILES;

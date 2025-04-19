@@ -5,6 +5,7 @@ import L from 'leaflet';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
 import { setCenter, setZoom, setSelectedLocation } from '@/store/mapSlice';
+import SearchBox from './SearchBox';
 
 // MUOS and ALT satellite positions (geostationary)
 const SATELLITES = [
@@ -50,22 +51,68 @@ const SATELLITES = [
   },
 ];
 
-// Create satellite icon
-const satelliteIcon = L.divIcon({
-  className: 'satellite-marker',
-  html: `<div style="
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #1976d2;
-    font-size: 24px;
-  ">
-    <i class="material-icons">satellite</i>
-  </div>`,
-  iconSize: [24, 24],
-  iconAnchor: [12, 12]
+// Update the satellite icon definition to include a label and theme support
+const createSatelliteIcon = (name: string, longitude: number) => {
+  const isDarkMode = useSelector((state: RootState) => state.ui.theme === 'dark');
+  
+  return L.divIcon({
+    className: 'satellite-marker',
+    html: `
+      <div style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      ">
+        <div style="
+          font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: ${isDarkMode ? '#E2E8F0' : '#1A202C'};
+          background: ${isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)'};
+          padding: 4px 8px;
+          border-radius: 6px;
+          margin-bottom: 4px;
+          white-space: nowrap;
+          box-shadow: ${isDarkMode ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'};
+          line-height: 1.4;
+        ">
+          <div style="font-weight: 600;">${name}</div>
+          <div style="color: ${isDarkMode ? '#A0AEC0' : '#4A5568'};">${longitude.toFixed(1)}°</div>
+        </div>
+        <div style="
+          width: 32px;
+          height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: ${isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'white'};
+          border-radius: 50%;
+          box-shadow: ${isDarkMode ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'};
+        ">
+          <span class="material-icons" style="
+            color: ${isDarkMode ? '#60A5FA' : '#2563EB'};
+            font-size: 24px;
+          ">
+            satellite_alt
+          </span>
+        </div>
+      </div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 56],
+    popupAnchor: [0, -60]
+  });
+};
+
+// Add back the locationIcon definition
+const locationIcon = L.icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 const MapEvents: React.FC = () => {
@@ -88,8 +135,16 @@ const MapEvents: React.FC = () => {
       dispatch(setZoom(zoom));
     },
     click: (e) => {
-      const { lat, lng } = e.latlng;
-      dispatch(setSelectedLocation([lat, lng]));
+      // Check if the click was on a control element
+      const target = e.originalEvent.target as HTMLElement;
+      const isControlClick = target.closest('.leaflet-control-search') || 
+                           target.closest('.MuiTextField-root') ||
+                           target.closest('.MuiIconButton-root');
+      
+      if (!isControlClick) {
+        const { lat, lng } = e.latlng;
+        dispatch(setSelectedLocation([lat, lng]));
+      }
     }
   });
 
@@ -136,28 +191,43 @@ const getVisibilityCategory = (elevation: number) => {
 const getLineStyle = (category: string) => {
   switch (category) {
     case 'good':
-      return { color: '#4caf50', weight: 2, opacity: 0.8, dashArray: '0' }; // Green, solid
+      return { 
+        color: '#2E7D32', // Dark green
+        weight: 3, 
+        opacity: 0.9, 
+        dashArray: '0',
+        className: 'line-good' // For additional styling
+      };
     case 'poor':
-      return { color: '#ff9800', weight: 1, opacity: 0.7, dashArray: '5,5' }; // Orange, dashed
+      return { 
+        color: '#1565C0', // Blue instead of orange
+        weight: 2, 
+        opacity: 0.9, 
+        dashArray: '5,5',
+        className: 'line-poor'
+      };
     case 'hidden':
-      return { color: '#f44336', weight: 1, opacity: 0.5, dashArray: '3,3' }; // Red, dotted
+      return { 
+        color: '#C62828', // Red
+        weight: 2, 
+        opacity: 0.9, 
+        dashArray: '3,3',
+        className: 'line-hidden'
+      };
     default:
-      return { color: '#1976d2', weight: 1, opacity: 0.7, dashArray: '5,5' };
+      return { 
+        color: '#1565C0', 
+        weight: 2, 
+        opacity: 0.9, 
+        dashArray: '5,5',
+        className: 'line-default'
+      };
   }
 };
 
 // Helper function to get marker icon based on visibility
-const getMarkerIcon = (category: string) => {
-  switch (category) {
-    case 'good':
-      return satelliteIcon;
-    case 'poor':
-      return satelliteIcon;
-    case 'hidden':
-      return satelliteIcon;
-    default:
-      return satelliteIcon;
-  }
+const getMarkerIcon = (category: string, name: string, longitude: number) => {
+  return createSatelliteIcon(name, longitude);
 };
 
 interface MapProps {
@@ -168,6 +238,8 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
   const center = useSelector((state: RootState) => state.map.center);
   const zoom = useSelector((state: RootState) => state.map.zoom);
   const selectedLocation = useSelector((state: RootState) => state.map.selectedLocation);
+  const theme = useSelector((state: RootState) => state.ui.theme);
+  const isDarkMode = theme === 'dark';
 
   return (
     <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -177,15 +249,22 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
         zoomControl={false}
+        aria-label="Interactive map"
       >
+        {/* Default Leaflet control positions */}
+        <ZoomControl position="topleft" style={{ marginTop: '8px' }} />
         <ScaleControl position="bottomleft" />
-        <ZoomControl position="topleft" />
-        
-        <LayersControl position="topleft">
-          <LayersControl.BaseLayer checked name="OpenStreetMap">
+        <LayersControl position="topright">
+          <LayersControl.BaseLayer checked={!isDarkMode} name="OpenStreetMap">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+          </LayersControl.BaseLayer>
+          <LayersControl.BaseLayer checked={isDarkMode} name="Dark Mode">
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attributions">CARTO</a>'
             />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Satellite">
@@ -201,17 +280,26 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
             />
           </LayersControl.BaseLayer>
         </LayersControl>
-
+        <SearchBox mapRef={mapRef} />
         <MapEvents />
         
         {selectedLocation && (
           <Marker
             position={selectedLocation}
-            icon={satelliteIcon}
+            icon={locationIcon}
           >
             <Popup>
-              Latitude: {selectedLocation[0].toFixed(6)}°<br />
-              Longitude: {selectedLocation[1].toFixed(6)}°
+              <div style={{
+                fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+                fontSize: '0.875rem',
+                lineHeight: '1.6',
+              }}>
+                <div style={{ fontWeight: 600, color: '#1A202C', marginBottom: '4px' }}>Selected Location</div>
+                <div style={{ color: '#4A5568' }}>
+                  Latitude: {selectedLocation[0].toFixed(6)}°<br />
+                  Longitude: {selectedLocation[1].toFixed(6)}°
+                </div>
+              </div>
             </Popup>
           </Marker>
         )}
@@ -227,7 +315,7 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
           );
           const category = getVisibilityCategory(elevation);
           const lineStyle = getLineStyle(category);
-          const markerIcon = getMarkerIcon(category);
+          const markerIcon = getMarkerIcon(category, satellite.name, satellite.position[1]);
 
           return (
             <React.Fragment key={satellite.id}>
@@ -237,6 +325,7 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
               >
                 <Popup>
                   {satellite.name}<br />
+                  Longitude: {satellite.position[1].toFixed(1)}°<br />
                   Elevation: {elevation.toFixed(1)}°
                 </Popup>
               </Marker>
