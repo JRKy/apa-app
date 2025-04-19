@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store';
 import { setCenter, setZoom, setSelectedLocation } from '@/store/mapSlice';
 import SearchBox from './SearchBox';
+import { formatAngle, formatSatelliteAngles } from '@/features/satellite/utils/satelliteUtils';
 
 // MUOS and ALT satellite positions (geostationary)
 const SATELLITES = [
@@ -63,10 +64,11 @@ const createSatelliteIcon = (name: string, longitude: number) => {
         flex-direction: column;
         align-items: center;
         text-align: center;
+        min-width: 120px;
       ">
         <div style="
           font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
-          font-size: 0.875rem;
+          font-size: 0.75rem;
           font-weight: 500;
           color: ${isDarkMode ? '#E2E8F0' : '#1A202C'};
           background: ${isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)'};
@@ -76,13 +78,14 @@ const createSatelliteIcon = (name: string, longitude: number) => {
           white-space: nowrap;
           box-shadow: ${isDarkMode ? '0 2px 4px rgba(0,0,0,0.3)' : '0 2px 4px rgba(0,0,0,0.1)'};
           line-height: 1.4;
+          transform: translateX(-50%);
         ">
           <div style="font-weight: 600;">${name}</div>
           <div style="color: ${isDarkMode ? '#A0AEC0' : '#4A5568'};">${longitude.toFixed(1)}°</div>
         </div>
         <div style="
-          width: 32px;
-          height: 32px;
+          width: 28px;
+          height: 28px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -92,15 +95,15 @@ const createSatelliteIcon = (name: string, longitude: number) => {
         ">
           <span class="material-icons" style="
             color: ${isDarkMode ? '#60A5FA' : '#2563EB'};
-            font-size: 24px;
+            font-size: 20px;
           ">
             satellite_alt
           </span>
         </div>
       </div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 56],
-    popupAnchor: [0, -60]
+    iconSize: [28, 28],
+    iconAnchor: [14, 46],
+    popupAnchor: [0, -50]
   });
 };
 
@@ -257,17 +260,17 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         aria-label="Interactive map"
       >
         <ZoomControl 
-          position="topleft"
+          position="bottomright"
           zoomInText="+"
           zoomOutText="-"
         />
         <ScaleControl 
-          position="bottomleft"
+          position="bottomright"
           imperial={false}
         />
         <LayersControl 
           position="topright"
-          collapsed={window.innerWidth <= 768}
+          collapsed={false}
         >
           <LayersControl.BaseLayer checked={!isDarkMode} name="Light">
             <TileLayer
@@ -278,16 +281,16 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer checked={isDarkMode} name="Dark Mode">
             <TileLayer
-              url={`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`}
-              attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               maxZoom={20}
-              detectRetina={false}
+              subdomains="abcd"
             />
           </LayersControl.BaseLayer>
           <LayersControl.BaseLayer name="Satellite">
             <TileLayer
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
               maxZoom={19}
             />
           </LayersControl.BaseLayer>
@@ -343,9 +346,24 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
                 icon={markerIcon}
               >
                 <Popup>
-                  {satellite.name}<br />
-                  Longitude: {satellite.position[1].toFixed(1)}°<br />
-                  Elevation: {elevation.toFixed(1)}°
+                  <div style={{
+                    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+                    fontSize: '0.875rem',
+                    lineHeight: '1.6',
+                    minWidth: '160px',
+                  }}>
+                    <div style={{ fontWeight: 600, color: '#1A202C', marginBottom: '4px' }}>
+                      {satellite.name}
+                    </div>
+                    <div style={{ 
+                      color: '#4A5568',
+                      fontFamily: 'monospace',
+                      fontSize: '0.8125rem',
+                    }}>
+                      Elevation:{formatAngle(elevation)}<br />
+                      Longitude:{formatAngle(satellite.position[1])}
+                    </div>
+                  </div>
                 </Popup>
               </Marker>
               

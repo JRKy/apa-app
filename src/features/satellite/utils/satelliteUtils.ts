@@ -1,7 +1,9 @@
 import { Satellite } from '@/constants/satellites';
 
 export const formatAngle = (angle: number, precision: number = 1): string => {
-  return `${angle.toFixed(precision)}°`;
+  const formattedValue = angle.toFixed(precision);
+  // Add a leading space for positive numbers to align with negative signs
+  return angle >= 0 ? ` ${formattedValue}°` : `${formattedValue}°`;
 };
 
 export const formatDistance = (distance: number, units: 'metric' | 'imperial', precision: number = 0): string => {
@@ -53,4 +55,8 @@ export const calculateElevationAngle = (
   );
 
   return (elevation * 180) / Math.PI; // Convert to degrees
+};
+
+export const formatSatelliteAngles = (name: string, elevation: number, azimuth: number): string => {
+  return `${name} ${formatAngle(elevation)} ${formatAngle(azimuth)}`;
 }; 
