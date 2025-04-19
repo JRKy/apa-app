@@ -260,12 +260,12 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         aria-label="Interactive map"
       >
         <ZoomControl 
-          position="bottomright"
+          position="bottomleft"
           zoomInText="+"
           zoomOutText="-"
         />
         <ScaleControl 
-          position="bottomright"
+          position="bottomleft"
           imperial={false}
         />
         <LayersControl 

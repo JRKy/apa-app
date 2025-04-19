@@ -198,8 +198,8 @@ const MainLayout: React.FC = () => {
           title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
           sx={{
             position: 'absolute',
-            bottom: 16,
-            right: 16,
+            bottom: { xs: 80, sm: 16 }, // Increase bottom margin on mobile
+            right: { xs: 16, sm: 16 },
             zIndex: 1000,
             backgroundColor: theme.palette.mode === 'dark' 
               ? theme.palette.grey[800] 
