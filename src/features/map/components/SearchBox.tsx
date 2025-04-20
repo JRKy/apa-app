@@ -155,9 +155,7 @@ const SearchBox: React.FC = () => {
           clearOnBlur={false}
           clearOnEscape={true}
           onChange={(_, newValue) => {
-            if (newValue === null) {
-              handleClear();
-            } else if (typeof newValue !== 'string') {
+            if (newValue && typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
           }}
