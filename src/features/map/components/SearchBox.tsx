@@ -176,10 +176,7 @@ const SearchBox: React.FC = () => {
             },
             '& .MuiAutocomplete-clearIndicator': {
               padding: '4px',
-              marginRight: '4px',
-              '&:hover': {
-                backgroundColor: 'transparent'
-              }
+              marginRight: '4px'
             }
           }}
           renderInput={(params) => (
