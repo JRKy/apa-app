@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Box, TextField, Paper, Autocomplete, CircularProgress, IconButton } from '@mui/material';
+import { Box, TextField, Paper, Autocomplete, CircularProgress } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { setSelectedLocation } from '@/store/mapSlice';
-import ClearIcon from '@mui/icons-material/Clear';
 
 interface SearchResult {
   display_name: string;
@@ -161,7 +160,9 @@ const SearchBox: React.FC = () => {
           clearOnBlur={false}
           clearOnEscape={true}
           onChange={(_, newValue) => {
-            if (newValue && typeof newValue !== 'string') {
+            if (newValue === null) {
+              handleClear();
+            } else if (typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
           }}
@@ -173,6 +174,10 @@ const SearchBox: React.FC = () => {
             height: '100%',
             '& .MuiAutocomplete-inputRoot': {
               height: { xs: '100%', sm: 'auto' }
+            },
+            '& .MuiAutocomplete-clearIndicator': {
+              padding: '4px',
+              marginRight: '4px'
             }
           }}
           renderInput={(params) => (
@@ -212,21 +217,6 @@ const SearchBox: React.FC = () => {
                 endAdornment: (
                   <>
                     {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                    {searchQuery && (
-                      <IconButton
-                        size="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleClear();
-                        }}
-                        sx={{ 
-                          padding: '4px',
-                          marginRight: '4px'
-                        }}
-                      >
-                        <ClearIcon fontSize="small" />
-                      </IconButton>
-                    )}
                     {params.InputProps.endAdornment}
                   </>
                 ),
