@@ -43,6 +43,13 @@ export const LocationButton: React.FC<LocationButtonProps> = ({ mapRef, onLocati
       (error) => {
         console.warn('Location error:', error.message);
         setIsLocating(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          alert('Please enable location access in your browser settings to use this feature.');
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          alert('Location information is unavailable. Please check your device settings.');
+        } else if (error.code === error.TIMEOUT) {
+          alert('Location request timed out. Please try again.');
+        }
       },
       options
     );
