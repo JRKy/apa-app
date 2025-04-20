@@ -163,7 +163,10 @@ const SearchBox: React.FC = () => {
           clearOnEscape={true}
           onChange={(_, newValue) => {
             if (newValue === null) {
-              handleClear();
+              setSearchQuery('');
+              setSearchResults([]);
+              setOpen(false);
+              dispatch(setSelectedLocation(null));
             } else if (typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
