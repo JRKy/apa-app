@@ -124,7 +124,7 @@ const SearchBox: React.FC = () => {
             sm: 1
           },
           padding: {
-            xs: '0 16px',
+            xs: '0 8px',
             sm: '4px'
           },
           margin: 0,
@@ -136,7 +136,7 @@ const SearchBox: React.FC = () => {
           },
           width: '100%',
           minWidth: { xs: 'auto', sm: '250px' },
-          height: { xs: '56px', sm: 'auto' },
+          height: { xs: '48px', sm: 'auto' },
         }}
         role="search"
         aria-label="Search location"
@@ -166,11 +166,8 @@ const SearchBox: React.FC = () => {
             width: '100%',
             height: '100%',
             '& .MuiAutocomplete-inputRoot': {
-              height: { xs: '100%', sm: 'auto' }
-            },
-            '& .MuiAutocomplete-clearIndicator': {
-              padding: '4px',
-              marginRight: '4px'
+              height: { xs: '100%', sm: 'auto' },
+              padding: { xs: '0 4px', sm: '4px 8px' }
             }
           }}
           renderInput={(params) => (
@@ -186,10 +183,6 @@ const SearchBox: React.FC = () => {
                   color: theme.palette.mode === 'dark' 
                     ? theme.palette.grey[100] 
                     : theme.palette.grey[900],
-                  padding: { 
-                    xs: '0',
-                    sm: '4px 8px'
-                  },
                   height: { xs: '100%', sm: 'auto' },
                   fontSize: '1rem',
                 },
