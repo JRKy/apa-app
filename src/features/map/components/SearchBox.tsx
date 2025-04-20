@@ -93,10 +93,7 @@ const SearchBox: React.FC = () => {
           xs: 0,
           sm: 'auto'
         },
-        zIndex: {
-          xs: theme.zIndex.appBar + 1,
-          sm: 400
-        },
+        zIndex: 400,
         width: { 
           xs: '100%',
           sm: '300px'
@@ -111,7 +108,6 @@ const SearchBox: React.FC = () => {
           xs: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]}`,
           sm: 'none'
         },
-        transition: 'all 0.2s ease-in-out',
       }}
     >
       <Box
