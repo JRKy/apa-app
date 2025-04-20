@@ -117,6 +117,15 @@
 
 /* Mobile-friendly control positioning */
 @media screen and (max-width: 600px) {
+  .leaflet-control-zoom,
+  .leaflet-control-layers {
+    display: none !important;
+  }
+
+  .leaflet-control-attribution {
+    font-size: 10px;
+  }
+
   .leaflet-top .leaflet-control-zoom {
     margin-top: 70px !important;
   }

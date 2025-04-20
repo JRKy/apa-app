@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, useMediaQuery } from '@mui/material';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, Polyline, LayersControl, ScaleControl, ZoomControl } from 'react-leaflet';
 import L from 'leaflet';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,7 @@ import { RootState } from '@/store';
 import { setCenter, setZoom, setSelectedLocation } from '@/store/mapSlice';
 import SearchBox from './SearchBox';
 import { formatAngle, formatSatelliteAngles } from '@/features/satellite/utils/satelliteUtils';
+import { LayerControlDrawer } from './LayerControlDrawer';
 
 // MUOS and ALT satellite positions (geostationary)
 const SATELLITES = [
@@ -245,11 +246,17 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ mapRef }) => {
+  const [layerDrawerOpen, setLayerDrawerOpen] = useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
   const center = useSelector((state: RootState) => state.map.center);
   const zoom = useSelector((state: RootState) => state.map.zoom);
   const selectedLocation = useSelector((state: RootState) => state.map.selectedLocation);
   const theme = useSelector((state: RootState) => state.ui.theme);
   const isDarkMode = theme === 'dark';
+  const currentLayer = useSelector((state: RootState) => state.map.currentLayer);
+
+  // Determine if we should show imperial units based on locale
+  const showImperial = navigator.language === 'en-US';
 
   return (
     <Box sx={{ height: '100%', width: '100%', position: 'relative' }}>
@@ -259,53 +266,96 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
         style={{ height: '100%', width: '100%' }}
         ref={mapRef}
         zoomControl={false}
+        attributionControl={!isMobile}
         aria-label="Interactive map"
       >
-        <ZoomControl 
-          position="topleft"
-          zoomInText="+"
-          zoomOutText="-"
-          zoomInTitle="Zoom in"
-          zoomOutTitle="Zoom out"
-        />
+        {/* Scale control for both mobile and desktop */}
         <ScaleControl 
           position="bottomleft"
-          imperial={false}
+          imperial={showImperial}
+          metric={true}
         />
-        <LayersControl 
-          position="topright"
-          collapsed={false}
-        >
-          <LayersControl.BaseLayer checked={!isDarkMode} name="Light">
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              maxZoom={19}
+        
+        {!isMobile && (
+          <>
+            <ZoomControl 
+              position="topleft"
+              zoomInText="+"
+              zoomOutText="-"
+              zoomInTitle="Zoom in"
+              zoomOutTitle="Zoom out"
             />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer checked={isDarkMode} name="Dark Mode">
-            <TileLayer
-              url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              maxZoom={20}
-              subdomains="abcd"
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="Satellite">
-            <TileLayer
-              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-              attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
-              maxZoom={19}
-            />
-          </LayersControl.BaseLayer>
-          <LayersControl.BaseLayer name="Terrain">
-            <TileLayer
-              url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              maxZoom={17}
-            />
-          </LayersControl.BaseLayer>
-        </LayersControl>
+            <LayersControl 
+              position="topright"
+            >
+              <LayersControl.BaseLayer checked={currentLayer === 'light' && !isDarkMode} name="Light">
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  maxZoom={19}
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer checked={currentLayer === 'dark' || isDarkMode} name="Dark Mode">
+                <TileLayer
+                  url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  maxZoom={20}
+                  subdomains="abcd"
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer checked={currentLayer === 'satellite'} name="Satellite">
+                <TileLayer
+                  url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                  attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                  maxZoom={19}
+                />
+              </LayersControl.BaseLayer>
+              <LayersControl.BaseLayer checked={currentLayer === 'terrain'} name="Terrain">
+                <TileLayer
+                  url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  maxZoom={17}
+                />
+              </LayersControl.BaseLayer>
+            </LayersControl>
+          </>
+        )}
+        
+        {/* Active layer based on currentLayer state */}
+        {isMobile && (
+          <>
+            {currentLayer === 'light' && !isDarkMode && (
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                maxZoom={19}
+              />
+            )}
+            {(currentLayer === 'dark' || isDarkMode) && (
+              <TileLayer
+                url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                maxZoom={20}
+                subdomains="abcd"
+              />
+            )}
+            {currentLayer === 'satellite' && (
+              <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
+                maxZoom={19}
+              />
+            )}
+            {currentLayer === 'terrain' && (
+              <TileLayer
+                url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                maxZoom={17}
+              />
+            )}
+          </>
+        )}
+        
         <SearchBox />
         <MapEvents />
         
@@ -384,6 +434,12 @@ const Map: React.FC<MapProps> = ({ mapRef }) => {
           );
         })}
       </MapContainer>
+      {isMobile && (
+        <LayerControlDrawer 
+          open={layerDrawerOpen}
+          onClose={() => setLayerDrawerOpen(!layerDrawerOpen)}
+        />
+      )}
     </Box>
   );
 };

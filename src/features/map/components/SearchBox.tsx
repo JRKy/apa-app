@@ -10,6 +10,7 @@ interface SearchResult {
   display_name: string;
   lat: string;
   lon: string;
+  place_id: number;
 }
 
 const SearchBox: React.FC = () => {
@@ -69,12 +70,41 @@ const SearchBox: React.FC = () => {
   return (
     <Box
       sx={{
-        position: 'absolute',
-        top: '10px',
-        left: { xs: '10px', sm: '50px' },
-        right: { xs: '10px', sm: 'auto' },
-        zIndex: 400,
-        width: { xs: 'calc(100% - 20px)', sm: '400px' },
+        position: { 
+          xs: 'fixed',
+          sm: 'absolute'
+        },
+        top: { 
+          xs: '56px',
+          sm: '10px'
+        },
+        left: { 
+          xs: 0,
+          sm: '50px'
+        },
+        right: { 
+          xs: 0,
+          sm: 'auto'
+        },
+        zIndex: {
+          xs: theme.zIndex.appBar - 1,
+          sm: 400
+        },
+        width: { 
+          xs: '100%',
+          sm: '300px'
+        },
+        backgroundColor: {
+          xs: theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[50],
+          sm: 'transparent'
+        },
+        margin: 0,
+        padding: 0,
+        borderBottom: {
+          xs: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]}`,
+          sm: 'none'
+        },
+        transition: 'all 0.2s ease-in-out',
       }}
     >
       <Box
@@ -86,12 +116,24 @@ const SearchBox: React.FC = () => {
           backgroundColor: theme.palette.mode === 'dark' 
             ? theme.palette.grey[800] 
             : theme.palette.grey[100],
-          borderRadius: 1,
-          padding: '4px',
-          boxShadow: theme.palette.mode === 'dark' 
-            ? '0 2px 4px rgba(0, 0, 0, 0.3)' 
-            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+          borderRadius: { 
+            xs: 0,
+            sm: 1
+          },
+          padding: {
+            xs: '0 16px',
+            sm: '4px'
+          },
+          margin: 0,
+          boxShadow: {
+            xs: 'none',
+            sm: theme.palette.mode === 'dark'
+              ? '0 2px 4px rgba(0, 0, 0, 0.3)'
+              : '0 2px 4px rgba(0, 0, 0, 0.1)'
+          },
           width: '100%',
+          minWidth: { xs: 'auto', sm: '250px' },
+          height: { xs: '56px', sm: 'auto' },
         }}
         role="search"
         aria-label="Search location"
@@ -118,6 +160,10 @@ const SearchBox: React.FC = () => {
           }}
           sx={{
             width: '100%',
+            height: '100%',
+            '& .MuiAutocomplete-inputRoot': {
+              height: { xs: '100%', sm: 'auto' }
+            }
           }}
           renderInput={(params) => (
             <TextField
@@ -127,22 +173,26 @@ const SearchBox: React.FC = () => {
               size="small"
               sx={{
                 width: '100%',
+                height: '100%',
                 '& .MuiInputBase-root': {
                   color: theme.palette.mode === 'dark' 
                     ? theme.palette.grey[100] 
                     : theme.palette.grey[900],
-                  padding: { xs: '4px 4px', sm: '4px 8px' },
-                  fontSize: { xs: '0.875rem', sm: '1rem' },
+                  padding: { 
+                    xs: '0',
+                    sm: '4px 8px'
+                  },
+                  height: { xs: '100%', sm: 'auto' },
+                  fontSize: '1rem',
                 },
                 '& .MuiInput-underline:before': {
-                  borderBottomColor: theme.palette.mode === 'dark' 
-                    ? theme.palette.grey[700] 
-                    : theme.palette.grey[300],
+                  borderBottomColor: 'transparent',
                 },
                 '& .MuiInput-underline:after': {
-                  borderBottomColor: theme.palette.mode === 'dark' 
-                    ? theme.palette.grey[500] 
-                    : theme.palette.grey[400],
+                  borderBottomColor: 'transparent',
+                },
+                '& .MuiInput-underline:hover:not(.Mui-disabled):before': {
+                  borderBottomColor: 'transparent',
                 },
               }}
               InputProps={{
@@ -159,12 +209,23 @@ const SearchBox: React.FC = () => {
             />
           )}
           renderOption={(props, option) => {
-            const { key, ...otherProps } = props;
+            if (typeof option === 'string') return null;
             return (
-              <li key={key} {...otherProps}>
+              <li {...props} key={option.place_id} style={{
+                padding: '16px',
+                fontSize: '0.9375rem',
+                borderBottom: `1px solid ${theme.palette.mode === 'dark' 
+                  ? theme.palette.grey[800] 
+                  : theme.palette.grey[200]}`
+              }}>
                 {option.display_name}
               </li>
             );
+          }}
+          ListboxProps={{
+            style: {
+              maxHeight: '50vh',
+            }
           }}
         />
       </Box>

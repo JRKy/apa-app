@@ -48,16 +48,24 @@ export const LocationButton: React.FC<LocationButtonProps> = ({ mapRef, onLocati
     );
   };
 
-  return (
-    <Tooltip title={isLocating ? "Locating..." : "Find my location"}>
-      <IconButton
-        onClick={handleLocationClick}
-        disabled={isLocating}
-        color="inherit"
-        title="Find my location"
-      >
-        <LocationOnIcon />
-      </IconButton>
+  const button = (
+    <IconButton
+      onClick={handleLocationClick}
+      disabled={isLocating}
+      color="inherit"
+      aria-label="Find my location"
+    >
+      <LocationOnIcon />
+    </IconButton>
+  );
+
+  return isLocating ? (
+    <span style={{ display: 'inline-flex' }}>
+      {button}
+    </span>
+  ) : (
+    <Tooltip title="Find my location">
+      {button}
     </Tooltip>
   );
 }; 
