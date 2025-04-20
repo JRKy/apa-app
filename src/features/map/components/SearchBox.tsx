@@ -168,6 +168,9 @@ const SearchBox: React.FC = () => {
           }}
           onInputChange={(_, newInputValue) => {
             setSearchQuery(newInputValue);
+            if (newInputValue === '') {
+              handleClear();
+            }
           }}
           sx={{
             width: '100%',
