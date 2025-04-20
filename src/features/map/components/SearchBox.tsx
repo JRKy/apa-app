@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { Box, TextField, Paper, Autocomplete, CircularProgress } from '@mui/material';
@@ -23,58 +23,108 @@ const SearchBox: React.FC = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const searchControlRef = useRef<L.Control.Search | null>(null);
 
   useEffect(() => {
-    let timeoutId: number;
+    if (isMobile) {
+      // Initialize Leaflet search control
+      const searchControl = new L.Control.Search({
+        position: 'topleft',
+        layer: L.layerGroup(),
+        initial: false,
+        zoom: 13,
+        marker: {
+          icon: new L.Icon.Default(),
+          animate: true,
+        },
+        autoType: false,
+        autoCollapse: true,
+        minLength: 2,
+        textPlaceholder: 'Search location...',
+        textErr: 'Location not found',
+        textCancel: 'Cancel',
+        textNoData: 'No results found',
+        sourceData: async (text: string, callResponse: Function) => {
+          try {
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(text)}&limit=5`,
+              {
+                headers: {
+                  'User-Agent': 'APAA-App/1.0',
+                  'Accept-Language': 'en',
+                },
+              }
+            );
+            const data = await response.json();
+            callResponse(data);
+          } catch (error) {
+            console.error('Error searching location:', error);
+            callResponse([]);
+          }
+        },
+        formatData: (data: any) => {
+          return {
+            title: data.display_name,
+            location: [parseFloat(data.lat), parseFloat(data.lon)],
+            bounds: data.boundingbox
+              ? L.latLngBounds(
+                  [parseFloat(data.boundingbox[0]), parseFloat(data.boundingbox[2])],
+                  [parseFloat(data.boundingbox[1]), parseFloat(data.boundingbox[3])]
+                )
+              : null,
+          };
+        },
+      });
 
-    const fetchResults = async () => {
-      if (!searchQuery.trim()) {
-        setSearchResults([]);
-        return;
-      }
+      searchControlRef.current = searchControl;
+      map.addControl(searchControl);
 
-      setLoading(true);
-      try {
-        if (isMobile) {
-          // Use Leaflet's geocoding for mobile
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
-            {
-              headers: {
-                'User-Agent': 'APAA-App/1.0',
-                'Accept-Language': 'en',
-              },
-            }
-          );
-          const data = await response.json();
-          setSearchResults(data);
-        } else {
-          // Existing search logic for desktop
-          const response = await fetch(
-            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
-            {
-              headers: {
-                'User-Agent': 'APAA-App/1.0',
-                'Accept-Language': 'en',
-              },
-            }
-          );
-          const data = await response.json();
-          setSearchResults(data);
+      return () => {
+        if (searchControlRef.current) {
+          map.removeControl(searchControlRef.current);
         }
-      } catch (error) {
-        console.error('Error searching location:', error);
-        setSearchResults([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (searchQuery.trim()) {
-      timeoutId = window.setTimeout(fetchResults, 500);
+      };
     }
+  }, [map, isMobile]);
 
-    return () => clearTimeout(timeoutId);
+  // Desktop search functionality
+  useEffect(() => {
+    if (!isMobile) {
+      let timeoutId: number;
+
+      const fetchResults = async () => {
+        if (!searchQuery.trim()) {
+          setSearchResults([]);
+          return;
+        }
+
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
+            {
+              headers: {
+                'User-Agent': 'APAA-App/1.0',
+                'Accept-Language': 'en',
+              },
+            }
+          );
+          const data = await response.json();
+          setSearchResults(data);
+        } catch (error) {
+          console.error('Error searching location:', error);
+          setSearchResults([]);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      if (searchQuery.trim()) {
+        timeoutId = window.setTimeout(fetchResults, 500);
+      }
+
+      return () => clearTimeout(timeoutId);
+    }
   }, [searchQuery, isMobile]);
 
   const handleLocationSelect = (result: SearchResult) => {
@@ -92,30 +142,18 @@ const SearchBox: React.FC = () => {
     dispatch(setSelectedLocation(null));
   };
 
+  if (isMobile) {
+    return null; // Leaflet search control handles mobile UI
+  }
+
   return (
     <Box
       sx={{
-        position: { 
-          xs: 'fixed',
-          sm: 'absolute'
-        },
-        top: { 
-          xs: '56px',
-          sm: '10px'
-        },
-        left: { 
-          xs: 0,
-          sm: '50px'
-        },
-        right: { 
-          xs: 0,
-          sm: 'auto'
-        },
+        position: 'absolute',
+        top: '10px',
+        left: '50px',
         zIndex: 400,
-        width: { 
-          xs: '100%',
-          sm: '300px'
-        }
+        width: '300px'
       }}
     >
       <Box
@@ -127,10 +165,7 @@ const SearchBox: React.FC = () => {
           backgroundColor: theme.palette.mode === 'dark' 
             ? theme.palette.grey[800] 
             : theme.palette.grey[100],
-          borderRadius: { 
-            xs: 0,
-            sm: 1
-          },
+          borderRadius: 1,
           padding: '4px',
           margin: 0,
           boxShadow: theme.palette.mode === 'dark'
