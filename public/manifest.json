@@ -1,7 +1,7 @@
 {
   "name": "APAA",
   "short_name": "APAA",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "Advanced Positioning Application for satellite and location tracking",
   "start_url": "/",
   "display": "standalone",
