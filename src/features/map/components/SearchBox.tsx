@@ -67,6 +67,13 @@ const SearchBox: React.FC = () => {
     setOpen(false);
   };
 
+  const handleClear = () => {
+    setSearchQuery('');
+    setSearchResults([]);
+    setOpen(false);
+    dispatch(setSelectedLocation(null));
+  };
+
   return (
     <Box
       sx={{
@@ -150,8 +157,12 @@ const SearchBox: React.FC = () => {
           }
           loading={loading}
           value={searchQuery}
+          clearOnBlur={false}
+          clearOnEscape={true}
           onChange={(_, newValue) => {
-            if (newValue && typeof newValue !== 'string') {
+            if (newValue === null || newValue === '') {
+              handleClear();
+            } else if (typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
           }}

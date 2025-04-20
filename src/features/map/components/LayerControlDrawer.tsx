@@ -8,9 +8,7 @@ import {
   Box, 
   Typography,
   useTheme,
-  Radio,
-  RadioGroup,
-  FormControlLabel
+  Paper
 } from '@mui/material';
 import LayersIcon from '@mui/icons-material/Layers';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,10 +22,26 @@ interface LayerControlDrawerProps {
 }
 
 const LAYER_OPTIONS = [
-  { id: 'light', name: 'Light' },
-  { id: 'dark', name: 'Dark Mode' },
-  { id: 'satellite', name: 'Satellite' },
-  { id: 'terrain', name: 'Terrain' }
+  { 
+    id: 'light', 
+    name: 'Light',
+    preview: 'https://tile.openstreetmap.org/5/16/10.png'
+  },
+  { 
+    id: 'dark', 
+    name: 'Dark Mode',
+    preview: 'https://cartodb-basemaps-a.global.ssl.fastly.net/dark_all/5/16/10.png'
+  },
+  { 
+    id: 'satellite', 
+    name: 'Satellite',
+    preview: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/5/10/16'
+  },
+  { 
+    id: 'terrain', 
+    name: 'Terrain',
+    preview: 'https://tile.opentopomap.org/5/16/10.png'
+  }
 ];
 
 export const LayerControlDrawer: React.FC<LayerControlDrawerProps> = ({ open, onClose }) => {
@@ -36,8 +50,8 @@ export const LayerControlDrawer: React.FC<LayerControlDrawerProps> = ({ open, on
   const isDarkMode = useSelector((state: RootState) => state.ui.theme === 'dark');
   const currentLayer = useSelector((state: RootState) => state.map.currentLayer);
 
-  const handleLayerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setMapLayer(event.target.value));
+  const handleLayerChange = (layerId: string) => {
+    dispatch(setMapLayer(layerId));
     onClose();
   };
 
@@ -87,29 +101,51 @@ export const LayerControlDrawer: React.FC<LayerControlDrawerProps> = ({ open, on
               <CloseIcon />
             </IconButton>
           </Box>
-          <RadioGroup
-            value={effectiveLayer}
-            onChange={handleLayerChange}
-          >
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(2, 1fr)', 
+            gap: 2 
+          }}>
             {LAYER_OPTIONS.map((layer) => (
-              <FormControlLabel
+              <Paper
                 key={layer.id}
-                value={layer.id}
-                control={<Radio />}
-                label={layer.name}
+                onClick={() => handleLayerChange(layer.id)}
                 sx={{
-                  width: '100%',
-                  margin: 0,
-                  py: 1.5,
-                  px: 1,
-                  borderRadius: 1,
+                  p: 1,
+                  cursor: 'pointer',
+                  border: effectiveLayer === layer.id ? `2px solid ${theme.palette.primary.main}` : 'none',
                   '&:hover': {
                     backgroundColor: theme.palette.action.hover
                   }
                 }}
-              />
+              >
+                <Box sx={{ 
+                  position: 'relative',
+                  width: '100%',
+                  paddingTop: '75%', // 4:3 aspect ratio
+                  borderRadius: 1,
+                  overflow: 'hidden',
+                  mb: 1
+                }}>
+                  <img
+                    src={layer.preview}
+                    alt={layer.name}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </Box>
+                <Typography variant="body2" align="center">
+                  {layer.name}
+                </Typography>
+              </Paper>
             ))}
-          </RadioGroup>
+          </Box>
         </Box>
       </Drawer>
     </>
