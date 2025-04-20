@@ -5,6 +5,7 @@ import { Box, TextField, Paper, Autocomplete, CircularProgress } from '@mui/mate
 import { useTheme } from '@mui/material/styles';
 import { useDispatch } from 'react-redux';
 import { setSelectedLocation } from '@/store/mapSlice';
+import { useMediaQuery } from '@mui/material';
 
 interface SearchResult {
   display_name: string;
@@ -21,6 +22,7 @@ const SearchBox: React.FC = () => {
   const map = useMap();
   const theme = useTheme();
   const dispatch = useDispatch();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     let timeoutId: number;
@@ -33,17 +35,33 @@ const SearchBox: React.FC = () => {
 
       setLoading(true);
       try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
-          {
-            headers: {
-              'User-Agent': 'APAA-App/1.0',
-              'Accept-Language': 'en',
-            },
-          }
-        );
-        const data = await response.json();
-        setSearchResults(data);
+        if (isMobile) {
+          // Use Leaflet's geocoding for mobile
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
+            {
+              headers: {
+                'User-Agent': 'APAA-App/1.0',
+                'Accept-Language': 'en',
+              },
+            }
+          );
+          const data = await response.json();
+          setSearchResults(data);
+        } else {
+          // Existing search logic for desktop
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=5`,
+            {
+              headers: {
+                'User-Agent': 'APAA-App/1.0',
+                'Accept-Language': 'en',
+              },
+            }
+          );
+          const data = await response.json();
+          setSearchResults(data);
+        }
       } catch (error) {
         console.error('Error searching location:', error);
         setSearchResults([]);
@@ -53,11 +71,11 @@ const SearchBox: React.FC = () => {
     };
 
     if (searchQuery.trim()) {
-      timeoutId = window.setTimeout(fetchResults, 500); // Debounce search
+      timeoutId = window.setTimeout(fetchResults, 500);
     }
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, isMobile]);
 
   const handleLocationSelect = (result: SearchResult) => {
     const location: [number, number] = [parseFloat(result.lat), parseFloat(result.lon)];
@@ -139,10 +157,7 @@ const SearchBox: React.FC = () => {
           clearOnEscape={true}
           onChange={(_, newValue) => {
             if (newValue === null) {
-              setSearchQuery('');
-              setSearchResults([]);
-              setOpen(false);
-              dispatch(setSelectedLocation(null));
+              handleClear();
             } else if (typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
@@ -190,25 +205,11 @@ const SearchBox: React.FC = () => {
               }}
             />
           )}
-          renderOption={(props, option) => {
-            if (typeof option === 'string') return null;
-            return (
-              <li {...props} key={option.place_id} style={{
-                padding: '16px',
-                fontSize: '0.9375rem',
-                borderBottom: `1px solid ${theme.palette.mode === 'dark' 
-                  ? theme.palette.grey[800] 
-                  : theme.palette.grey[200]}`
-              }}>
-                {option.display_name}
-              </li>
-            );
-          }}
-          ListboxProps={{
-            style: {
-              maxHeight: '50vh',
-            }
-          }}
+          renderOption={(props, option) => (
+            <li {...props} key={option.place_id}>
+              {option.display_name}
+            </li>
+          )}
         />
       </Box>
     </Box>
