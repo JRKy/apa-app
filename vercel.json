@@ -69,7 +69,6 @@
     "enabled": true,
     "silent": true
   },
-  "domains": ["apa.kcdev.info"],
   "redirects": [
     {
       "source": "www.apa.kcdev.info",
