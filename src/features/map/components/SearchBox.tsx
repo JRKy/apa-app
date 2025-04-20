@@ -145,6 +145,8 @@ const SearchBox: React.FC = () => {
         role="search"
         aria-label="Search location"
         onClick={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
       >
         <Autocomplete
           freeSolo
@@ -221,6 +223,9 @@ const SearchBox: React.FC = () => {
                   </>
                 ),
               }}
+              onClick={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
             />
           )}
           renderOption={(props, option) => {
