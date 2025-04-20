@@ -179,7 +179,10 @@ const SearchBox: React.FC = () => {
             },
             '& .MuiAutocomplete-clearIndicator': {
               padding: '4px',
-              marginRight: '4px'
+              marginRight: '4px',
+              '&:hover': {
+                backgroundColor: 'transparent'
+              }
             }
           }}
           renderInput={(params) => (
@@ -223,9 +226,6 @@ const SearchBox: React.FC = () => {
                   </>
                 ),
               }}
-              onClick={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
-              onTouchEnd={(e) => e.stopPropagation()}
             />
           )}
           renderOption={(props, option) => {
