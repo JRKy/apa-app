@@ -94,7 +94,7 @@ const SearchBox: React.FC = () => {
           sm: 'auto'
         },
         zIndex: {
-          xs: theme.zIndex.appBar - 1,
+          xs: theme.zIndex.appBar + 1,
           sm: 400
         },
         width: { 
