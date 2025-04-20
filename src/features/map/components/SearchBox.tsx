@@ -144,9 +144,6 @@ const SearchBox: React.FC = () => {
         }}
         role="search"
         aria-label="Search location"
-        onClick={(e) => e.stopPropagation()}
-        onTouchStart={(e) => e.stopPropagation()}
-        onTouchEnd={(e) => e.stopPropagation()}
       >
         <Autocomplete
           freeSolo
@@ -163,10 +160,7 @@ const SearchBox: React.FC = () => {
           clearOnEscape={true}
           onChange={(_, newValue) => {
             if (newValue === null) {
-              setSearchQuery('');
-              setSearchResults([]);
-              setOpen(false);
-              dispatch(setSelectedLocation(null));
+              handleClear();
             } else if (typeof newValue !== 'string') {
               handleLocationSelect(newValue);
             }
