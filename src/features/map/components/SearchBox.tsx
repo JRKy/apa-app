@@ -151,12 +151,7 @@ const SearchBox: React.FC = () => {
             setSearchQuery(newInputValue);
           }}
           sx={{
-            width: '100%',
-            '& .MuiAutocomplete-clearIndicator': {
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }
+            width: '100%'
           }}
           renderInput={(params) => (
             <TextField
