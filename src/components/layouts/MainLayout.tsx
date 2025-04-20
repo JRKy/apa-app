@@ -69,12 +69,8 @@ const MainLayout: React.FC = () => {
         color="default" 
         elevation={0}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' 
-            ? theme.palette.grey[900] 
-            : theme.palette.grey[50],
-          borderBottom: `1px solid ${theme.palette.mode === 'dark' 
-            ? theme.palette.grey[800] 
-            : theme.palette.grey[200]}`,
+          backgroundColor: 'transparent',
+          borderBottom: 'none',
           borderRadius: 0,
           zIndex: theme.zIndex.drawer + 1,
         }}
@@ -175,7 +171,7 @@ const MainLayout: React.FC = () => {
         height: '100vh', 
         width: '100%', 
         position: 'relative',
-        pt: '64px' // Add padding top to account for fixed AppBar
+        pt: { xs: '56px', sm: '64px' } // 56px for mobile, 64px for desktop
       }}>
         <Map mapRef={mapRef} />
         

@@ -8,9 +8,17 @@ interface HelpProps {
 
 const Help = ({ open, onClose }: HelpProps) => {
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+    <Dialog 
+      open={open} 
+      onClose={onClose} 
+      maxWidth="md" 
+      fullWidth
+      disableEnforceFocus
+      disableAutoFocus
+      aria-labelledby="help-dialog-title"
+    >
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom id="help-dialog-title">
           Help & Documentation
         </Typography>
         <Paper sx={{ p: 3 }}>

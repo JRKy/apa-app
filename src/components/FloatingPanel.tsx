@@ -37,7 +37,7 @@ const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
   useEffect(() => {
     if (isMobile) {
       dispatch(setSatelliteWindow({
-        position: { x: 0, y: 64 }, // Below header
+        position: { x: 0, y: 56 }, // Below header (56px for mobile)
         size: { 
           width: window.innerWidth,
           height: window.innerHeight * 0.6
@@ -129,12 +129,12 @@ const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
       sx={{
         position: 'fixed',
         left: isMobile ? 0 : position.x,
-        top: isMobile ? 64 : position.y,
+        top: isMobile ? 56 : position.y, // Updated to 56px for mobile
         width: isMobile ? '100%' : size.width,
         height: isMobile ? '60vh' : size.height,
         backgroundColor: theme.palette.background.paper,
         borderRadius: isMobile ? 0 : 1,
-        boxShadow: `0 4px 20px 0 rgba(0,0,0,0.1), 0 0 0 1px ${theme.palette.divider}`,
+        boxShadow: isMobile ? 'none' : `0 4px 20px 0 rgba(0,0,0,0.1), 0 0 0 1px ${theme.palette.divider}`,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -189,7 +189,7 @@ const FloatingPanel: React.FC<FloatingPanelProps> = ({ onClose }) => {
       <Box sx={{ 
         flex: 1, 
         overflow: 'auto', 
-        padding: 2,
+        padding: isMobile ? 1 : 2,
         '&::-webkit-scrollbar': {
           width: '6px',
         },
