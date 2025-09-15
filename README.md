@@ -3,40 +3,47 @@
 A web-based application for calculating antenna pointing angles to MUOS and other geostationary satellites.
 
 [![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/JRKy/apa-app)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://react.dev/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/JRKy/apa-app/blob/main/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue.svg)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-18.2-blue.svg)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.1-blue.svg)](https://vitejs.dev/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Deploy](https://github.com/JRKy/apa-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/JRKy/apa-app/actions/workflows/deploy.yml)
 
 ---
 
 ## ✨ Features
 
-- 🌍 Interactive world map with satellite subsatellite positions  
-- 🛰️ Antenna pointing angle (Az/El) calculations from any location  
-- 📡 Satellite visibility indicators (elevation > 0° = in view)  
-- 🔍 Location search with Nominatim integration  
+- 🌍 Interactive world map with OpenStreetMap tiles  
+- 🛰️ MUOS + other GEO satellites rendered at subsatellite points  
+- 📡 Antenna pointing angle (Azimuth/Elevation) calculations from any location  
+- 📊 Satellite visibility indicators (elevation > 0° = visible)  
+- 🔍 Location search with autocomplete (Leaflet Search + Nominatim)  
+- 🗺️ Combatant Command (CCMD) region overlays via GeoJSON  
 - 🔄 Unit conversion (km / mi)  
-- 📱 Responsive design (desktop & mobile)  
-- 🌙 Dark/Light theme toggle  
-- 📊 Geolocation with accuracy circle  
+- 📱 Responsive design for desktop & mobile  
+- 🌙 Dark/Light theme support (MUI theming)  
+- ⚡ Offline-capable (PWA manifest + service worker)  
+- 🔗 Routing with React Router  
+- 📦 State management with Redux Toolkit + React Query  
 
 ---
 
 ## 🚀 Live Demo
 
-The app is deployed on **GitHub Pages**:  
 👉 [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
 
 ---
 
 ## 🛠 Tech Stack
 
-- [React 19](https://react.dev/) + [Vite 6.3](https://vitejs.dev/)  
-- [TypeScript 5.7](https://www.typescriptlang.org/)  
-- [Redux Toolkit](https://redux-toolkit.js.org/) for state management  
-- [Material-UI v7](https://mui.com/) for UI components  
-- [Leaflet](https://leafletjs.com/) + OpenStreetMap tiles for mapping  
+- **React 18** + **Vite 5** + **TypeScript 5.3**  
+- **Redux Toolkit** + **React Query** for state & data fetching  
+- **Material-UI (MUI v5)** for UI components + theming  
+- **Leaflet** + **React-Leaflet** + **Leaflet-Search** for maps  
+- **Axios** for data requests  
+- **Lodash** for utilities  
+- **React Router v6** for routing  
+- **PWA**: manifest + service worker  
 
 ---
 
@@ -47,7 +54,6 @@ The app is deployed on **GitHub Pages**:
 - npm **9+**
 
 ### Installation
-
 ```bash
 git clone https://github.com/JRKy/apa-app.git
 cd apa-app
@@ -58,52 +64,50 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Open [http://localhost:5173](http://localhost:5173).
 
 ### Production Build
 ```bash
 npm run build
 npm run preview
 ```
-The production build is output to the `dist/` directory.
 
 ---
 
-## 📂 Available Scripts
+## 📂 Scripts
 
 - `npm run dev` – Start development server  
-- `npm run build` – Create production build  
-- `npm run preview` – Preview build locally  
+- `npm run build` – Production build to `dist/`  
+- `npm run preview` – Preview the build locally  
 - `npm run lint` – Run ESLint  
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository  
-2. Create a feature branch (`git checkout -b feature/MyFeature`)  
-3. Commit changes (`git commit -m 'Add my feature'`)  
-4. Push to your branch (`git push origin feature/MyFeature`)  
-5. Open a Pull Request  
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License – see [LICENSE](LICENSE).
-
----
-
-## 📜 Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for details.
 
 ---
 
 ## 📦 Deployment
 
-This app is deployed via **GitHub Actions** to **GitHub Pages**.  
-- Branch: `develop` (or `main`, depending on config)  
-- Workflow: `.github/workflows/deploy.yml` builds the app and publishes it to Pages.  
+Deployed via **GitHub Actions** to **GitHub Pages**.  
+- Workflow: `.github/workflows/deploy.yml`  
+- Branch: `develop` (merged into `main` for release)  
+- URL: [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
 
-URL: [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
+---
+
+## 🤝 Contributing
+
+1. Fork repo  
+2. Create branch: `git checkout -b feature/YourFeature`  
+3. Commit changes: `git commit -m 'Add feature'`  
+4. Push branch: `git push origin feature/YourFeature`  
+5. Open Pull Request  
+
+---
+
+## 📄 License
+
+MIT © [JRKy](https://github.com/JRKy)
+
+---
+
+## 📜 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
