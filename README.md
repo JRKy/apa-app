@@ -21,7 +21,7 @@ A web-based application for calculating antenna pointing angles to MUOS and ALT 
 
 ## Live Demo
 
-Visit the live application at: [https://apaa-app.vercel.app](https://apaa-app.vercel.app)
+Visit the live application at: [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
 
 ## Tech Stack
 
