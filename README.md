@@ -1,99 +1,109 @@
-# Antenna Pointing Angles (APAA) Application
+# Antenna Pointing Angles (APA) Application
 
-A web-based application for calculating antenna pointing angles to MUOS and ALT satellites.
+A web-based application for calculating antenna pointing angles to MUOS and other geostationary satellites.
 
 [![Version](https://img.shields.io/badge/version-3.0-blue.svg)](https://github.com/JRKy/apa-app)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-19.0-blue.svg)](https://react.dev/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/JRKy/apa-app/blob/main/LICENSE)
+[![Deploy](https://github.com/JRKy/apa-app/actions/workflows/deploy.yml/badge.svg)](https://github.com/JRKy/apa-app/actions/workflows/deploy.yml)
 
-## Features
+---
 
-- 🌍 Interactive world map with satellite positions
-- 🛰️ Real-time satellite tracking
-- 📡 Antenna pointing angles calculations
-- 🔍 Advanced location search with autocomplete
-- 🔄 Unit conversion support (km/mi)
-- 📱 Responsive design
-- 🌙 Dark/Light theme support
-- 🗺️ Combatant Command region visualization
-- 📊 Satellite visibility indicators
+## ✨ Features
 
-## Live Demo
+- 🌍 Interactive world map with satellite subsatellite positions  
+- 🛰️ Antenna pointing angle (Az/El) calculations from any location  
+- 📡 Satellite visibility indicators (elevation > 0° = in view)  
+- 🔍 Location search with Nominatim integration  
+- 🔄 Unit conversion (km / mi)  
+- 📱 Responsive design (desktop & mobile)  
+- 🌙 Dark/Light theme toggle  
+- 📊 Geolocation with accuracy circle  
 
-Visit the live application at: [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
+---
 
-## Tech Stack
+## 🚀 Live Demo
 
-- React 19
-- TypeScript 5.7
-- Vite 6.3
-- Material-UI v7
-- Redux Toolkit
-- Leaflet for mapping
-- OpenStreetMap integration
+The app is deployed on **GitHub Pages**:  
+👉 [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
 
-## Getting Started
+---
+
+## 🛠 Tech Stack
+
+- [React 19](https://react.dev/) + [Vite 6.3](https://vitejs.dev/)  
+- [TypeScript 5.7](https://www.typescriptlang.org/)  
+- [Redux Toolkit](https://redux-toolkit.js.org/) for state management  
+- [Material-UI v7](https://mui.com/) for UI components  
+- [Leaflet](https://leafletjs.com/) + OpenStreetMap tiles for mapping  
+
+---
+
+## ⚡ Getting Started
 
 ### Prerequisites
-
-- Node.js 18+ 
-- npm 9+
+- Node.js **18+**  
+- npm **9+**
 
 ### Installation
 
-1. Clone the repository
 ```bash
-git clone https://github.com/JRKy/apaa-app.git
-cd apaa-app
-```
-
-2. Install dependencies
-```bash
+git clone https://github.com/JRKy/apa-app.git
+cd apa-app
 npm install
 ```
 
-3. Start the development server
+### Development
 ```bash
 npm run dev
 ```
-
-The application will be available at `http://localhost:5173`
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ### Production Build
-
-To create a production build:
-
 ```bash
 npm run build
+npm run preview
 ```
+The production build is output to the `dist/` directory.
 
-The built files will be in the `dist` directory.
+---
 
-## Development
+## 📂 Available Scripts
 
-### Available Scripts
+- `npm run dev` – Start development server  
+- `npm run build` – Create production build  
+- `npm run preview` – Preview build locally  
+- `npm run lint` – Run ESLint  
 
-- `npm run dev` - Start development server
-- `npm run build` - Create production build
-- `npm run preview` - Preview production build locally
-- `npm run lint` - Run ESLint
+---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repository  
+2. Create a feature branch (`git checkout -b feature/MyFeature`)  
+3. Commit changes (`git commit -m 'Add my feature'`)  
+4. Push to your branch (`git push origin feature/MyFeature`)  
+5. Open a Pull Request  
 
-## License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/JRKy/apaa-app/blob/main/LICENSE) file for details.
+## 📄 License
 
-## Changelog
+This project is licensed under the MIT License – see [LICENSE](LICENSE).
 
-See [CHANGELOG.md](https://github.com/JRKy/apaa-app/blob/main/CHANGELOG.md) for a list of changes and updates.
+---
 
-## Deployment
-This application is deployed on Vercel and automatically updates when changes are pushed to the stable-ui-version branch.
+## 📜 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for details.
+
+---
+
+## 📦 Deployment
+
+This app is deployed via **GitHub Actions** to **GitHub Pages**.  
+- Branch: `develop` (or `main`, depending on config)  
+- Workflow: `.github/workflows/deploy.yml` builds the app and publishes it to Pages.  
+
+URL: [https://jrky.github.io/apa-app](https://jrky.github.io/apa-app)
