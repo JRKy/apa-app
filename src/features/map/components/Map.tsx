@@ -188,9 +188,9 @@ export const calculateElevationAngle = (observerLat: number, observerLon: number
 
 // Helper function to determine visibility category
 const getVisibilityCategory = (elevation: number) => {
-  if (elevation <= 5) return 'hidden';  // Below or just above horizon
-  if (elevation < 20) return 'poor';    // Poor visibility
-  return 'good';                        // Good visibility
+  if (elevation < 0) return 'hidden';
+  if (elevation < 10) return 'poor';
+  return 'good';
 };
 
 // Helper function to get line style based on visibility
@@ -198,7 +198,7 @@ const getLineStyle = (category: string) => {
   switch (category) {
     case 'good':
       return { 
-        color: '#2E7D32', // Dark green
+        color: '#4caf50', // Dark green
         weight: 3, 
         opacity: 0.9, 
         dashArray: '0',
@@ -206,7 +206,7 @@ const getLineStyle = (category: string) => {
       };
     case 'poor':
       return { 
-        color: '#1565C0', // Blue instead of orange
+        color: '#2196f3', // Blue instead of orange
         weight: 2, 
         opacity: 0.9, 
         dashArray: '5,5',
@@ -214,7 +214,7 @@ const getLineStyle = (category: string) => {
       };
     case 'hidden':
       return { 
-        color: '#C62828', // Red
+        color: '#f44336', // Red
         weight: 2, 
         opacity: 0.9, 
         dashArray: '3,3',
@@ -222,7 +222,7 @@ const getLineStyle = (category: string) => {
       };
     default:
       return { 
-        color: '#1565C0', 
+        color: '#2196f3', 
         weight: 2, 
         opacity: 0.9, 
         dashArray: '5,5',
