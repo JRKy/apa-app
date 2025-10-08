@@ -67,16 +67,7 @@ const SatelliteRow: React.FC<SatelliteRowProps> = ({ satellite, pointingAngles, 
         '&:last-child td, &:last-child th': { border: 0 },
         backgroundColor,
         transition: 'background-color 0.3s ease',
-        position: 'relative',
-        '&::after': {
-          content: '""',
-          position: 'absolute',
-          right: 0,
-          top: 0,
-          bottom: 0,
-          width: '4px',
-          backgroundColor: textColor,
-        }
+        position: 'relative'
       }}
       aria-label={`${satellite.name} - ${elevationStatus} visibility`}
     >
@@ -255,23 +246,18 @@ export const SatelliteInfo: React.FC = () => {
       </Box>
       <TableContainer 
         component={Paper} 
-        sx={{ 
+        sx={{ overflow: 'hidden',  
           maxHeight: 'calc(100vh - 200px)',
           boxShadow: 'none',
           border: (theme: Theme) => `1px solid ${theme.palette.divider}`,
           borderRadius: 1.5,
-          overflow: 'hidden',
         }}
       >
         <Table 
           size="small" 
-          sx={{ 
+          sx={{ borderCollapse: 'separate', borderSpacing: 0, '& th:last-of-type, & td:last-of-type': { borderRight: 0 }, '& .MuiTableCell-root': { backgroundClip: 'padding-box' },  
             tableLayout: 'auto', // Changed from 'fixed' to 'auto' for dynamic columns
-            borderCollapse: 'separate',
-            borderSpacing: 0,
-            '& th:last-of-type, & td:last-of-type': { borderRight: 0 }
             '& .MuiTableCell-root': {
-              backgroundClip: 'padding-box',
               fontFamily: (theme: Theme) => theme.typography.fontFamily,
               fontSize: '0.875rem',
               whiteSpace: 'nowrap' // Prevent text wrapping
