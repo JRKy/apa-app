@@ -260,13 +260,18 @@ export const SatelliteInfo: React.FC = () => {
           boxShadow: 'none',
           border: (theme: Theme) => `1px solid ${theme.palette.divider}`,
           borderRadius: 1.5,
+          overflow: 'hidden',
         }}
       >
         <Table 
           size="small" 
           sx={{ 
             tableLayout: 'auto', // Changed from 'fixed' to 'auto' for dynamic columns
+            borderCollapse: 'separate',
+            borderSpacing: 0,
+            '& th:last-of-type, & td:last-of-type': { borderRight: 0 }
             '& .MuiTableCell-root': {
+              backgroundClip: 'padding-box',
               fontFamily: (theme: Theme) => theme.typography.fontFamily,
               fontSize: '0.875rem',
               whiteSpace: 'nowrap' // Prevent text wrapping
